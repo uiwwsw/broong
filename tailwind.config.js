@@ -7,36 +7,17 @@ export default {
     },
     extend: {
       animation: {
-        'ripple-start': 'ripple-start 1s linear forwards',
-        'ripple-end': 'ripple-end 0.6s linear',
+        ripple: 'ripple 0.6s linear forwards',
       },
       keyframes: {
-        'ripple-start': {
-          '0%': {
-            opacity: '0',
-            transform: 'scale(0)',
-          },
-          '10%': {
-            opacity: '0.7',
-            transform: 'scale(0.2)',
-          },
-          '100%': {
-            transform: 'scale(0.7)',
-            opacity: '1',
-          },
-        },
-        'ripple-end': {
-          '0%': {
-            transform: 'scale(0.7)',
-            opacity: '1',
-          },
+        ripple: {
           '10%': {
             opacity: '1',
-            transform: 'scale(1)',
+            transform: 'scale(1) translate(-50%, -50%)',
           },
           '100%': {
-            transform: 'scale(4)',
             opacity: '0',
+            transform: 'scale(4) translate(-50%, -50%)',
           },
         },
       },
