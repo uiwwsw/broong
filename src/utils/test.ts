@@ -1,1 +1,1 @@
-console.log('dawd');
+console.log('test');

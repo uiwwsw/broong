@@ -1,0 +1,12 @@
+words:
+  # 브랜드네임
+  - vroong
+
+  # plugins
+  - commitlint
+  - tailwindcss
+  - pretendard # 폰트
+ignoreWords:
+  - noopener
+ignorePaths:
+  - '**/node_modules/**'
