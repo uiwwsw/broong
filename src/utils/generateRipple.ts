@@ -30,18 +30,19 @@ const generateRipple = (e: MouseEvent) => {
   ripple.style.top = `${e.clientY}px`;
   ripple.className =
     'opacity-0 fixed z-50 rounded-full pointer-events-none bg-black bg-opacity-20 -translate-x-1/2 -translate-y-1/2 origin-top-left';
-  target.appendChild(ripple);
   target.addEventListener('touchend', setAnimate);
   target.addEventListener('mouseup', setAnimate);
   target.addEventListener('mouseleave', setAnimate);
-  window.requestAnimationFrame(requestAnimationFrame);
-
   ripple.addEventListener('animationend', () => {
     ripple.remove();
     target.removeEventListener('touchend', setAnimate);
     target.removeEventListener('mouseup', setAnimate);
     target.removeEventListener('mouseleave', setAnimate);
   });
+
+  target.appendChild(ripple);
+
+  window.requestAnimationFrame(requestAnimationFrame);
 };
 
 export default generateRipple;
