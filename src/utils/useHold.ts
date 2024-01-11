@@ -1,22 +1,26 @@
 import { MouseEvent, TouchEvent, useCallback, useRef } from 'react';
 interface UseHoldProps {
-  onEnd?: Function;
-  onStart?: Function;
+  onHoldBefore?: Function;
+  onHoldEnd?: Function;
+  onHoldStart?: Function;
   holdTime?: number;
 }
-const useHold = ({ onEnd, onStart, holdTime = 1000 }: UseHoldProps) => {
+const useHold = ({ onHoldEnd, onHoldStart, onHoldBefore, holdTime = 1000 }: UseHoldProps) => {
   const holdTimer = useRef(setTimeout(() => null));
 
   const handleStart = useCallback(
     (e: MouseEvent | TouchEvent) => {
-      onStart && onStart(e);
-      if (!onEnd) return;
-      holdTimer.current = setTimeout(() => onEnd(), holdTime);
+      onHoldBefore && onHoldBefore(e);
+      if (!onHoldStart) return;
+      holdTimer.current = setTimeout(() => onHoldStart(), holdTime);
     },
-    [onStart, onEnd, holdTime],
+    [onHoldStart, onHoldBefore, holdTime],
   );
 
-  const handleStop = useCallback(() => clearTimeout(holdTimer.current), []);
+  const handleStop = useCallback(() => {
+    clearTimeout(holdTimer.current);
+    onHoldEnd && onHoldEnd();
+  }, [onHoldEnd]);
 
   return {
     onMouseDown: handleStart,

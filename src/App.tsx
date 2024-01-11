@@ -9,7 +9,7 @@ const App = () => {
 
   return (
     <>
-      <Sample />
+      <Sample max={13} onChange={(d) => console.log(d)} />
       <Button>dawdawdad</Button>
     </>
   );
