@@ -1,3 +1,4 @@
+import Button from '@/Button';
 import Sample from '@/Sample';
 import { useState } from 'react';
 // import reactLogo from './assets/react.svg'
@@ -9,6 +10,7 @@ function App() {
   return (
     <>
       <Sample />
+      <Button>dawdawdad</Button>
     </>
   );
 }
