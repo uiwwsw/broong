@@ -8,48 +8,47 @@ interface SampleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onCha
   onChange?: (value: number) => unknown;
 }
 function Sample({ max, min = 1, onChange }: SampleProps) {
-  const [value, setValue] = useState<number | ''>(+(min ?? 0));
+  const [value, setValue] = useState<number>(+(min ?? 0));
+  const [focus, setFocus] = useState(false);
   const holdRef = useRef(false);
   const getValue = (newValue: number) => {
     if (newValue === value) return value;
 
-    if (newValue > +value) {
+    if (newValue > value) {
       return Math.min(newValue, +(max ?? newValue));
     } else {
       return Math.max(newValue, +(min ?? newValue));
     }
   };
-  const adapterGetValue = (newValue: string) => {
-    if (newValue === '') return '';
-    return getValue(+newValue);
-  };
   const handleChange = useDebounce(onChange);
-  const handlePlus = () => setValue(getValue(+value + 1));
-  const handleMinus = () => setValue(getValue(+value - 1));
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => setValue(adapterGetValue(e.target.value));
-  const handleBlur = () => (value === '' ? setValue(+min) : null);
-  const handlePlusHold = () => {
+  const handleFocus = () => setFocus(true);
+  const handleBlur = () => setFocus(false);
+  const handlePlus = () => setValue(getValue(value + 1));
+  const handleMinus = () => setValue(getValue(value - 1));
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => setValue(getValue(+e.target.value));
+  const handleRequestFrame = (direct: boolean) => () => {
+    // let startTime: number;
     holdRef.current = true;
     const event = () => {
+      //time: number
       if (holdRef.current === false) return;
-      setValue((prev) => getValue(+prev + 1));
+      // if (startTime === undefined) startTime = time;
+
+      // 10의 배수
+      // const step = Math.floor((time - startTime) / 1000);
+      // setValue((prev) => getValue(+prev + 10 ** step * (direct ? 1 : -1)));
+      // 순차 증가
+      // const step = Math.floor((time - startTime) / 1000);
+      // setValue((prev) => getValue(+prev + step * (direct ? 1 : -1)));
+      setValue((prev) => getValue(+prev + (direct ? 1 : -1)));
       window.requestAnimationFrame(event);
     };
-    event();
+    window.requestAnimationFrame(event);
   };
+  const handlePlusHold = handleRequestFrame(true);
   const handleHoldEnd = () => (holdRef.current = false);
-  const handleMinusHold = () => {
-    holdRef.current = true;
-    const event = () => {
-      if (holdRef.current === false) return;
-      setValue((prev) => getValue(+prev - 1));
-      window.requestAnimationFrame(event);
-    };
-    event();
-  };
-  useEffect(() => {
-    if (value !== '' && onChange) handleChange(value);
-  }, [value, onChange]);
+  const handleMinusHold = handleRequestFrame(false);
+  useEffect(() => handleChange(value), [value, handleChange]);
   return (
     <div className="border border-slate-700 rounded-md inline-flex">
       <Button
@@ -73,8 +72,9 @@ function Sample({ max, min = 1, onChange }: SampleProps) {
         max={max}
         min={min}
         type="number"
-        value={value}
+        value={focus ? undefined : value}
         onInput={handleInput}
+        onFocus={handleFocus}
         onBlur={handleBlur}
         className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none text-center w-10 outline-none text-lg font-bold"
       />
