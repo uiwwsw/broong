@@ -4,7 +4,7 @@ interface UseHoldProps {
   onStart?: Function;
   holdTime?: number;
 }
-function useHold({ onEnd, onStart, holdTime = 1000 }: UseHoldProps) {
+const useHold = ({ onEnd, onStart, holdTime = 1000 }: UseHoldProps) => {
   const holdTimer = useRef(setTimeout(() => null));
 
   const handleStart = useCallback(
@@ -25,6 +25,6 @@ function useHold({ onEnd, onStart, holdTime = 1000 }: UseHoldProps) {
     onTouchStart: handleStart,
     onTouchEnd: handleStop,
   };
-}
+};
 
 export default useHold;

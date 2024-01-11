@@ -16,12 +16,20 @@ export default {
             opacity: '0',
             transform: 'scale(0)',
           },
+          '10%': {
+            opacity: '0.7',
+            transform: 'scale(0.2)',
+          },
           '100%': {
-            transform: 'scale(0.5)',
+            transform: 'scale(0.7)',
             opacity: '1',
           },
         },
         'ripple-end': {
+          '0%': {
+            transform: 'scale(0.7)',
+            opacity: '1',
+          },
           '10%': {
             opacity: '1',
             transform: 'scale(1)',
