@@ -25,7 +25,14 @@ function Sample({ max, min = 1, onChange }: SampleProps) {
   const handleBlur = () => setFocus(false);
   const handlePlus = () => setValue(getValue(value + 1));
   const handleMinus = () => setValue(getValue(value - 1));
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => setValue(getValue(+e.target.value));
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === '') return;
+
+    const newValue = getValue(+value);
+    setValue(newValue);
+    if (newValue === min || newValue === max) return (e.target.value = `${newValue}`);
+  };
   const handleRequestFrame = (direct: boolean) => () => {
     // let startTime: number;
     holdRef.current = true;
@@ -69,6 +76,7 @@ function Sample({ max, min = 1, onChange }: SampleProps) {
         </svg>
       </Button>
       <input
+        placeholder={`${min}~${max}`}
         max={max}
         min={min}
         type="number"
@@ -76,7 +84,7 @@ function Sample({ max, min = 1, onChange }: SampleProps) {
         onInput={handleInput}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        className="w-10 text-center text-lg font-bold outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        className="w-16 text-center text-lg font-bold outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
       />
       <Button
         className="border-l border-slate-700 p-2"

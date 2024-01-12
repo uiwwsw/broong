@@ -6,7 +6,7 @@ import Sample from '@/Sample';
 const App = () => {
   return (
     <>
-      <Sample onChange={(d) => console.log(d)} />
+      <Sample onChange={(d) => console.log(d)} max={15} />
       <br />
       <Button className="btn">dawdawdad</Button>
       <br />
