@@ -4,6 +4,7 @@
 import { ChangeEvent, InputHTMLAttributes, useEffect, useRef, useState } from 'react';
 import Button from './Button';
 import useDebounce from '#/useDebounce';
+import requestAnimationFrame from '#/requestAnimationFrame';
 interface SampleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   onChange?: (value: number) => unknown;
 }
@@ -33,28 +34,40 @@ function Sample({ max, min = 1, onChange }: SampleProps) {
     setValue(newValue);
     if (newValue === min || newValue === max) return (e.target.value = `${newValue}`);
   };
-  const handleRequestFrame = (direct: boolean) => () => {
-    // let startTime: number;
-    holdRef.current = true;
-    const event = () => {
-      //time: number
-      if (holdRef.current === false) return;
-      // if (startTime === undefined) startTime = time;
+  // const handleRequestFrame = (direct: boolean) => () => {
+  //   // let startTime: number;
+  //   holdRef.current = true;
+  //   const event = () => {
+  //     //time: number
+  //     if (holdRef.current === false) return;
+  //     // if (startTime === undefined) startTime = time;
 
-      // 10의 배수
-      // const step = Math.floor((time - startTime) / 1000);
-      // setValue((prev) => getValue(+prev + 10 ** step * (direct ? 1 : -1)));
-      // 순차 증가
-      // const step = Math.floor((time - startTime) / 1000);
-      // setValue((prev) => getValue(+prev + step * (direct ? 1 : -1)));
-      setValue((prev) => getValue(+prev + (direct ? 1 : -1)));
-      window.requestAnimationFrame(event);
-    };
-    window.requestAnimationFrame(event);
+  //     // 10의 배수
+  //     // const step = Math.floor((time - startTime) / 1000);
+  //     // setValue((prev) => getValue(+prev + 10 ** step * (direct ? 1 : -1)));
+  //     // 순차 증가
+  //     // const step = Math.floor((time - startTime) / 1000);
+  //     // setValue((prev) => getValue(+prev + step * (direct ? 1 : -1)));
+  //     setValue((prev) => getValue(+prev + (direct ? 1 : -1)));
+  //     window.requestAnimationFrame(event);
+  //   };
+  //   window.requestAnimationFrame(event);
+  // };
+  const handlePlusHold = () => {
+    holdRef.current = true;
+    requestAnimationFrame(() => {
+      setValue((prev) => getValue(+prev + 1));
+      return holdRef.current;
+    });
   };
-  const handlePlusHold = handleRequestFrame(true);
   const handleHoldEnd = () => (holdRef.current = false);
-  const handleMinusHold = handleRequestFrame(false);
+  const handleMinusHold = () => {
+    holdRef.current = true;
+    requestAnimationFrame(() => {
+      setValue((prev) => getValue(+prev - 1));
+      return holdRef.current;
+    });
+  };
   useEffect(() => handleChange(value), [value, handleChange]);
   return (
     <div className="inline-flex rounded-md border border-slate-700">
