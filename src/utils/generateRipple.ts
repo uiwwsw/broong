@@ -1,7 +1,7 @@
 import { MouseEvent } from 'react';
+import requestAnimationFrame from './requestAnimationFrame';
 const generateRipple = (e: MouseEvent) => {
   let complete = false;
-  let startTime: number;
   const duration = 1000;
   const target = e.currentTarget as HTMLElement;
   const ripple = document.createElement('i');
@@ -13,18 +13,7 @@ const generateRipple = (e: MouseEvent) => {
     ripple.style.width = ripple.style.height = `${size}px`;
     ripple.style.opacity = '1';
   };
-  const requestAnimationFrame = (time: number) => {
-    if (complete) return;
-    if (startTime === undefined) startTime = time;
 
-    const timeElapsed = time - startTime;
-    const percent = timeElapsed / 1000;
-    if (timeElapsed < duration) {
-      ripple.style.width = ripple.style.height = `${size * percent}px`;
-      ripple.style.opacity = `${Math.min(percent, 1)}`;
-      window.requestAnimationFrame(requestAnimationFrame);
-    }
-  };
   ripple.style.width = ripple.style.height = '0px';
   ripple.style.left = `${e.clientX}px`;
   ripple.style.top = `${e.clientY}px`;
@@ -38,10 +27,18 @@ const generateRipple = (e: MouseEvent) => {
     target.removeEventListener('mouseup', setAnimate);
     target.removeEventListener('mouseleave', setAnimate);
   });
-
   target.appendChild(ripple);
 
-  window.requestAnimationFrame(requestAnimationFrame);
+  requestAnimationFrame((timeElapsed: number) => {
+    if (complete) return false;
+    if (timeElapsed < duration) {
+      const percent = timeElapsed / 1000;
+      ripple.style.width = ripple.style.height = `${size * percent}px`;
+      ripple.style.opacity = `${Math.min(percent, 1)}`;
+      return true;
+    }
+    return false;
+  });
 };
 
 export default generateRipple;
