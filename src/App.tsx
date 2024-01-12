@@ -7,7 +7,15 @@ const App = () => {
   return (
     <>
       <Sample onChange={(d) => console.log(d)} />
-      <Button className="btn btn--primary">dawdawdad</Button>
+      <br />
+      <Button className="btn">dawdawdad</Button>
+      <br />
+      <Button className="btn">dawdawdad</Button>
+      <br />
+      <div>
+        <Button className="btn btn--primary">dawdawdad</Button>
+        <Button className="btn btn--secondary">dawdawdad</Button>
+      </div>
     </>
   );
 };

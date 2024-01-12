@@ -1,6 +1,6 @@
 @layer base {
   .btn {
-    @apply rounded-md border p-3;
+    @apply box-border rounded-md border p-3;
   }
 }
 @layer components {
@@ -13,10 +13,10 @@
     }
 
     &--primary {
-      @apply bg-purple-700 text-white;
+      @apply border-purple-700 bg-purple-700 text-white;
     }
     &--secondary {
-      @apply bg-slate-700 text-white;
+      @apply border-slate-700 bg-slate-700 text-white;
     }
   }
 }
