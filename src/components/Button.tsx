@@ -2,7 +2,7 @@
 
 import generateRipple from '#/generateRipple';
 import useHold from '#/useHold';
-import { ButtonHTMLAttributes, MouseEvent } from 'react';
+import { ButtonHTMLAttributes } from 'react';
 
 // const generateRipple = (e: MouseEvent) => {
 //   const target = e.currentTarget;

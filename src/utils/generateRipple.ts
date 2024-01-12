@@ -9,7 +9,7 @@ const generateRipple = (e: MouseEvent) => {
   const size = Math.max(rect.width, rect.height);
   const setAnimate = () => {
     complete = true;
-    ripple.classList.add('transition-all', 'duration-300', 'animate-ripple');
+    ripple.classList.add('ripple--begin');
     ripple.style.width = ripple.style.height = `${size}px`;
     ripple.style.opacity = '1';
   };
@@ -28,8 +28,7 @@ const generateRipple = (e: MouseEvent) => {
   ripple.style.width = ripple.style.height = '0px';
   ripple.style.left = `${e.clientX}px`;
   ripple.style.top = `${e.clientY}px`;
-  ripple.className =
-    'opacity-0 fixed z-50 rounded-full pointer-events-none bg-black bg-opacity-20 -translate-x-1/2 -translate-y-1/2 origin-top-left';
+  ripple.className = 'ripple';
   target.addEventListener('touchend', setAnimate);
   target.addEventListener('mouseup', setAnimate);
   target.addEventListener('mouseleave', setAnimate);

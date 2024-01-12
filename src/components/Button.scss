@@ -1,0 +1,17 @@
+@layer base {
+  .btn {
+    @apply rounded-md border p-3;
+  }
+}
+@layer components {
+  .btn {
+    &--sm {
+      @apply rounded-sm p-2;
+    }
+    &--lg {
+      @apply rounded-lg p-4;
+    }
+  }
+}
+@layer utilities {
+}

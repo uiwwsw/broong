@@ -50,7 +50,7 @@ function Sample({ max, min = 1, onChange }: SampleProps) {
   const handleMinusHold = handleRequestFrame(false);
   useEffect(() => handleChange(value), [value, handleChange]);
   return (
-    <div className="border border-slate-700 rounded-md inline-flex">
+    <div className="inline-flex rounded-md border border-slate-700">
       <Button
         className="border-r border-slate-700 p-2"
         onClick={handlePlus}
@@ -63,7 +63,7 @@ function Sample({ max, min = 1, onChange }: SampleProps) {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
         </svg>
@@ -76,7 +76,7 @@ function Sample({ max, min = 1, onChange }: SampleProps) {
         onInput={handleInput}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none text-center w-10 outline-none text-lg font-bold"
+        className="w-10 text-center text-lg font-bold outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
       />
       <Button
         className="border-l border-slate-700 p-2"
@@ -90,7 +90,7 @@ function Sample({ max, min = 1, onChange }: SampleProps) {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
         </svg>
