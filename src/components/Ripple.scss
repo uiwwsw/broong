@@ -1,17 +1,18 @@
 @layer base {
+  .ripple {
+    @apply pointer-events-none fixed z-50 origin-top-left -translate-x-1/2 -translate-y-1/2 rounded-full bg-black bg-opacity-10 opacity-0;
+  }
 }
 @layer components {
   .ripple {
-    @apply pointer-events-none fixed z-50 origin-top-left -translate-x-1/2 -translate-y-1/2 rounded-full bg-black bg-opacity-20 opacity-0;
     &--begin {
       @apply animate-ripple transition-all duration-300;
+    }
+    .btn--primary &,
+    .btn--secondary & {
+      @apply bg-white bg-opacity-20;
     }
   }
 }
 @layer utilities {
-  .ripple {
-    .btn--primary & {
-      @apply bg-white bg-opacity-60;
-    }
-  }
 }
