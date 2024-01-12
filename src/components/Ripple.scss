@@ -9,4 +9,9 @@
   }
 }
 @layer utilities {
+  .ripple {
+    .btn--primary & {
+      @apply bg-white bg-opacity-60;
+    }
+  }
 }

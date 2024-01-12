@@ -6,10 +6,17 @@
 @layer components {
   .btn {
     &--sm {
-      @apply rounded-sm p-2;
+      @apply rounded-sm p-2 text-sm;
     }
     &--lg {
-      @apply rounded-lg p-4;
+      @apply rounded-lg p-4 text-lg;
+    }
+
+    &--primary {
+      @apply bg-purple-700 text-white;
+    }
+    &--secondary {
+      @apply bg-slate-700 text-white;
     }
   }
 }
