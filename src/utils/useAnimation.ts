@@ -1,12 +1,12 @@
 import { useRef } from 'react';
-interface UseAnimationProps {
-  animate?: Function;
+interface UseAnimationProps<T> {
+  animate?: (params?: T) => unknown;
 }
-const useAnimation = ({ animate }: UseAnimationProps) => {
+const useAnimation = <T>({ animate }: UseAnimationProps<T>) => {
   const requestRef = useRef(0);
-  const startAnimation = () => {
-    animate && animate();
-    requestRef.current = requestAnimationFrame(startAnimation);
+  const startAnimation = (params?: T) => {
+    animate && animate(params);
+    requestRef.current = requestAnimationFrame(() => startAnimation(params));
   };
   const stopAnimation = () => cancelAnimationFrame(requestRef.current);
   return {

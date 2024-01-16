@@ -1,0 +1,42 @@
+@layer base {
+  .inp {
+    @apply box-border inline-flex rounded-md border;
+    input {
+      @apply bg-transparent p-3;
+    }
+    span {
+      @apply pointer-events-none absolute z-10 mt-3 transition-all;
+    }
+  }
+}
+@layer components {
+  .inp {
+    &--focus {
+      span {
+        @apply -mt-6;
+      }
+    }
+    &--blur {
+      span {
+        @apply sticky;
+      }
+    }
+    &--sm {
+      @apply rounded-sm p-2 text-sm;
+    }
+    &--lg {
+      @apply rounded-lg p-4 text-lg;
+    }
+
+    &--primary {
+      @apply border-purple-700 bg-purple-700 text-white;
+    }
+    &--secondary {
+      @apply border-slate-700 bg-slate-700 text-white;
+    }
+  }
+}
+@layer utilities {
+  .inp {
+  }
+}

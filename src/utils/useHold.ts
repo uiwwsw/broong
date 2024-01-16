@@ -7,7 +7,7 @@ interface UseHoldProps {
 }
 const useHold = ({ onHold, onHoldBefore, holdTime = 1000 }: UseHoldProps) => {
   const holdTimer = useRef(setTimeout(() => null));
-  const { startAnimation, stopAnimation } = useAnimation({ animate: onHold });
+  const { startAnimation, stopAnimation } = useAnimation({ animate: () => onHold && onHold() });
 
   const handleStart = useCallback(
     (e: MouseEvent | TouchEvent) => {

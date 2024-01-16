@@ -1,17 +1,15 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 
-import { ChangeEvent, InputHTMLAttributes, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, InputHTMLAttributes, useEffect, useState } from 'react';
 import Button from './Button';
 import useDebounce from '#/useDebounce';
-import requestAnimationFrame from '#/requestAnimationFrame';
 interface SampleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
-  onChange?: (value: number) => unknown;
+  onChange?: (value?: number) => unknown;
 }
 const Sample = ({ max, min = 1, onChange }: SampleProps) => {
   const [value, setValue] = useState<number>(+(min ?? 0));
   const [focus, setFocus] = useState(false);
-  const holdRef = useRef(false);
   const getValue = (newValue: number) => {
     if (newValue === value) return value;
 
