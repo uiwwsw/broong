@@ -1,22 +1,25 @@
-import Button from '@/Button';
-import Sample from '@/Sample';
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 
+import DefaultLayout from '@/DefaultLayout';
+import Main from '@/Main';
+import NormalLayout from '@/NormalLayout';
+import NotFound from '@/NotFound';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 const App = () => {
   return (
-    <>
-      <Sample onChange={(d) => console.log(d)} max={15} />
-      <br />
-      <Button className="btn">dawdawdad</Button>
-      <br />
-      <Button className="btn">dawdawdad</Button>
-      <br />
-      <div>
-        <Button className="btn btn--primary">dawdawdad</Button>
-        <Button className="btn btn--secondary">dawdawdad</Button>
-      </div>
-    </>
+    <Router>
+      <Routes>
+        <Route element={<DefaultLayout />}>
+          <Route path="/" element={<Main />} />
+        </Route>
+        <Route element={<NormalLayout />}>
+          <Route path="*" element={<NotFound />} />
+        </Route>
+        {/* <Route path={ROUTES_PATH['/sign-out']} element={<SignOut />} /> */}
+      </Routes>
+    </Router>
   );
 };
 

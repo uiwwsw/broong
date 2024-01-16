@@ -1,0 +1,31 @@
+import Scroll from '#/Scroll';
+import { useRef } from 'react';
+import { useUiContext } from './UiProvider';
+
+const Header = () => {
+  const { title, underlineColor } = useUiContext();
+  const headRef = useRef<HTMLHeadElement>(null);
+  const iRef = useRef<HTMLElement>(null);
+  const handleScroll = () => {
+    const { scrollY, innerHeight } = window;
+    const opacity = Math.min(scrollY / Math.min(300, document.body.scrollHeight - innerHeight), 1).toFixed(2);
+    const width = Math.min(scrollY / (document.body.scrollHeight - innerHeight), 1).toFixed(2);
+    headRef.current && headRef.current.setAttribute('style', `--tw-bg-opacity: ${opacity}`);
+    iRef.current && iRef.current.setAttribute('style', `transform: scaleX(${width})`);
+  };
+  return (
+    <>
+      <Scroll onScroll={handleScroll} debounce={0} />
+
+      <header ref={headRef} className="sticky top-0 origin-left border-b bg-white bg-opacity-0 p-3">
+        <h1>{title}</h1>
+        <i
+          className="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 bg-teal-700"
+          ref={iRef}
+          style={{ backgroundColor: underlineColor }}
+        />
+      </header>
+    </>
+  );
+};
+export default Header;

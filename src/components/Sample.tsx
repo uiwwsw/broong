@@ -8,7 +8,7 @@ import requestAnimationFrame from '#/requestAnimationFrame';
 interface SampleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   onChange?: (value: number) => unknown;
 }
-function Sample({ max, min = 1, onChange }: SampleProps) {
+const Sample = ({ max, min = 1, onChange }: SampleProps) => {
   const [value, setValue] = useState<number>(+(min ?? 0));
   const [focus, setFocus] = useState(false);
   const holdRef = useRef(false);
@@ -53,30 +53,14 @@ function Sample({ max, min = 1, onChange }: SampleProps) {
   //   };
   //   window.requestAnimationFrame(event);
   // };
-  const handlePlusHold = () => {
-    holdRef.current = true;
-    requestAnimationFrame(() => {
-      setValue((prev) => getValue(+prev + 1));
-      return holdRef.current;
-    });
-  };
-  const handleHoldEnd = () => (holdRef.current = false);
-  const handleMinusHold = () => {
-    holdRef.current = true;
-    requestAnimationFrame(() => {
-      setValue((prev) => getValue(+prev - 1));
-      return holdRef.current;
-    });
-  };
-  useEffect(() => handleChange(value), [value, handleChange]);
+  const handlePlusHold = () => setValue((prev) => getValue(+prev + 1));
+  const handleMinusHold = () => setValue((prev) => getValue(+prev - 1));
+  useEffect(() => {
+    handleChange(value);
+  }, [value, handleChange]);
   return (
     <div className="inline-flex rounded-md border border-slate-700">
-      <Button
-        className="border-r border-slate-700 p-2"
-        onClick={handlePlus}
-        onHoldStart={handlePlusHold}
-        onHoldEnd={handleHoldEnd}
-      >
+      <Button className="border-r border-slate-700 p-2" onClick={handlePlus} onHold={handlePlusHold}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -99,12 +83,7 @@ function Sample({ max, min = 1, onChange }: SampleProps) {
         onBlur={handleBlur}
         className="w-16 text-center text-lg font-bold outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
       />
-      <Button
-        className="border-l border-slate-700 p-2"
-        onClick={handleMinus}
-        onHoldStart={handleMinusHold}
-        onHoldEnd={handleHoldEnd}
-      >
+      <Button className="border-l border-slate-700 p-2" onClick={handleMinus} onHold={handleMinusHold}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -118,6 +97,6 @@ function Sample({ max, min = 1, onChange }: SampleProps) {
       </Button>
     </div>
   );
-}
+};
 
 export default Sample;

@@ -1,4 +1,4 @@
-type requestAnimationFrameProps = (value: number) => boolean;
+type requestAnimationFrameProps = (value: number) => boolean | void;
 const requestAnimationFrame = (frame: requestAnimationFrameProps) => {
   let startTime: number;
   const requestAnimationFrame = (time: number) => {

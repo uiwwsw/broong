@@ -25,20 +25,18 @@ import { ButtonHTMLAttributes } from 'react';
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  onHoldEnd?: ButtonProps['onClick'];
-  onHoldStart?: ButtonProps['onClick'];
+  onHold?: ButtonProps['onClick'];
 }
-function Button({ onHoldEnd, onHoldStart, children, ...props }: ButtonProps) {
+const Button = ({ onHold, children, ...props }: ButtonProps) => {
   const holdProps = useHold({
     onHoldBefore: generateRipple,
-    onHoldEnd,
-    onHoldStart,
+    onHold,
   });
   return (
     <button {...props} {...holdProps} style={{ clipPath: 'border-box' }}>
       {children}
     </button>
   );
-}
+};
 
 export default Button;

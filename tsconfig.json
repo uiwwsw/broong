@@ -22,7 +22,7 @@
     "paths": {
       "$/*": ["./src/assets/*"],
       "!/*": ["./src/libs/*"],
-      "@/*": ["./src/components/*"],
+      "@/*": ["./src/components/*", "./src/pages/*", "./src/layouts/*"],
       "#/*": ["./src/utils/*"],
       "src/*": ["./src/*"]
     }
