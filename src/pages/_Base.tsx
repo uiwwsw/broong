@@ -1,21 +1,22 @@
 import { useUiContext } from '@/UiProvider';
-import { CSSProperties, ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 interface BaseProps {
   title?: string;
-  style?: CSSProperties;
+  backgroundColor?: string;
   children?: ReactNode;
 }
-const Base = ({ title, style, children }: BaseProps) => {
-  const { setTitle, setStyle } = useUiContext();
+const Base = ({ title, backgroundColor, children }: BaseProps) => {
+  const { setTitle, setBackgroundColor } = useUiContext();
   useEffect(() => {
-    title && setTitle(title);
+    console.log(title);
+
+    setTitle(title);
     return () => setTitle();
   }, [title]);
   useEffect(() => {
-    console.log(style, 'dwadawdad');
-    style && setStyle(style);
-    return () => setStyle();
-  }, [style]);
+    setBackgroundColor(backgroundColor);
+    return () => setBackgroundColor();
+  }, [backgroundColor]);
   return children;
 };
 

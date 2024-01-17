@@ -7,9 +7,7 @@ const useDebounce = <T>(fn?: (e: T) => unknown, delay: number = 300) => {
   const handleRun = (e: T) => {
     if (sto.current) clearTimeout(sto.current);
 
-    sto.current = setTimeout(async () => {
-      return await fn(e);
-    }, delay);
+    sto.current = setTimeout(() => fn(e), delay);
   };
 
   return handleRun;

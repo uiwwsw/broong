@@ -14,28 +14,10 @@ interface SampleProps {
 const Sample = ({ max, min = 1, onChange, debounce = 0 }: SampleProps) => {
   const [_value, setValue] = useState<string>(`${min}`);
   const [focus, setFocus] = useState(false);
-  const displayValue = useMemo(() => {
-    if (_value === '') {
-      if (focus) return '';
-      return min;
-    }
-    return +_value;
-  }, [_value, focus]);
 
-  const value = useMemo(() => {
-    if (_value === '') return min;
-    return +_value;
-  }, [_value]);
-
-  const getValue = (newValue: number) => {
-    if (newValue === value) return value;
-
-    if (newValue > value) {
-      return Math.min(newValue, max ?? newValue);
-    } else {
-      return Math.max(newValue, min ?? newValue);
-    }
-  };
+  const value = useMemo(() => getValue(+_value), [_value, min, max]);
+  const displayValue = useMemo(() => (focus ? _value : `${value}`), [_value, focus, value]);
+  const invalid = useMemo(() => +displayValue !== value, [displayValue, value]);
   const debounceChange = useDebounce(onChange, debounce);
   const handlePlus = () => setValue((prev) => `${getValue(+prev + 1)}`);
   const handleMinus = () => setValue((prev) => `${getValue(+prev - 1)}`);
@@ -44,11 +26,14 @@ const Sample = ({ max, min = 1, onChange, debounce = 0 }: SampleProps) => {
 
     if (!value) return setValue('');
     if (isNaN(+value)) return;
-
-    const newValue = getValue(+value);
-    setValue(`${newValue}`);
-    if (newValue === min || newValue === max) return (e.target.value = `${newValue}`);
+    return setValue(value);
   };
+
+  function getValue(value: number) {
+    if (max && max < value) return max;
+    if (min && min > value) return min;
+    return value;
+  }
 
   useEffect(() => {
     debounceChange(value);
@@ -77,7 +62,7 @@ const Sample = ({ max, min = 1, onChange, debounce = 0 }: SampleProps) => {
         onChange={handleChange}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        className="inp w-20 text-center font-bold"
+        className={`inp w-20 text-center font-bold${invalid ? ' border-red-500' : ''}`}
       />
       <Button className="border-l border-slate-700 p-2" onClick={handleMinus} onHold={handleMinus}>
         <svg

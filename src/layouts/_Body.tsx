@@ -4,9 +4,9 @@ interface BodyProps {
   children?: ReactNode;
 }
 const Body = ({ children }: BodyProps) => {
-  const { style } = useUiContext();
+  const { backgroundColor } = useUiContext();
   return (
-    <div className="flex min-h-screen w-full flex-col" style={style}>
+    <div className="flex min-h-screen w-full flex-col" style={{ backgroundColor }}>
       {children}
     </div>
   );

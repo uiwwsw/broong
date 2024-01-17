@@ -1,0 +1,53 @@
+/* className="appearance-none" */
+@layer base {
+  .slt {
+    @apply relative box-border inline-flex overflow-hidden border;
+    select {
+      @apply appearance-none bg-inherit;
+    }
+    svg {
+      @apply pointer-events-none absolute right-2 top-1/2 -translate-y-1/2;
+    }
+  }
+}
+@layer components {
+  .slt {
+    &--sm {
+      @apply rounded-sm text-sm;
+      select {
+        @apply p-1 py-0;
+      }
+    }
+    &--md {
+      @apply rounded-md;
+
+      select {
+        @apply p-2 py-1;
+      }
+    }
+    &--lg {
+      @apply rounded-lg text-lg;
+
+      select {
+        @apply p-4 py-1.5;
+      }
+    }
+
+    &--primary {
+      @apply border-purple-700 bg-purple-700 text-white;
+    }
+    &--secondary {
+      @apply border-slate-700 bg-slate-700 text-white;
+    }
+  }
+}
+@layer utilities {
+  .slt {
+    select {
+      @apply pr-[2em];
+    }
+    &.is-placeholder {
+      @apply text-gray-400;
+    }
+  }
+}

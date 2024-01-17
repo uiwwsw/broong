@@ -66,6 +66,7 @@ const Input = ({
         onFocus={handleFocus}
         onBlur={handleBlur}
         type={type}
+        title={value}
       />
     </label>
   );

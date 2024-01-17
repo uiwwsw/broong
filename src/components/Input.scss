@@ -5,7 +5,7 @@
       @apply h-full w-full flex-1 truncate bg-transparent outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none;
     }
     p {
-      @apply flex items-center border-inherit bg-inherit transition-transform after:content-[':'];
+      @apply flex items-center border-inherit bg-inherit transition-all after:content-[':'];
     }
   }
 }

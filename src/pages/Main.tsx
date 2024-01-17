@@ -3,15 +3,17 @@ import Base from './_Base';
 import { useState } from 'react';
 import Sample from '@/Sample';
 import Input from '@/Input';
-
+import Select from '@/Select';
 const Main = () => {
   const [count1, setCount1] = useState(0);
-  const [count2, setCount2] = useState('');
+  const [count2, setCount2] = useState(0);
   const [text1, setText1] = useState('');
+  const [text2, setText2] = useState('');
   return (
-    <Base title="메인" style={{ background: 'gray' }}>
+    <Base title="메인" backgroundColor="gray">
       <dl className="m-1 flex h-12 items-center gap-4 bg-white p-3">
-        <dt>primary 버튼 {count1}</dt>
+        <dt>버튼</dt>
+        <dd>{count1}</dd>
         <dd>
           <Button
             className="btn btn--primary btn--md"
@@ -23,15 +25,39 @@ const Main = () => {
         </dd>
       </dl>
       <dl className="m-1 flex h-12 items-center gap-4 bg-white p-3">
-        <dt>샘플 컴포넌트 max: 99 min: 1// {count2}</dt>
+        <dt>샘플</dt>
+        <dd>{count2}</dd>
         <dd>
-          <Sample max={99} onChange={(value) => setCount2(value)} />
+          <Sample max={99} min={6} onChange={(value) => setCount2(value)} debounce={300} />
         </dd>
       </dl>
       <dl className="m-1 flex h-12 items-center gap-4 bg-white p-3">
         <dt>인풋</dt>
+        <dd>{text1}</dd>
         <dd>
-          <Input className="inp inp--md inp--primary">가나다</Input>
+          <Input
+            className="inp inp--md inp--primary"
+            onChange={(e) => setText1(e.target.value)}
+            debounce={300}
+            placeholder="ddawd"
+          >
+            가나다
+          </Input>
+        </dd>
+      </dl>
+      <dl className="m-1 flex h-12 items-center gap-4 bg-white p-3">
+        <dt>셀렉</dt>
+        <dd>{text2}</dd>
+        <dd>
+          <Select
+            className="slt slt--md slt--primary"
+            onChange={(e) => setText2(e.target.value)}
+            options={[
+              { label: '1', value: '1' },
+              { label: '2', value: '2' },
+              { label: '3', value: '3' },
+            ]}
+          />
         </dd>
       </dl>
     </Base>

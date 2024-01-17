@@ -1,35 +1,34 @@
-import { CSSProperties, ReactNode, createContext, useContext, useState } from 'react';
+import { ReactNode, createContext, useContext, useState } from 'react';
 interface UiProviderProps {
   children?: ReactNode;
 }
 interface ContextProps {
   title?: string;
   setTitle: (title?: string) => void;
-  style?: CSSProperties;
-  setStyle: (style?: CSSProperties) => void;
+  backgroundColor?: string;
+  setBackgroundColor: (bg?: string) => void;
   underlineColor?: string;
   setUnderlineColor: (underlineColor: string) => void;
 }
 const UiContext = createContext<ContextProps>({
   title: undefined,
   setTitle: () => null,
-  style: undefined,
-  setStyle: () => null,
+  backgroundColor: undefined,
+  setBackgroundColor: () => null,
   underlineColor: undefined,
   setUnderlineColor: () => null,
 });
 export const UiProvider = ({ children }: UiProviderProps) => {
   const [title, setTitle] = useState<string>();
-  const [style, setStyle] = useState<CSSProperties>();
-  const [underlineColor, setUnderlineColor] = useState('');
-
+  const [backgroundColor, setBackgroundColor] = useState<string>();
+  const [underlineColor, setUnderlineColor] = useState<string>();
   return (
     <UiContext.Provider
       value={{
         title,
         setTitle,
-        style,
-        setStyle,
+        backgroundColor,
+        setBackgroundColor,
         underlineColor,
         setUnderlineColor,
       }}
