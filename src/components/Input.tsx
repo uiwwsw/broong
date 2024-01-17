@@ -1,9 +1,7 @@
 // import { MouseEvent } from 'react';
 
-import generateRipple from '#/generateRipple';
 import useDebounce from '#/useDebounce';
-import useHold from '#/useHold';
-import { InputHTMLAttributes, useEffect, useState } from 'react';
+import { ChangeEvent, FocusEvent, InputHTMLAttributes, useState } from 'react';
 
 // const generateRipple = (e: MouseEvent) => {
 //   const target = e.currentTarget;
@@ -25,42 +23,51 @@ import { InputHTMLAttributes, useEffect, useState } from 'react';
 // export default generateRipple;
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
-  onHold?: InputProps['onClick'];
-  onFocus?: () => unknown;
-  onBlur?: () => unknown;
-  onChange?: (value?: string) => unknown;
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  debounce?: number;
 }
-const Input = ({ onHold, children, className, type = 'text', onChange, onFocus, onBlur, ...props }: InputProps) => {
+const Input = ({
+  children,
+  className,
+  type = 'text',
+  onChange,
+  onFocus,
+  onBlur,
+  debounce = 0,
+  ...props
+}: InputProps) => {
   const [focus, setFocus] = useState(false);
   const [value, setValue] = useState('');
-  const holdProps = useHold({
-    onHoldBefore: generateRipple,
-    onHold,
-  });
-  const handleChange = useDebounce(onChange);
-  const handleFocus = useDebounce(onFocus);
-  const handleBlur = useDebounce(onBlur);
-  useEffect(() => {
-    if (onFocus && focus) handleFocus();
-    if (onBlur && !focus) handleBlur();
-  }, [focus, onFocus, onBlur]);
-  useEffect(() => {
-    if (onChange) handleChange();
-  }, [onChange, value]);
+  const debounceChange = useDebounce(onChange, debounce);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    debounceChange(e);
+    setValue(e.currentTarget.value);
+  };
+  const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+    setFocus(true);
+    onFocus && onFocus(e);
+  };
+  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+    setFocus(false);
+    onBlur && onBlur(e);
+  };
   return (
-    <div className={className + (focus ? ' inp--focus' : value ? ' inp--blur' : '')}>
-      <span>{children}</span>
-      <label {...holdProps} style={{ clipPath: 'border-box' }}>
-        <input
-          {...props}
-          onChange={(e) => setValue(e.currentTarget.value)}
-          onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
-          type={type}
-        />
-      </label>
-    </div>
+    <label className={className + (focus ? ' inp--focus' : value ? ' inp--blur' : '')}>
+      {/* <label {...holdProps} style={{ clipPath: 'border-box' }}> */}
+      {children ? (
+        <p>
+          <span>{children}</span>
+        </p>
+      ) : null}
+      <input
+        {...props}
+        style={{ textAlign: 'inherit' }}
+        onChange={handleChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        type={type}
+      />
+    </label>
   );
 };
 

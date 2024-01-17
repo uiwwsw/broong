@@ -1,31 +1,42 @@
 @layer base {
   .inp {
-    @apply box-border inline-flex rounded-md border;
+    @apply relative box-border inline-flex items-center border;
     input {
-      @apply bg-transparent p-3;
+      @apply h-full w-full flex-1 truncate bg-transparent outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none;
     }
-    span {
-      @apply pointer-events-none absolute z-10 mt-3 transition-all;
+    p {
+      @apply flex items-center border-inherit bg-inherit transition-transform after:content-[':'];
     }
   }
 }
 @layer components {
   .inp {
-    &--focus {
-      span {
-        @apply -mt-6;
-      }
-    }
-    &--blur {
-      span {
-        @apply sticky;
-      }
-    }
     &--sm {
-      @apply rounded-sm p-2 text-sm;
+      @apply w-32 rounded-sm text-sm;
+      input {
+        @apply p-1 py-0;
+      }
+      p {
+        @apply rounded-sm px-1;
+      }
+    }
+    &--md {
+      @apply w-52 rounded-md;
+      input {
+        @apply p-2 py-1;
+      }
+      p {
+        @apply rounded-md px-2;
+      }
     }
     &--lg {
-      @apply rounded-lg p-4 text-lg;
+      @apply w-72 rounded-lg text-lg;
+      input {
+        @apply p-3 py-1.5;
+      }
+      p {
+        @apply rounded-lg px-3;
+      }
     }
 
     &--primary {
@@ -38,5 +49,26 @@
 }
 @layer utilities {
   .inp {
+    &:not(.inp--focus) {
+      p {
+        @apply pr-0;
+      }
+    }
+    &:not(.inp--blur) {
+      p {
+        @apply after:hidden;
+      }
+    }
+    &--focus {
+      @apply rounded-tl-none;
+      p {
+        @apply absolute -left-[1px] h-full -translate-y-full rounded-b-none border border-b-0;
+      }
+    }
+    &--blur {
+      p {
+        @apply static;
+      }
+    }
   }
 }

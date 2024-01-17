@@ -1,64 +1,62 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 
-import { ChangeEvent, InputHTMLAttributes, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import Button from './Button';
 import useDebounce from '#/useDebounce';
-interface SampleProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
-  onChange?: (value?: number) => unknown;
+import Input from './Input';
+interface SampleProps {
+  onChange?: (value: number) => unknown;
+  max?: number;
+  min?: number;
+  debounce?: number;
 }
-const Sample = ({ max, min = 1, onChange }: SampleProps) => {
-  const [value, setValue] = useState<number>(+(min ?? 0));
+const Sample = ({ max, min = 1, onChange, debounce = 0 }: SampleProps) => {
+  const [_value, setValue] = useState<string>(`${min}`);
   const [focus, setFocus] = useState(false);
+  const displayValue = useMemo(() => {
+    if (_value === '') {
+      if (focus) return '';
+      return min;
+    }
+    return +_value;
+  }, [_value, focus]);
+
+  const value = useMemo(() => {
+    if (_value === '') return min;
+    return +_value;
+  }, [_value]);
+
   const getValue = (newValue: number) => {
     if (newValue === value) return value;
 
     if (newValue > value) {
-      return Math.min(newValue, +(max ?? newValue));
+      return Math.min(newValue, max ?? newValue);
     } else {
-      return Math.max(newValue, +(min ?? newValue));
+      return Math.max(newValue, min ?? newValue);
     }
   };
-  const handleChange = useDebounce(onChange);
-  const handleFocus = () => setFocus(true);
-  const handleBlur = () => setFocus(false);
-  const handlePlus = () => setValue(getValue(value + 1));
-  const handleMinus = () => setValue(getValue(value - 1));
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const debounceChange = useDebounce(onChange, debounce);
+  const handlePlus = () => setValue((prev) => `${getValue(+prev + 1)}`);
+  const handleMinus = () => setValue((prev) => `${getValue(+prev - 1)}`);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (value === '') return;
+
+    if (!value) return setValue('');
+    if (isNaN(+value)) return;
 
     const newValue = getValue(+value);
-    setValue(newValue);
+    setValue(`${newValue}`);
     if (newValue === min || newValue === max) return (e.target.value = `${newValue}`);
   };
-  // const handleRequestFrame = (direct: boolean) => () => {
-  //   // let startTime: number;
-  //   holdRef.current = true;
-  //   const event = () => {
-  //     //time: number
-  //     if (holdRef.current === false) return;
-  //     // if (startTime === undefined) startTime = time;
 
-  //     // 10의 배수
-  //     // const step = Math.floor((time - startTime) / 1000);
-  //     // setValue((prev) => getValue(+prev + 10 ** step * (direct ? 1 : -1)));
-  //     // 순차 증가
-  //     // const step = Math.floor((time - startTime) / 1000);
-  //     // setValue((prev) => getValue(+prev + step * (direct ? 1 : -1)));
-  //     setValue((prev) => getValue(+prev + (direct ? 1 : -1)));
-  //     window.requestAnimationFrame(event);
-  //   };
-  //   window.requestAnimationFrame(event);
-  // };
-  const handlePlusHold = () => setValue((prev) => getValue(+prev + 1));
-  const handleMinusHold = () => setValue((prev) => getValue(+prev - 1));
   useEffect(() => {
-    handleChange(value);
-  }, [value, handleChange]);
+    debounceChange(value);
+  }, [value]);
+
   return (
     <div className="inline-flex rounded-md border border-slate-700">
-      <Button className="border-r border-slate-700 p-2" onClick={handlePlus} onHold={handlePlusHold}>
+      <Button className="border-r border-slate-700 p-2" onClick={handlePlus} onHold={handlePlus}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -70,18 +68,18 @@ const Sample = ({ max, min = 1, onChange }: SampleProps) => {
           <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
         </svg>
       </Button>
-      <input
+      <Input
         placeholder={`${min}~${max}`}
         max={max}
         min={min}
-        type="number"
-        value={focus ? undefined : value}
-        onInput={handleInput}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        className="w-16 text-center text-lg font-bold outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        type="text"
+        value={displayValue}
+        onChange={handleChange}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        className="inp w-20 text-center font-bold"
       />
-      <Button className="border-l border-slate-700 p-2" onClick={handleMinus} onHold={handleMinusHold}>
+      <Button className="border-l border-slate-700 p-2" onClick={handleMinus} onHold={handleMinus}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

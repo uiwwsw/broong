@@ -1,15 +1,16 @@
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-
+import Body from '@/_Body';
+import { UiProvider } from '@/UiProvider';
 import { Outlet } from 'react-router-dom';
 
 const NormalLayout = () => {
   return (
-    <div className="flex min-h-screen w-full flex-col">
-      <div className="flex-auto">
-        <Outlet />
-      </div>
-    </div>
+    <UiProvider>
+      <Body>
+        <div className="flex-auto">
+          <Outlet />
+        </div>
+      </Body>
+    </UiProvider>
   );
 };
 

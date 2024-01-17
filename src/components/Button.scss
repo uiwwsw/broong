@@ -1,15 +1,18 @@
 @layer base {
   .btn {
-    @apply box-border rounded-md border p-3;
+    @apply box-border border;
   }
 }
 @layer components {
   .btn {
     &--sm {
-      @apply rounded-sm p-2 text-sm;
+      @apply rounded-sm p-1 py-0 text-sm;
+    }
+    &--md {
+      @apply rounded-md p-2 py-1;
     }
     &--lg {
-      @apply rounded-lg p-4 text-lg;
+      @apply rounded-lg p-4 py-1.5 text-lg;
     }
 
     &--primary {
