@@ -2,9 +2,13 @@
 
 import generateRipple from '#/generateRipple';
 import useDebounce from '#/useDebounce';
-import { ChangeEvent, SelectHTMLAttributes, useMemo, useState } from 'react';
+import { ChangeEvent, ReactNode, SelectHTMLAttributes, useMemo, useState } from 'react';
+import Label from './Label';
+import useTheme, { WithTheme } from '#/useTheme';
+import mergeClassName from '#/mergeClassName';
 
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'value'>, WithTheme<'slt'> {
+  children?: ReactNode;
   placeholder?: string;
   debounce?: number;
   defaultValue?: string;
@@ -15,14 +19,20 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   }[];
 }
 const Select = ({
+  children,
   placeholder = '선택해주세요.',
   defaultValue = '',
   debounce = 0,
   onChange,
   options,
   className,
+  componentName,
+  themeColor,
+  themeSize,
   ...props
 }: SelectProps) => {
+  const theme = useTheme({ componentName, themeColor, themeSize });
+
   const [value, setValue] = useState(defaultValue);
   const [focus, setFocus] = useState(false);
   const memoOption = useMemo<SelectProps['options']>(
@@ -40,17 +50,31 @@ const Select = ({
   const handleBlur = () => setFocus(false);
   return (
     <label
-      className={className + (isPlaceholder ? ' is-placeholder' : '')}
+      className={mergeClassName(theme, className, isPlaceholder ? ' slt--placeholder' : '')}
       onTouchStart={generateRipple}
       onMouseDown={generateRipple}
     >
-      <select {...props} onFocus={handleFocus} onBlur={handleBlur} onChange={handleChange}>
-        {memoOption?.map((option) => (
-          <option selected={option.value === value} disabled={option.disabled} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <div>
+        <select
+          {...props}
+          className="peer"
+          value={value}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onChange={handleChange}
+        >
+          {memoOption?.map((option) => (
+            <option key={option.value} disabled={option.disabled} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        {children ? (
+          <Label componentName="lbl" themeColor={themeColor} themeSize={themeSize}>
+            {children}
+          </Label>
+        ) : null}
+      </div>
       {focus ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"

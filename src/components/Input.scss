@@ -1,74 +1,31 @@
-@layer base {
-  .inp {
-    @apply relative box-border inline-flex items-center border;
+.inp {
+  @apply relative box-border inline-flex flex-row-reverse items-center overflow-hidden border focus-within:flex-row;
+  input {
+    @apply h-full w-full flex-1 truncate bg-transparent outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none;
+  }
+  &--sm {
+    @apply w-32 rounded-sm text-sm;
     input {
-      @apply h-full w-full flex-1 truncate bg-transparent outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none;
-    }
-    p {
-      @apply flex items-center border-inherit bg-inherit transition-all after:content-[':'];
+      @apply p-1 py-0;
     }
   }
-}
-@layer components {
-  .inp {
-    &--sm {
-      @apply w-32 rounded-sm text-sm;
-      input {
-        @apply p-1 py-0;
-      }
-      p {
-        @apply rounded-sm px-1;
-      }
+  &--md {
+    @apply w-52 rounded-md;
+    input {
+      @apply p-2 py-1;
     }
-    &--md {
-      @apply w-52 rounded-md;
-      input {
-        @apply p-2 py-1;
-      }
-      p {
-        @apply rounded-md px-2;
-      }
+  }
+  &--lg {
+    @apply w-72 rounded-lg text-lg;
+    input {
+      @apply p-3 py-1.5;
     }
-    &--lg {
-      @apply w-72 rounded-lg text-lg;
-      input {
-        @apply p-3 py-1.5;
-      }
-      p {
-        @apply rounded-lg px-3;
-      }
-    }
+  }
 
-    &--primary {
-      @apply border-purple-700 bg-purple-700 text-white;
-    }
-    &--secondary {
-      @apply border-slate-700 bg-slate-700 text-white;
-    }
+  &--primary {
+    @apply border-purple-700 bg-purple-700 text-white;
   }
-}
-@layer utilities {
-  .inp {
-    &:not(.inp--focus) {
-      p {
-        @apply pr-0;
-      }
-    }
-    &:not(.inp--blur) {
-      p {
-        @apply after:hidden;
-      }
-    }
-    &--focus {
-      @apply rounded-tl-none;
-      p {
-        @apply absolute -left-[1px] h-full -translate-y-full rounded-b-none border border-b-0;
-      }
-    }
-    &--blur {
-      p {
-        @apply static;
-      }
-    }
+  &--secondary {
+    @apply border-slate-700 bg-slate-700 text-white;
   }
 }

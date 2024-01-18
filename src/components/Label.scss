@@ -1,0 +1,21 @@
+.lbl {
+  @apply flex items-center border-inherit bg-inherit transition-transform after:content-[':'];
+  @apply peer-focus-within:fixed peer-focus-within:-mx-[1px] peer-focus-within:-translate-y-full peer-focus-within:rounded-b-none peer-focus-within:border;
+  @apply before:absolute before:-left-[1px] before:bottom-0 before:bg-inherit before:pr-[inherit] before:transition-transform;
+  &--sm {
+    @apply rounded-sm pl-1 before:h-1 peer-focus-within:pr-1 peer-focus-within:before:translate-y-1;
+  }
+  &--md {
+    @apply rounded-md pl-2 before:h-2 peer-focus-within:pr-2 peer-focus-within:before:translate-y-2;
+  }
+  &--lg {
+    @apply rounded-lg pl-3 before:h-3 peer-focus-within:pr-3 peer-focus-within:before:translate-y-3;
+  }
+
+  &--primary {
+    @apply border-purple-700 bg-purple-700 text-white;
+  }
+  &--secondary {
+    @apply border-slate-700 bg-slate-700 text-white;
+  }
+}

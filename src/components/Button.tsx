@@ -1,8 +1,10 @@
 // import { MouseEvent } from 'react';
 
 import generateRipple from '#/generateRipple';
+import mergeClassName from '#/mergeClassName';
 import useDebounce from '#/useDebounce';
 import useHold from '#/useHold';
+import useTheme, { WithTheme } from '#/useTheme';
 import { ButtonHTMLAttributes } from 'react';
 
 // const generateRipple = (e: MouseEvent) => {
@@ -25,18 +27,39 @@ import { ButtonHTMLAttributes } from 'react';
 // export default generateRipple;
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, WithTheme<'btn'> {
   onHold?: ButtonProps['onClick'];
   debounce?: number;
 }
-const Button = ({ onHold, children, debounce = 0, onClick, ...props }: ButtonProps) => {
+const Button = ({
+  onHold,
+  children,
+  debounce = 0,
+  onClick,
+  className,
+  componentName,
+  themeColor,
+  themeSize,
+  ...props
+}: ButtonProps) => {
+  const theme = useTheme({
+    componentName,
+    themeColor,
+    themeSize,
+  });
   const holdProps = useHold({
     onHoldBefore: generateRipple,
     onHold,
   });
   const debounceClick = useDebounce(onClick, debounce);
   return (
-    <button {...props} {...holdProps} onClick={debounceClick} style={{ clipPath: 'border-box' }}>
+    <button
+      {...props}
+      {...holdProps}
+      className={mergeClassName(theme, className)}
+      onClick={debounceClick}
+      style={{ clipPath: 'border-box' }}
+    >
       {children}
     </button>
   );

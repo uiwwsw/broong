@@ -1,52 +1,44 @@
-/* className="appearance-none" */
-@layer base {
-  .slt {
-    @apply relative box-border inline-flex overflow-hidden border;
+.slt {
+  @apply relative box-border inline-flex overflow-hidden border;
+  div {
+    @apply inline-flex flex-1 flex-row-reverse items-center bg-inherit text-inherit focus-within:flex-row;
+  }
+  select {
+    @apply h-full w-full flex-1 appearance-none bg-inherit outline-none;
+  }
+  svg {
+    @apply pointer-events-none absolute right-2 top-1/2 -translate-y-1/2;
+  }
+  &--sm {
+    @apply w-32 rounded-sm text-sm;
     select {
-      @apply appearance-none bg-inherit;
-    }
-    svg {
-      @apply pointer-events-none absolute right-2 top-1/2 -translate-y-1/2;
+      @apply p-1 py-0;
     }
   }
-}
-@layer components {
-  .slt {
-    &--sm {
-      @apply rounded-sm text-sm;
-      select {
-        @apply p-1 py-0;
-      }
-    }
-    &--md {
-      @apply rounded-md;
+  &--md {
+    @apply w-52 rounded-md;
 
-      select {
-        @apply p-2 py-1;
-      }
-    }
-    &--lg {
-      @apply rounded-lg text-lg;
-
-      select {
-        @apply p-4 py-1.5;
-      }
-    }
-
-    &--primary {
-      @apply border-purple-700 bg-purple-700 text-white;
-    }
-    &--secondary {
-      @apply border-slate-700 bg-slate-700 text-white;
+    select {
+      @apply p-2 py-1;
     }
   }
-}
-@layer utilities {
-  .slt {
+  &--lg {
+    @apply w-72 rounded-lg text-lg;
+
     select {
-      @apply pr-[2em];
+      @apply p-4 py-1.5;
     }
-    &.is-placeholder {
+  }
+
+  &--primary {
+    @apply border-purple-700 bg-purple-700 text-white;
+  }
+  &--secondary {
+    @apply border-slate-700 bg-slate-700 text-white;
+  }
+  &--placeholder {
+    @apply text-gray-400;
+    .lbl {
       @apply text-gray-400;
     }
   }

@@ -6,16 +6,12 @@
     }
   }
 }
-@layer components {
-  .ripple {
-    &--begin {
-      @apply animate-ripple transition-all duration-300;
-    }
-    .btn--primary &,
-    .btn--secondary & {
-      @apply bg-white bg-opacity-20;
-    }
+.ripple {
+  &--begin {
+    @apply animate-ripple transition-all duration-300;
   }
-}
-@layer utilities {
+  [class*='--primary'] &,
+  [class*='--secondary'] & {
+    @apply bg-white bg-opacity-20;
+  }
 }

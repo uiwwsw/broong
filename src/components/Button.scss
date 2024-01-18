@@ -1,27 +1,19 @@
-@layer base {
-  .btn {
-    @apply box-border border;
+.btn {
+  @apply box-border border;
+  &--sm {
+    @apply rounded-sm p-1 py-0 text-sm;
   }
-}
-@layer components {
-  .btn {
-    &--sm {
-      @apply rounded-sm p-1 py-0 text-sm;
-    }
-    &--md {
-      @apply rounded-md p-2 py-1;
-    }
-    &--lg {
-      @apply rounded-lg p-4 py-1.5 text-lg;
-    }
+  &--md {
+    @apply rounded-md p-2 py-1;
+  }
+  &--lg {
+    @apply rounded-lg p-4 py-1.5 text-lg;
+  }
 
-    &--primary {
-      @apply border-purple-700 bg-purple-700 text-white;
-    }
-    &--secondary {
-      @apply border-slate-700 bg-slate-700 text-white;
-    }
+  &--primary {
+    @apply border-purple-700 bg-purple-700 text-white;
   }
-}
-@layer utilities {
+  &--secondary {
+    @apply border-slate-700 bg-slate-700 text-white;
+  }
 }

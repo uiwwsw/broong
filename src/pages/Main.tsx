@@ -36,10 +36,11 @@ const Main = () => {
         <dd>{text1}</dd>
         <dd>
           <Input
-            className="inp inp--md inp--primary"
             onChange={(e) => setText1(e.target.value)}
             debounce={300}
-            placeholder="ddawd"
+            componentName="inp"
+            themeColor="secondary"
+            themeSize="lg"
           >
             가나다
           </Input>
@@ -50,14 +51,19 @@ const Main = () => {
         <dd>{text2}</dd>
         <dd>
           <Select
-            className="slt slt--md slt--primary"
+            defaultValue="2"
+            componentName="slt"
+            themeColor="primary"
+            themeSize="md"
             onChange={(e) => setText2(e.target.value)}
             options={[
               { label: '1', value: '1' },
               { label: '2', value: '2' },
               { label: '3', value: '3' },
             ]}
-          />
+          >
+            아이디
+          </Select>
         </dd>
       </dl>
     </Base>

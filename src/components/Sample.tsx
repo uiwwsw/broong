@@ -62,7 +62,8 @@ const Sample = ({ max, min = 1, onChange, debounce = 0 }: SampleProps) => {
         onChange={handleChange}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        className={`inp w-20 text-center font-bold${invalid ? ' border-red-500' : ''}`}
+        componentName="inp"
+        className={`w-20 text-center font-bold${invalid ? ' border-red-500' : ''}`}
       />
       <Button className="border-l border-slate-700 p-2" onClick={handleMinus} onHold={handleMinus}>
         <svg
