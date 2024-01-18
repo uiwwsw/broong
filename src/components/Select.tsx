@@ -1,11 +1,11 @@
 // import { MouseEvent } from 'react';
 
-import generateRipple from '#/generateRipple';
 import useDebounce from '#/useDebounce';
 import { ChangeEvent, ReactNode, SelectHTMLAttributes, useMemo, useState } from 'react';
 import Label from './Label';
 import useTheme, { WithTheme } from '#/useTheme';
 import mergeClassName from '#/mergeClassName';
+import useRipple from '#/useRipple';
 
 interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'value'>, WithTheme<'slt'> {
   children?: ReactNode;
@@ -32,7 +32,7 @@ const Select = ({
   ...props
 }: SelectProps) => {
   const theme = useTheme({ componentName, themeColor, themeSize });
-
+  const { Ripple, ...rippleProps } = useRipple();
   const [value, setValue] = useState(defaultValue);
   const [focus, setFocus] = useState(false);
   const memoOption = useMemo<SelectProps['options']>(
@@ -49,11 +49,7 @@ const Select = ({
   const handleFocus = () => setFocus(true);
   const handleBlur = () => setFocus(false);
   return (
-    <label
-      className={mergeClassName(theme, className, isPlaceholder ? ' slt--placeholder' : '')}
-      onTouchStart={generateRipple}
-      onMouseDown={generateRipple}
-    >
+    <label {...rippleProps} className={mergeClassName(theme, className, isPlaceholder ? ' slt--placeholder' : '')}>
       <div>
         <select
           {...props}
@@ -98,6 +94,7 @@ const Select = ({
           <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
         </svg>
       )}
+      <i className="ripple--wrap">{Ripple}</i>
     </label>
   );
 };

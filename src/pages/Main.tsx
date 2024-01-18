@@ -51,7 +51,6 @@ const Main = () => {
         <dd>{text2}</dd>
         <dd>
           <Select
-            defaultValue="2"
             componentName="slt"
             themeColor="primary"
             themeSize="md"

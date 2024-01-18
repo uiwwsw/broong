@@ -1,6 +1,6 @@
 .lbl {
-  @apply flex items-center border-inherit bg-inherit transition-transform after:content-[':'];
-  @apply peer-focus-within:fixed peer-focus-within:-mx-[1px] peer-focus-within:-translate-y-full peer-focus-within:rounded-b-none peer-focus-within:border;
+  @apply pointer-events-none flex items-center border-inherit bg-inherit transition-transform after:content-[':'];
+  @apply peer-focus-within:absolute peer-focus-within:-left-[1px] peer-focus-within:h-full peer-focus-within:-translate-y-full peer-focus-within:rounded-b-none peer-focus-within:border;
   @apply before:absolute before:-left-[1px] before:bottom-0 before:bg-inherit before:pr-[inherit] before:transition-transform;
   &--sm {
     @apply rounded-sm pl-1 before:h-1 peer-focus-within:pr-1 peer-focus-within:before:translate-y-1;

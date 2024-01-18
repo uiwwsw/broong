@@ -1,9 +1,8 @@
 // import { MouseEvent } from 'react';
 
-import generateRipple from '#/generateRipple';
 import mergeClassName from '#/mergeClassName';
 import useDebounce from '#/useDebounce';
-import useHold from '#/useHold';
+import useRipple from '#/useRipple';
 import useTheme, { WithTheme } from '#/useTheme';
 import { ButtonHTMLAttributes } from 'react';
 
@@ -47,20 +46,12 @@ const Button = ({
     themeColor,
     themeSize,
   });
-  const holdProps = useHold({
-    onHoldBefore: generateRipple,
-    onHold,
-  });
+  const { Ripple, ...rippleProps } = useRipple();
   const debounceClick = useDebounce(onClick, debounce);
   return (
-    <button
-      {...props}
-      {...holdProps}
-      className={mergeClassName(theme, className)}
-      onClick={debounceClick}
-      style={{ clipPath: 'border-box' }}
-    >
+    <button {...props} {...rippleProps} className={mergeClassName(theme, className)} onClick={debounceClick}>
       {children}
+      {Ripple}
     </button>
   );
 };

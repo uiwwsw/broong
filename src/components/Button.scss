@@ -1,5 +1,5 @@
 .btn {
-  @apply box-border border;
+  @apply relative box-border overflow-hidden border;
   &--sm {
     @apply rounded-sm p-1 py-0 text-sm;
   }

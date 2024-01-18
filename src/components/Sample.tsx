@@ -41,7 +41,11 @@ const Sample = ({ max, min = 1, onChange, debounce = 0 }: SampleProps) => {
 
   return (
     <div className="inline-flex rounded-md border border-slate-700">
-      <Button className="border-r border-slate-700 p-2" onClick={handlePlus} onHold={handlePlus}>
+      <Button
+        className="relative overflow-hidden border-r border-slate-700 p-2"
+        onClick={handlePlus}
+        onHold={handlePlus}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -63,9 +67,13 @@ const Sample = ({ max, min = 1, onChange, debounce = 0 }: SampleProps) => {
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         componentName="inp"
-        className={`w-20 text-center font-bold${invalid ? ' border-red-500' : ''}`}
+        className={`w-20 text-center font-bold${invalid ? ' animate-pulse border-red-500' : ''}`}
       />
-      <Button className="border-l border-slate-700 p-2" onClick={handleMinus} onHold={handleMinus}>
+      <Button
+        className="relative overflow-hidden border-l border-slate-700 p-2"
+        onClick={handleMinus}
+        onHold={handleMinus}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import useDebounce from './useDebounce';
 interface ScrollProps {
-  onScroll?: (event?: Event) => void;
+  onScroll: () => void;
   debounce: number;
 }
 const Scroll = ({ onScroll, debounce = 300 }: ScrollProps) => {

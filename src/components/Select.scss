@@ -1,10 +1,10 @@
 .slt {
-  @apply relative box-border inline-flex overflow-hidden border;
+  @apply relative box-border inline-flex border;
   div {
-    @apply inline-flex flex-1 flex-row-reverse items-center bg-inherit text-inherit focus-within:flex-row;
+    @apply inline-flex flex-1 flex-row-reverse items-center bg-transparent text-inherit;
   }
   select {
-    @apply h-full w-full flex-1 appearance-none bg-inherit outline-none;
+    @apply h-full w-full flex-1 appearance-none bg-transparent outline-none;
   }
   svg {
     @apply pointer-events-none absolute right-2 top-1/2 -translate-y-1/2;
@@ -32,9 +32,15 @@
 
   &--primary {
     @apply border-purple-700 bg-purple-700 text-white;
+    select {
+      @apply border-purple-700 bg-purple-700;
+    }
   }
   &--secondary {
     @apply border-slate-700 bg-slate-700 text-white;
+    select {
+      @apply border-slate-700 bg-slate-700;
+    }
   }
   &--placeholder {
     @apply text-gray-400;

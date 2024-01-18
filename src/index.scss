@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  svg {
+    @apply pointer-events-none;
+  }
+}
+
 @import './components/Button';
 @import './components/Select';
 @import './components/Label';

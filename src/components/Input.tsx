@@ -5,8 +5,7 @@ import { ChangeEvent, InputHTMLAttributes, useState } from 'react';
 import Label from './Label';
 import useTheme, { WithTheme } from '#/useTheme';
 import mergeClassName from '#/mergeClassName';
-import useHold from '#/useHold';
-import generateRipple from '#/generateRipple';
+import useRipple from '#/useRipple';
 interface InputProps extends InputHTMLAttributes<HTMLInputElement>, WithTheme<'inp'> {
   debounce?: number;
 }
@@ -22,7 +21,7 @@ const Input = ({
   ...props
 }: InputProps) => {
   const theme = useTheme({ componentName, themeColor, themeSize });
-  const holdProps = useHold({ onHoldBefore: generateRipple });
+  const { Ripple, ...rippleProps } = useRipple();
   const [value, setValue] = useState('');
   const debounceChange = useDebounce(onChange, debounce);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +29,7 @@ const Input = ({
     setValue(e.currentTarget.value);
   };
   return (
-    <label {...holdProps} className={mergeClassName(theme, className)}>
+    <label {...rippleProps} className={mergeClassName(theme, className)}>
       {/* <label {...holdProps} style={{ clipPath: 'border-box' }}> */}
       <input
         {...props}
@@ -45,6 +44,7 @@ const Input = ({
           {children}
         </Label>
       ) : null}
+      <i className="ripple--wrap">{Ripple}</i>
     </label>
   );
 };
