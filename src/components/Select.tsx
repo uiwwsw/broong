@@ -2,7 +2,7 @@
 
 import useDebounce from '#/useDebounce';
 import { ChangeEvent, ReactNode, SelectHTMLAttributes, useMemo, useState } from 'react';
-import Label from './Label';
+import Label from '@/Label';
 import useTheme, { WithTheme } from '#/useTheme';
 import mergeClassName from '#/mergeClassName';
 import useRipple from '#/useRipple';
@@ -34,7 +34,6 @@ const Select = ({
   const theme = useTheme({ componentName, themeColor, themeSize });
   const { Ripple, ...rippleProps } = useRipple();
   const [value, setValue] = useState(defaultValue);
-  const [focus, setFocus] = useState(false);
   const memoOption = useMemo<SelectProps['options']>(
     () => [{ value: '', label: placeholder ?? '', disabled: true }, ...(options ?? [])],
     [options, placeholder],
@@ -46,54 +45,21 @@ const Select = ({
     debounceChange(e);
     e.target.blur();
   };
-  const handleFocus = () => setFocus(true);
-  const handleBlur = () => setFocus(false);
   return (
     <label {...rippleProps} className={mergeClassName(theme, className, isPlaceholder ? ' slt--placeholder' : '')}>
-      <div>
-        <select
-          {...props}
-          className="peer"
-          value={value}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          onChange={handleChange}
-        >
-          {memoOption?.map((option) => (
-            <option key={option.value} disabled={option.disabled} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        {children ? (
-          <Label componentName="lbl" themeColor={themeColor} themeSize={themeSize}>
-            {children}
-          </Label>
-        ) : null}
-      </div>
-      {focus ? (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="h-6 w-6"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
-        </svg>
-      ) : (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="h-6 w-6"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-        </svg>
-      )}
+      <select {...props} className="peer" value={value} onChange={handleChange}>
+        {memoOption?.map((option) => (
+          <option key={option.value} disabled={option.disabled} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      {children ? (
+        <Label componentName="lbl" themeColor={themeColor} themeSize={themeSize}>
+          {children}
+        </Label>
+      ) : null}
+      <i className="slt__caret" />
       <i className="ripple--wrap">{Ripple}</i>
     </label>
   );

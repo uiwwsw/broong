@@ -1,6 +1,6 @@
-import Button from '@/Button';
-import Base from './_Base';
 import { useState } from 'react';
+import Base from './_Base';
+import Button from '@/Button';
 import Sample from '@/Sample';
 import Input from '@/Input';
 import Select from '@/Select';
@@ -40,7 +40,7 @@ const Main = () => {
             debounce={300}
             componentName="inp"
             themeColor="secondary"
-            themeSize="lg"
+            themeSize="md"
           >
             가나다
           </Input>
@@ -53,7 +53,7 @@ const Main = () => {
           <Select
             componentName="slt"
             themeColor="primary"
-            themeSize="md"
+            themeSize="lg"
             onChange={(e) => setText2(e.target.value)}
             options={[
               { label: '1', value: '1' },

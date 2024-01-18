@@ -2,9 +2,9 @@
 // import viteLogo from '/vite.svg'
 
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
-import Button from './Button';
+import Button from '@/Button';
 import useDebounce from '#/useDebounce';
-import Input from './Input';
+import Input from '@/Input';
 interface SampleProps {
   onChange?: (value: number) => unknown;
   max?: number;

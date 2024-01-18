@@ -1,6 +1,6 @@
 import Scroll from '#/Scroll';
 import { useRef } from 'react';
-import { useUiContext } from './UiProvider';
+import { useUiContext } from '@/UiProvider';
 
 const Header = () => {
   const { title, underlineColor } = useUiContext();

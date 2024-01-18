@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import useDebounce from './useDebounce';
+import useDebounce from '#/useDebounce';
 interface ScrollProps {
   onScroll: () => void;
   debounce: number;

@@ -2,7 +2,7 @@
 
 import useDebounce from '#/useDebounce';
 import { ChangeEvent, InputHTMLAttributes, useState } from 'react';
-import Label from './Label';
+import Label from '@/Label';
 import useTheme, { WithTheme } from '#/useTheme';
 import mergeClassName from '#/mergeClassName';
 import useRipple from '#/useRipple';

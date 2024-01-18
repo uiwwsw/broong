@@ -1,6 +1,6 @@
 import { MouseEvent, TouchEvent, useEffect, useMemo, useRef, useState } from 'react';
-import useAnimation from './useAnimation';
-import useDebounce from './useDebounce';
+import useAnimation from '#/useAnimation';
+import useDebounce from '#/useDebounce';
 interface Active {
   width?: number;
   height?: number;
@@ -11,10 +11,10 @@ interface Ripple extends Active {
   top?: number;
   className?: string;
 }
-
-const useRipple = () => {
+type UseRippleProps = number;
+const useRipple = (size: UseRippleProps = 40) => {
   const startTime = useRef(0);
-  const size = useRef<number>(0);
+  // const size = useRef<number>(0);
   const [_ripple, setRipple] = useState<(Ripple | undefined)[]>([]);
   const [active, setActive] = useState<Active | undefined>();
   const ripple = useMemo(
@@ -25,7 +25,7 @@ const useRipple = () => {
     const timeElapsed = new Date().valueOf();
     if (!startTime.current) startTime.current = timeElapsed;
     const percent = Math.min((timeElapsed - startTime.current) / 1000, 1);
-    const rect = (size.current ? size.current : 1) * percent;
+    const rect = size * percent;
     setActive({ width: rect, height: rect, opacity: percent });
   };
   const reset = useDebounce(() => setRipple([]), 1000);
@@ -41,8 +41,8 @@ const useRipple = () => {
       ...ripple,
       {
         ...current,
-        width: size.current,
-        height: size.current,
+        width: size,
+        height: size,
         opacity: 1,
         className: 'ripple ripple--begin',
       },
@@ -51,7 +51,6 @@ const useRipple = () => {
   const handleEnd = (index: number) => setRipple((prev) => prev.map((x, i) => (i === index ? undefined : x)));
   const onMouseDown = (e: MouseEvent) => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    size.current = Math.max(rect.width, rect.height);
     setRipple((prev) => [
       ...prev,
       {
@@ -64,7 +63,6 @@ const useRipple = () => {
   };
   const onTouchStart = (e: TouchEvent) => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    size.current = Math.max(rect.width, rect.height);
     setRipple((prev) => [
       ...prev,
       {

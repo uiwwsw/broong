@@ -5,19 +5,19 @@
   }
 
   &--sm {
-    @apply w-32 rounded-sm text-sm;
+    @apply h-8 w-32 rounded-sm text-sm;
     input {
       @apply p-1 py-0;
     }
   }
   &--md {
-    @apply w-52 rounded-md;
+    @apply h-10 w-52 rounded-md;
     input {
       @apply p-2 py-1;
     }
   }
   &--lg {
-    @apply w-72 rounded-lg text-lg;
+    @apply h-14 w-72 rounded-lg text-lg;
     input {
       @apply p-3 py-1.5;
     }
