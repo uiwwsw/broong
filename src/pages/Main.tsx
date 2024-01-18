@@ -23,12 +23,22 @@ const Main = () => {
             버튼
           </Button>
         </dd>
+        <dd>
+          <Button
+            debounce={300}
+            className="btn btn--primary btn--md"
+            onClick={() => setCount1(count1 + 1)}
+            onHold={() => setCount1((prev) => prev + 1)}
+          >
+            디바운스 버튼
+          </Button>
+        </dd>
       </dl>
       <dl className="m-1 flex h-12 items-center gap-4 bg-white p-3">
         <dt>샘플</dt>
         <dd>{count2}</dd>
         <dd>
-          <Sample max={99} min={6} onChange={(value) => setCount2(value)} debounce={300} />
+          <Sample debounce={0} max={99} min={6} onChange={(value) => setCount2(value)} />
         </dd>
       </dl>
       <dl className="m-1 flex h-12 items-center gap-4 bg-white p-3">
@@ -37,12 +47,23 @@ const Main = () => {
         <dd>
           <Input
             onChange={(e) => setText1(e.target.value)}
-            debounce={300}
             componentName="inp"
             themeColor="secondary"
             themeSize="md"
+            debounce={0}
           >
             가나다
+          </Input>
+        </dd>
+        <dd>
+          <Input
+            onChange={(e) => setText1(e.target.value)}
+            componentName="inp"
+            themeColor="secondary"
+            themeSize="md"
+            debounce={300}
+          >
+            디바운스 가나다
           </Input>
         </dd>
       </dl>
@@ -54,14 +75,29 @@ const Main = () => {
             componentName="slt"
             themeColor="primary"
             themeSize="lg"
+            debounce={0}
             onChange={(e) => setText2(e.target.value)}
             options={[
-              { label: '1', value: '1' },
-              { label: '2', value: '2' },
-              { label: '3', value: '3' },
+              { label: '0', value: '0' },
+              { label: '300', value: '300' },
             ]}
           >
             아이디
+          </Select>
+        </dd>
+        <dd>
+          <Select
+            componentName="slt"
+            themeColor="primary"
+            themeSize="lg"
+            debounce={300}
+            onChange={(e) => setText2(e.target.value)}
+            options={[
+              { label: '0', value: '0' },
+              { label: '300', value: '300' },
+            ]}
+          >
+            디바운스 아이디
           </Select>
         </dd>
       </dl>
