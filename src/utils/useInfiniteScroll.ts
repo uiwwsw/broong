@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface InfiniteScrollProps {
   event: () => Promise<unknown | boolean>;
@@ -6,14 +6,11 @@ interface InfiniteScrollProps {
 const InfiniteScroll = ({ event }: InfiniteScrollProps) => {
   const loadingRef = useRef(false);
   const handleScroll = async () => {
-    console.log(`,loading:${loadingRef.current}`);
     // if (!ctn) clearEvent();
     if (loadingRef.current) return;
 
     const { scrollY, innerHeight } = window;
     const { clientHeight } = document.body;
-
-    console.log(scrollY + innerHeight >= clientHeight - 50);
 
     if (scrollY + innerHeight >= clientHeight - 50) {
       loadingRef.current = true;
@@ -27,7 +24,6 @@ const InfiniteScroll = ({ event }: InfiniteScrollProps) => {
     window.addEventListener('scroll', handleScroll);
     return () => clearEvent();
   }, []);
-  return loadingRef.current;
 };
 
 export default InfiniteScroll;
