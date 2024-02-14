@@ -3,9 +3,10 @@
 import mergeClassName from '#/mergeClassName';
 import useDebounce from '#/useDebounce';
 import useHold from '#/useHold';
+import useMergeProps from '#/useMergeFn';
 import useRipple from '#/useRipple';
 import useTheme, { WithTheme } from '#/useTheme';
-import { ButtonHTMLAttributes, MouseEvent, TouchEvent } from 'react';
+import { ButtonHTMLAttributes } from 'react';
 
 // const generateRipple = (e: MouseEvent) => {
 //   const target = e.currentTarget;
@@ -49,38 +50,11 @@ const Button = ({
   });
   const { Ripple, ...rippleProps } = useRipple();
   const holdProps = useHold({ onHold });
+  const buttonProps = useMergeProps({ main: rippleProps, other: holdProps });
   const debounceClick = useDebounce(onClick, debounce);
-  const handleMouseDown = (e: MouseEvent) => {
-    rippleProps.onMouseDown(e);
-    holdProps.onMouseDown();
-  };
-  const handleTouchStart = (e: TouchEvent) => {
-    rippleProps.onTouchStart(e);
-    holdProps.onTouchStart();
-  };
-  const handleMouseUp = () => {
-    rippleProps.onMouseUp();
-    holdProps.onMouseUp();
-  };
-  const handleTouchEnd = () => {
-    rippleProps.onTouchEnd();
-    holdProps.onTouchEnd();
-  };
-  const handleMouseLeave = () => {
-    rippleProps.onMouseLeave();
-    holdProps.onMouseLeave();
-  };
+
   return (
-    <button
-      {...props}
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchStart}
-      onMouseUp={handleMouseUp}
-      onTouchEnd={handleTouchEnd}
-      onMouseLeave={handleMouseLeave}
-      className={mergeClassName(theme, className)}
-      onClick={debounceClick}
-    >
+    <button {...props} {...buttonProps} className={mergeClassName(theme, className)} onClick={debounceClick}>
       {children}
       {Ripple}
     </button>

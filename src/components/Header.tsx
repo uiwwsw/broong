@@ -1,4 +1,4 @@
-import Scroll from '#/Scroll';
+import Scroll from '@/Scroll';
 import { useRef } from 'react';
 import { useUiContext } from '@/UiProvider';
 

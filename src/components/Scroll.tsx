@@ -2,12 +2,13 @@ import { useEffect, useRef } from 'react';
 import useDebounce from '#/useDebounce';
 
 interface ScrollProps {
-  onScroll: () => Promise<unknown | boolean>;
+  onScroll: () => Promise<unknown | boolean> | unknown;
   debounce?: number;
   infinity?: boolean;
 }
 const Scroll = ({ onScroll, infinity = false, debounce = 0 }: ScrollProps) => {
   const loadingRef = useRef(false);
+  const clearEvent = () => window.removeEventListener('scroll', handleScroll);
 
   const handleScroll = infinity
     ? useDebounce(onScroll, debounce)
@@ -24,12 +25,13 @@ const Scroll = ({ onScroll, infinity = false, debounce = 0 }: ScrollProps) => {
           loadingRef.current = false;
         }
       };
-  const clearEvent = () => window.removeEventListener('scroll', handleScroll);
   useEffect(() => {
     handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => clearEvent();
   }, []);
+
+  return null;
 };
 
 export default Scroll;

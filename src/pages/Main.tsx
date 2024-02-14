@@ -15,11 +15,7 @@ const Main = () => {
         <dt>버튼</dt>
         <dd>{count1}</dd>
         <dd>
-          <Button
-            className="btn btn--primary btn--md"
-            onClick={() => setCount1(count1 + 1)}
-            onHold={() => setCount1((prev) => prev + 1)}
-          >
+          <Button className="btn btn--primary btn--md" onClick={() => setCount1(count1 + 1)}>
             버튼
           </Button>
         </dd>
