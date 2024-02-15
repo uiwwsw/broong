@@ -30,7 +30,7 @@ const useRipple = (size: UseRippleProps = 70) => {
     const rect = size * percent;
     setActive({ width: rect, height: rect, opacity: percent });
   };
-  const reset = useDebounce(() => setRipple([]), 1000);
+  const reset = useDebounce<void>(() => setRipple([]), 1000);
 
   const { startAnimation, stopAnimation } = useAnimation({ animate });
 

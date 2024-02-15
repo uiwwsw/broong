@@ -1,16 +1,16 @@
-import { EventHandler, SyntheticEvent, useRef } from 'react';
+import { useRef } from 'react';
 
-const useThrottle = <T extends EventHandler<J>, J extends SyntheticEvent>(fn?: T, delay: number = 300) => {
+const useThrottle = <T>(fn?: (e: T) => unknown, delay: number = 300) => {
   if (!fn) return () => null;
   if (!delay) return fn;
-  const sto = useRef(setTimeout(() => null));
-  const handleRun = (e?: J) => {
-    if (!sto.current) fn(e!);
+  const sto = useRef(0);
+  const handleRun = (e: T) => {
+    if (!sto.current) fn(e);
 
     sto.current = setTimeout(() => (sto.current = 0), delay);
   };
 
-  return handleRun as T;
+  return handleRun;
 };
 
 export default useThrottle;

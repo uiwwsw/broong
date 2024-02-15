@@ -9,7 +9,7 @@ interface ScrollProps {
 const Scroll = ({ onScroll, infinity = false, debounce = 0 }: ScrollProps) => {
   const loadingRef = useRef(false);
   const handleScroll = infinity
-    ? useDebounce(onScroll, debounce)
+    ? useDebounce<unknown>(onScroll, debounce)
     : async () => {
         // if (!ctn) clearEvent();
         if (loadingRef.current) return;
@@ -26,7 +26,7 @@ const Scroll = ({ onScroll, infinity = false, debounce = 0 }: ScrollProps) => {
   const clearEvent = () => window.removeEventListener('scroll', handleScroll);
 
   useEffect(() => {
-    handleScroll();
+    handleScroll(undefined);
     window.addEventListener('scroll', handleScroll);
     return () => clearEvent();
   }, []);
