@@ -2,6 +2,7 @@ import { KeyboardEvent, MouseEvent, TouchEvent, useEffect, useMemo, useRef, useS
 import useAnimation from '#/useAnimation';
 import useDebounce from '#/useDebounce';
 import useKeyMatch from './useKeyMatch';
+import useThrottle from './useThrottle';
 interface Active {
   width?: number;
   height?: number;
@@ -35,7 +36,7 @@ const useRipple = (size: UseRippleProps = 70) => {
 
   const handleAnimateEnd = (index: number) => setRipple((prev) => prev.map((x, i) => (i === index ? undefined : x)));
   const handleKeyDown = (e: KeyboardEvent) => {
-    const { width, height } = (e.target as HTMLElement).getBoundingClientRect();
+    const { width, height } = (e.currentTarget as HTMLElement).getBoundingClientRect();
     setRipple((prev) => [
       ...prev,
       {
@@ -44,32 +45,26 @@ const useRipple = (size: UseRippleProps = 70) => {
         className: 'ripple',
       },
     ]);
-    setTimeout(startAnimation, 0);
+    startAnimation();
   };
-  const handleMouseDown = (e: MouseEvent) => {
+  const handleStart = useThrottle((e: MouseEvent | TouchEvent) => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    setRipple((prev) => [
-      ...prev,
-      {
-        left: e.clientX - rect.left,
-        top: e.clientY - rect.top,
-        className: 'ripple',
-      },
-    ]);
-    setTimeout(startAnimation, 0);
-  };
-  const handleTouchStart = (e: TouchEvent) => {
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    setRipple((prev) => [
-      ...prev,
-      {
-        left: e.touches[0].clientX - rect.left,
-        top: e.touches[0].clientY - rect.top,
-        className: 'ripple',
-      },
-    ]);
-    setTimeout(startAnimation, 0);
-  };
+    setRipple((prev) => {
+      const left =
+        (e as MouseEvent).clientX !== undefined ? (e as MouseEvent).clientX : (e as TouchEvent).touches[0].clientX;
+      const top =
+        (e as MouseEvent).clientY !== undefined ? (e as MouseEvent).clientY : (e as TouchEvent).touches[0].clientY;
+      return [
+        ...prev,
+        {
+          left: left - rect.left,
+          top: top - rect.top,
+          className: 'ripple',
+        },
+      ];
+    });
+    startAnimation();
+  }, 100);
   const handleEnd = () => {
     if (!active) return;
     stopAnimation();
@@ -95,8 +90,8 @@ const useRipple = (size: UseRippleProps = 70) => {
   }, [ripple]);
   return {
     ...keyMatchProps,
-    onMouseDown: handleMouseDown,
-    onTouchStart: handleTouchStart,
+    onMouseDown: handleStart,
+    onTouchStart: handleStart,
     onMouseUp: handleEnd,
     onTouchEnd: handleEnd,
     onMouseLeave: handleEnd,
