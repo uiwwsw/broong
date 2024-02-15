@@ -10,7 +10,7 @@ const useDebounce = <T extends EventHandler<J>, J extends SyntheticEvent>(fn?: T
     sto.current = setTimeout(() => fn(e!), delay);
   };
 
-  return handleRun;
+  return handleRun as T;
 };
 
 export default useDebounce;

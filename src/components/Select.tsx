@@ -1,7 +1,7 @@
 // import { MouseEvent } from 'react';
 
 import useDebounce from '#/useDebounce';
-import { ChangeEvent, ChangeEventHandler, ReactNode, SelectHTMLAttributes, useMemo, useState } from 'react';
+import { ChangeEvent, ReactNode, SelectHTMLAttributes, useMemo, useState } from 'react';
 import Label from '@/Label';
 import useTheme, { WithTheme } from '#/useTheme';
 import mergeClassName from '#/mergeClassName';

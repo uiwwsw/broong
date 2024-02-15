@@ -10,7 +10,7 @@ const useThrottle = <T extends EventHandler<J>, J extends SyntheticEvent>(fn?: T
     sto.current = setTimeout(() => (sto.current = 0), delay);
   };
 
-  return handleRun;
+  return handleRun as T;
 };
 
 export default useThrottle;
