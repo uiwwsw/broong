@@ -1,7 +1,8 @@
 .ripple {
   @apply pointer-events-none absolute z-50 h-0 w-0 origin-top-left -translate-x-1/2 -translate-y-1/2 rounded-full bg-black bg-opacity-10 opacity-0;
   &--begin {
-    @apply animate-ripple transition-all duration-300;
+    @apply transition-all duration-300;
+    animation: ripple 0.6s linear forwards;
   }
   &--wrap {
     @apply pointer-events-none absolute inset-0 overflow-hidden;
@@ -9,5 +10,15 @@
   [class*='--primary'] &,
   [class*='--secondary'] & {
     @apply bg-white bg-opacity-20;
+  }
+}
+@keyframes ripple {
+  10% {
+    opacity: 1;
+    transform: scale(1) translate(-50%, -50%);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(4) translate(-50%, -50%);
   }
 }

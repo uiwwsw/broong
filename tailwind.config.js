@@ -9,17 +9,24 @@ export default {
     },
     extend: {
       animation: {
-        ripple: 'ripple 0.6s linear forwards',
+        'fade-in': 'fade-in 0.6s linear',
+        'fade-out': 'fade-out 0.6s linear',
       },
       keyframes: {
-        ripple: {
-          '10%': {
+        'fade-in': {
+          '0%': {
+            opacity: '0',
+          },
+          '100%': {
             opacity: '1',
-            transform: 'scale(1) translate(-50%, -50%)',
+          },
+        },
+        'fade-out': {
+          '0%': {
+            opacity: '1',
           },
           '100%': {
             opacity: '0',
-            transform: 'scale(4) translate(-50%, -50%)',
           },
         },
       },

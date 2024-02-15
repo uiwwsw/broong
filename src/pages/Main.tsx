@@ -4,6 +4,8 @@ import Button from '@/Button';
 import Sample from '@/Sample';
 import Input from '@/Input';
 import Select from '@/Select';
+import Smooth from '@/Smooth';
+import Loading from '@/LoadingLayer';
 const Main = () => {
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
@@ -15,7 +17,10 @@ const Main = () => {
         <dt>버튼</dt>
         <dd>{count1}</dd>
         <dd>
-          <Button className="btn btn--primary btn--md" onClick={() => setCount1(count1 + 1)}>
+          <Smooth>{count2 === 9 && <div>dawdawd</div>}</Smooth>
+        </dd>
+        <dd>
+          <Button className="btn btn--primary btn--md overflow-hidden" onClick={() => setCount1(count1 + 1)}>
             버튼
           </Button>
         </dd>
@@ -27,6 +32,7 @@ const Main = () => {
             onHold={() => setCount1((prev) => prev + 1)}
           >
             디바운스 버튼
+            <Loading debounceTime={300} />
           </Button>
         </dd>
       </dl>
