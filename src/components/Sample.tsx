@@ -15,12 +15,12 @@ const Sample = ({ max, min = 1, onChange, debounce = 0 }: SampleProps) => {
   const [_value, setValue] = useState<string>(`${min}`);
   const [focus, setFocus] = useState(false);
 
-  const value = useMemo(() => getValue(+_value), [_value, min, max]);
+  const value = useMemo(() => +getValue(+_value), [_value, min, max]);
   const displayValue = useMemo(() => (focus ? _value : `${value}`), [_value, focus, value]);
   const invalid = useMemo(() => +displayValue !== value, [displayValue, value]);
   const debounceChange = useDebounce(onChange, debounce);
-  const handlePlus = () => setValue((prev) => `${getValue(+prev + 1)}`);
-  const handleMinus = () => setValue((prev) => `${getValue(+prev - 1)}`);
+  const handlePlus = () => setValue((prev) => getValue(+prev + 1));
+  const handleMinus = () => setValue((prev) => getValue(+prev - 1));
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
@@ -30,9 +30,9 @@ const Sample = ({ max, min = 1, onChange, debounce = 0 }: SampleProps) => {
   };
 
   function getValue(value: number) {
-    if (max && max < value) return max;
-    if (min && min > value) return min;
-    return value;
+    if (max && max < value) return `${max}`;
+    if (min && min > value) return `${min}`;
+    return `${value}`;
   }
 
   useEffect(() => {

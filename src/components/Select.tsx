@@ -14,8 +14,8 @@ interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'val
   defaultValue?: string;
   options?: {
     disabled?: boolean;
-    value: string;
-    label: string;
+    value: string | number;
+    label: string | number;
   }[];
 }
 const Select = ({
@@ -35,6 +35,7 @@ const Select = ({
   const { Ripple, ...rippleProps } = useRipple();
   const [value, setValue] = useState(defaultValue);
   const [open, setOpen] = useState(false);
+  const label = useMemo(() => (open || !children ? '' : children + ': '), [open]);
   const memoOption = useMemo<SelectProps['options']>(
     () => [{ value: '', label: placeholder ?? '', disabled: true }, ...(options ?? [])],
     [options, placeholder],
@@ -60,7 +61,7 @@ const Select = ({
       >
         {memoOption?.map((option) => (
           <option key={option.value} disabled={option.disabled} value={option.value}>
-            {(open ? '' : children + ': ') + option.label}
+            {label + option.label}
           </option>
         ))}
       </select>

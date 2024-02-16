@@ -49,8 +49,11 @@ const Button = ({
     themeSize,
   });
   const { Ripple, ...rippleProps } = useRipple();
-  const holdProps = useHold({ onHold });
-  const buttonProps = useMergeProps({ main: rippleProps, other: holdProps });
+  const holdParams = useHold({ onHold });
+  const buttonProps = useMergeProps({
+    main: rippleProps,
+    other: holdParams,
+  });
   const debounceClick = useDebounce(onClick, debounce);
 
   return (

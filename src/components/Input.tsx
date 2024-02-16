@@ -6,7 +6,7 @@ import Label from '@/Label';
 import useTheme, { WithTheme } from '#/useTheme';
 import mergeClassName from '#/mergeClassName';
 import useRipple from '#/useRipple';
-interface InputProps extends InputHTMLAttributes<HTMLInputElement>, WithTheme<'inp'> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement>, WithTheme<'inp'> {
   debounce?: number;
   onSubmit?: (e?: unknown) => void;
 }

@@ -3,13 +3,13 @@ import Smooth from './Smooth';
 import Spinner from './Spinner';
 interface UseLoaderProps {
   children?: ReactNode;
-  loading?: boolean;
-  debounceTime?: number;
+  show?: boolean;
+  debounce?: number;
 }
-const Loader = ({ children, debounceTime = 500, loading: injectLoading }: UseLoaderProps) => {
-  const isPropsMode = injectLoading !== undefined;
+const Loader = ({ children, debounce = 500, show }: UseLoaderProps) => {
+  const isPropsMode = show !== undefined;
   const sti = useRef(setTimeout(() => null));
-  const [loading, setLoading] = useState(!!injectLoading);
+  const [loading, setLoading] = useState(!!show);
   const handleClick = (e: MouseEvent) => {
     if (loading) return blockEvent(e);
     if (!isPropsMode) setLoading(true);
@@ -20,15 +20,16 @@ const Loader = ({ children, debounceTime = 500, loading: injectLoading }: UseLoa
   const blockEvent = (e: MouseEvent | TouchEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    return;
   };
   useEffect(() => {
     if (isPropsMode) {
-      setLoading(injectLoading);
+      setLoading(show);
     } else if (loading) {
       clearTimeout(sti.current);
-      sti.current = setTimeout(() => setLoading(false), debounceTime);
+      sti.current = setTimeout(() => setLoading(false), debounce);
     }
-  }, [loading, injectLoading]);
+  }, [loading, show]);
   return (
     <i
       className="relative inline-block"
@@ -38,7 +39,7 @@ const Loader = ({ children, debounceTime = 500, loading: injectLoading }: UseLoa
     >
       {children}
 
-      <Smooth>
+      <Smooth className="w-0">
         {loading && (
           <i className="absolute inset-0 bg-black bg-opacity-30 transition-colors">
             <Spinner />
