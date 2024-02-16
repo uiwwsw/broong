@@ -49,7 +49,7 @@
   }
 }
 .zoom {
-  @apply fixed -translate-x-1/2 -translate-y-1/2;
+  @apply fixed;
   &--in {
     animation: zoom-in 0.5s forwards;
   }

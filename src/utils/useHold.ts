@@ -5,16 +5,16 @@ interface UseHoldProps {
   holdTime?: number;
 }
 const useHold = ({ onHold, holdTime = 1000 }: UseHoldProps) => {
-  const holdTimer = useRef(setTimeout(() => null));
+  const holdtimeout = useRef(setTimeout(() => null));
   const { startAnimation, stopAnimation } = useAnimation({ animate: () => onHold && onHold() });
 
   const handleStart = useCallback(() => {
     if (!onHold) return;
-    holdTimer.current = setTimeout(() => startAnimation(), holdTime);
+    holdtimeout.current = setTimeout(() => startAnimation(), holdTime);
   }, [onHold, holdTime]);
 
   const handleStop = useCallback(() => {
-    clearTimeout(holdTimer.current);
+    clearTimeout(holdtimeout.current);
     stopAnimation();
   }, []);
 

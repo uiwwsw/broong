@@ -1,11 +1,12 @@
 import mergeClassName from '#/mergeClassName';
-import { ReactNode, useEffect, useState } from 'react';
+import { CSSProperties, ReactNode, useEffect, useState } from 'react';
 interface UseSmoothProps {
   children?: ReactNode;
   className?: string;
   type?: 'fade' | 'drop' | 'zoom';
+  style?: CSSProperties;
 }
-const Smooth = ({ children, className, type = 'fade' }: UseSmoothProps) => {
+const Smooth = ({ children, className, type = 'fade', ...props }: UseSmoothProps) => {
   const [show, setShow] = useState(false);
   const [clone, setClone] = useState(children);
   const [hide, setHide] = useState(false);
@@ -21,6 +22,7 @@ const Smooth = ({ children, className, type = 'fade' }: UseSmoothProps) => {
   }, [children]);
   return hide ? null : (
     <div
+      {...props}
       className={mergeClassName(type, `${type}--${show ? 'in' : 'out'}`, className)}
       onAnimationEnd={handleAnimationEnd}
     >

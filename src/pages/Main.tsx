@@ -81,7 +81,7 @@ const Main = () => {
       <dl className={style}>
         <dt>버튼</dt>
         {/* <dd>
-          <Toast show={number1 % 3 === 0} timer={3000}>
+          <Toast show={number1 % 3 === 0} timeout={3000}>
             dawdaw
           </Toast>
           <Numeric
@@ -96,6 +96,7 @@ const Main = () => {
         </dd> */}
         <dd>
           <Tooltip
+            timeout={1000}
             slot={
               <Button
                 componentName="btn"
@@ -112,7 +113,7 @@ const Main = () => {
           </Tooltip>
         </dd>
         <dd>
-          <Loader debounce={1000}>
+          <Loader timeout={1000}>
             <Button
               debounce={1000}
               componentName="btn"

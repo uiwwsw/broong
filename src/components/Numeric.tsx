@@ -39,7 +39,7 @@ const Numeric = ({ max = 99, min = 0, onChange, ...props }: NumericProps) => {
   return (
     <>
       <Input {...props} value={value} onChange={handleChange} />
-      <Toast show={!!msg} timer={3000}>
+      <Toast show={!!msg} timeout={3000}>
         {msg}
       </Toast>
     </>

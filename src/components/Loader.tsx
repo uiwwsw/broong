@@ -4,9 +4,9 @@ import Spinner from './Spinner';
 interface UseLoaderProps {
   children?: ReactNode;
   show?: boolean;
-  debounce?: number;
+  timeout?: number;
 }
-const Loader = ({ children, debounce = 500, show }: UseLoaderProps) => {
+const Loader = ({ children, timeout = 500, show }: UseLoaderProps) => {
   const isPropsMode = show !== undefined;
   const sti = useRef(setTimeout(() => null));
   const [loading, setLoading] = useState(!!show);
@@ -27,7 +27,7 @@ const Loader = ({ children, debounce = 500, show }: UseLoaderProps) => {
       setLoading(show);
     } else if (loading) {
       clearTimeout(sti.current);
-      sti.current = setTimeout(() => setLoading(false), debounce);
+      sti.current = setTimeout(() => setLoading(false), timeout);
     }
   }, [loading, show]);
   return (

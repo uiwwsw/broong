@@ -3,17 +3,17 @@ import { createPortal } from 'react-dom';
 import Smooth from './Smooth';
 interface ToastProps {
   show?: boolean;
-  timer?: number;
+  timeout?: number;
   children?: ReactNode;
 }
-const Toast = ({ children, show, timer = 0 }: ToastProps) => {
+const Toast = ({ children, show, timeout = 0 }: ToastProps) => {
   const [hide, setHide] = useState(false);
   useEffect(() => {
-    if (!timer || !show) return;
+    if (!timeout || !show) return;
     setHide(false);
-    const sti = setTimeout(() => setHide(true), timer);
+    const sti = setTimeout(() => setHide(true), timeout);
     return () => clearTimeout(sti);
-  }, [timer, show]);
+  }, [timeout, show]);
   return createPortal(
     <Smooth type="drop">
       {show && !hide && (
