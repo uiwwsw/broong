@@ -5,7 +5,6 @@ import Sample from '@/Sample';
 import Input from '@/Input';
 import Select from '@/Select';
 import Smooth from '@/Smooth';
-import Loading from '@/LoadingLayer';
 import Loader from '@/Loader';
 const Main = () => {
   const [count1, setCount1] = useState(0);
