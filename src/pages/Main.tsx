@@ -163,16 +163,23 @@ const Main = () => {
           </Input>
         </dd>
         <dd>
-          <Numeric
-            placeholder="-10 < x < 100"
-            min={-9}
-            onChange={(e) => setNumber(+e)}
-            componentName="inp"
-            themeColor={color}
-            themeSize={size}
+          <Tooltip
+            timeout={1000}
+            slot={
+              <Numeric
+                placeholder="-10 < x < 100"
+                min={-9}
+                onChange={(e) => setNumber(+e)}
+                componentName="inp"
+                themeColor={color}
+                themeSize={size}
+              >
+                뉴메릭
+              </Numeric>
+            }
           >
-            뉴메릭
-          </Numeric>
+            -11이나 100같은 수를 입력해보세요
+          </Tooltip>
         </dd>
       </dl>
 
