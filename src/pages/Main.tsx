@@ -1,13 +1,10 @@
 import { useState } from 'react';
 import Base from './_Base';
 import Button from '@/Button';
-import Sample from '@/Sample';
 import Input from '@/Input';
 import Select from '@/Select';
-import Smooth from '@/Smooth';
 import Loader from '@/Loader';
 import Numeric from '@/Numeric';
-import Toast from '@/Toast';
 import { COLOR, SIZE, colorArr, sizeArr } from '#/useTheme';
 import Tooltip from '@/Tooltip';
 const Main = () => {
