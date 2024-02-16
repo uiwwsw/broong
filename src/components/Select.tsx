@@ -34,6 +34,7 @@ const Select = ({
   const theme = useTheme({ componentName, themeColor, themeSize });
   const { Ripple, ...rippleProps } = useRipple();
   const [value, setValue] = useState(defaultValue);
+  const [open, setOpen] = useState(false);
   const memoOption = useMemo<SelectProps['options']>(
     () => [{ value: '', label: placeholder ?? '', disabled: true }, ...(options ?? [])],
     [options, placeholder],
@@ -45,17 +46,26 @@ const Select = ({
     debounceChange(e);
     e.target.blur();
   };
+  const handleFocus = () => setOpen(true);
+  const handleBlur = () => setOpen(false);
   return (
     <label {...rippleProps} className={mergeClassName(theme, className, isPlaceholder && 'slt--placeholder')}>
-      <select {...props} className="peer" value={value} onChange={handleChange}>
+      <select
+        {...props}
+        className="peer"
+        value={value}
+        onChange={handleChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      >
         {memoOption?.map((option) => (
           <option key={option.value} disabled={option.disabled} value={option.value}>
-            {option.label}
+            {(open ? '' : children + ': ') + option.label}
           </option>
         ))}
       </select>
       {children ? (
-        <Label componentName="lbl" themeColor={themeColor} themeSize={themeSize}>
+        <Label className="slt__lbl" componentName="lbl" themeColor={themeColor} themeSize={themeSize}>
           {children}
         </Label>
       ) : null}

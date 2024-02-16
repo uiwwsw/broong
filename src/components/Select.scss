@@ -1,5 +1,8 @@
 .slt {
-  @apply relative box-border inline-flex flex-row-reverse border;
+  @apply relative box-border inline-flex border;
+  &__lbl {
+    @apply absolute h-full;
+  }
   select {
     @apply h-full w-full flex-1 appearance-none rounded-[inherit] bg-transparent outline-none;
   }
@@ -33,7 +36,7 @@
     @apply h-14 w-72 rounded-lg text-lg;
 
     select {
-      @apply p-4 py-1.5 pr-8;
+      @apply p-3 py-1.5 pr-8;
     }
     .slt__caret {
       @apply h-3 w-3;

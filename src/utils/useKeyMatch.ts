@@ -2,15 +2,15 @@ import { KeyboardEvent, useRef } from 'react';
 
 interface UseHoldProps {
   code?: string;
-  onDown: Function;
-  onUp: Function;
+  onDown: Function | false;
+  onUp: Function | false;
 }
 const useKeyMatch = ({ code = 'Enter', onDown, onUp }: UseHoldProps) => {
   const once = useRef(false);
 
   const handleDown = (e: KeyboardEvent) => {
     if (e.code === code) {
-      if (once.current) {
+      if (!onDown || once.current) {
         e.preventDefault();
         e.stopPropagation();
         return;
@@ -21,6 +21,11 @@ const useKeyMatch = ({ code = 'Enter', onDown, onUp }: UseHoldProps) => {
   };
   const handleUp = (e: KeyboardEvent) => {
     if (e.code === code) {
+      if (!onUp) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
       once.current = false;
       onUp(e);
     }

@@ -6,6 +6,7 @@ import Input from '@/Input';
 import Select from '@/Select';
 import Smooth from '@/Smooth';
 import Loading from '@/LoadingLayer';
+import Loader from '@/Loader';
 const Main = () => {
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
@@ -20,20 +21,23 @@ const Main = () => {
           <Smooth>{count2 === 9 && <div>dawdawd</div>}</Smooth>
         </dd>
         <dd>
-          <Button className="btn btn--primary btn--md overflow-hidden" onClick={() => setCount1(count1 + 1)}>
-            버튼
-          </Button>
+          <Loader debounceTime={5000}>
+            <Button className="btn btn--primary btn--md overflow-hidden" onClick={() => setCount1(count1 + 1)}>
+              버튼
+            </Button>
+          </Loader>
         </dd>
         <dd>
-          <Button
-            debounce={300}
-            className="btn btn--primary btn--md"
-            onClick={() => setCount1(count1 + 1)}
-            onHold={() => setCount1((prev) => prev + 1)}
-          >
-            디바운스 버튼
-            <Loading debounceTime={300} />
-          </Button>
+          <Loader debounceTime={300} loading={count1 === 3}>
+            <Button
+              debounce={300}
+              className="btn btn--primary btn--md"
+              onClick={() => setCount1(count1 + 1)}
+              onHold={() => setCount1((prev) => prev + 1)}
+            >
+              디바운스 버튼
+            </Button>
+          </Loader>
         </dd>
       </dl>
       <dl className="m-1 flex h-12 items-center gap-4 bg-white p-3">

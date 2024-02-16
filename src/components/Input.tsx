@@ -8,6 +8,7 @@ import mergeClassName from '#/mergeClassName';
 import useRipple from '#/useRipple';
 interface InputProps extends InputHTMLAttributes<HTMLInputElement>, WithTheme<'inp'> {
   debounce?: number;
+  onSubmit?: (e?: unknown) => void;
 }
 const Input = ({
   componentName,
@@ -17,6 +18,7 @@ const Input = ({
   className,
   type = 'text',
   onChange,
+  onSubmit,
   debounce = 0,
   ...props
 }: InputProps) => {
@@ -33,7 +35,7 @@ const Input = ({
       {/* <label {...holdProps} style={{ clipPath: 'border-box' }}> */}
       <input
         {...props}
-        className="peer"
+        className="peer select-none"
         style={{ textAlign: 'inherit' }}
         onChange={handleChange}
         type={type}
