@@ -1,6 +1,5 @@
 import { useCallback, useRef } from 'react';
 import useAnimation from '#/useAnimation';
-import useKeyMatch from './useKeyMatch';
 interface UseHoldProps {
   onHold?: Function;
   holdTime?: number;
@@ -18,10 +17,8 @@ const useHold = ({ onHold, holdTime = 1000 }: UseHoldProps) => {
     clearTimeout(holdTimer.current);
     stopAnimation();
   }, []);
-  const keyMatchProps = useKeyMatch({ code: 'Enter', onDown: handleStart, onUp: handleStop });
 
   return {
-    ...keyMatchProps,
     onMouseDown: handleStart,
     onMouseUp: handleStop,
     onMouseLeave: handleStop,

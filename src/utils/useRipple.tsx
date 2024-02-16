@@ -1,7 +1,6 @@
-import { KeyboardEvent, MouseEvent, TouchEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { MouseEvent, TouchEvent, useEffect, useMemo, useRef, useState } from 'react';
 import useAnimation from '#/useAnimation';
 import useDebounce from '#/useDebounce';
-import useKeyMatch from './useKeyMatch';
 import useThrottle from './useThrottle';
 interface Active {
   width?: number;
@@ -24,6 +23,7 @@ const useRipple = (size: UseRippleProps = 70) => {
     [_ripple, active],
   );
   const animate = () => {
+    if (active) throw new Error('에니메이션이 끝나지 않고 다시 시작되었습니다.');
     const timeElapsed = new Date().valueOf();
     if (!startTime.current) startTime.current = timeElapsed;
     const percent = Math.min((timeElapsed - startTime.current) / 1000, 1);
@@ -35,18 +35,7 @@ const useRipple = (size: UseRippleProps = 70) => {
   const { startAnimation, stopAnimation } = useAnimation({ animate });
 
   const handleAnimateEnd = (index: number) => setRipple((prev) => prev.map((x, i) => (i === index ? undefined : x)));
-  const handleKeyDown = (e: KeyboardEvent) => {
-    const { width, height } = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    setRipple((prev) => [
-      ...prev,
-      {
-        left: width / 2,
-        top: height / 2,
-        className: 'ripple',
-      },
-    ]);
-    startAnimation();
-  };
+
   const handleStart = useThrottle((e: MouseEvent | TouchEvent) => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     setRipple((prev) => {
@@ -83,13 +72,11 @@ const useRipple = (size: UseRippleProps = 70) => {
       },
     ]);
   };
-  const keyMatchProps = useKeyMatch({ code: 'Enter', onDown: handleKeyDown, onUp: handleEnd });
 
   useEffect(() => {
     ripple.length && reset();
   }, [ripple]);
   return {
-    ...keyMatchProps,
     onMouseDown: handleStart,
     onTouchStart: handleStart,
     onMouseUp: handleEnd,
