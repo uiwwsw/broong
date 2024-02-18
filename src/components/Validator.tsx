@@ -6,7 +6,7 @@ interface ValidatorProps {
   validate: (value: string) => boolean | Promise<boolean>;
   debounce?: number;
 }
-const Validator = ({ debounce, validate, children }: ValidatorProps) => {
+const Validator = ({ validate, children }: ValidatorProps) => {
   const [result, setResult] = useState(false);
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     setResult(await validate(e.target.value));
