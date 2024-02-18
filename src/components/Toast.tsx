@@ -17,7 +17,7 @@ const Toast = ({ children, show, timeout = 0 }: ToastProps) => {
   return createPortal(
     <Smooth type="drop">
       {show && !hide && (
-        <div className="mt-3 rounded-md bg-slate-700 px-2 py-1 text-xs font-thin text-white">{children}</div>
+        <div className="mb-3 rounded-md bg-slate-700 px-2 py-1 text-xs font-thin text-white">{children}</div>
       )}
     </Smooth>,
     document.body,
