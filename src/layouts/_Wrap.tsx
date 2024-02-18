@@ -1,9 +1,9 @@
 import { useUiContext } from '@/UiProvider';
 import { ReactNode } from 'react';
-interface BodyProps {
+interface WrapProps {
   children?: ReactNode;
 }
-const Body = ({ children }: BodyProps) => {
+const Wrap = ({ children }: WrapProps) => {
   const { backgroundColor } = useUiContext();
   return (
     <div className="flex min-h-screen w-full flex-col" style={{ backgroundColor }}>
@@ -12,4 +12,4 @@ const Body = ({ children }: BodyProps) => {
   );
 };
 
-export default Body;
+export default Wrap;

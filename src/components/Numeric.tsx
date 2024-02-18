@@ -14,7 +14,10 @@ const Numeric = ({ max = 99, min = 0, onChange, ...props }: NumericProps) => {
   const getValue = (value: string) => {
     if (value === '-' && min < 0) return '-';
     const number = Number(value);
-    if (isNaN(number)) return '';
+    if (isNaN(number)) {
+      setMsg('숫자만 입력가능합니다.');
+      return '';
+    }
 
     if (number > max || number < min) {
       if (number > max) {

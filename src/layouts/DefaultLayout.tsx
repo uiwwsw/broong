@@ -1,17 +1,18 @@
 import Header from '@/Header';
-import Body from '@/_Body';
+import Wrap from '@/_Wrap';
 import { UiProvider } from '@/UiProvider';
 import { Outlet } from 'react-router-dom';
+import Main from './_Main';
 
 const DefaultLayout = () => {
   return (
     <UiProvider>
-      <Body>
+      <Wrap>
         <Header />
-        <div className="flex-auto">
+        <Main>
           <Outlet />
-        </div>
-      </Body>
+        </Main>
+      </Wrap>
     </UiProvider>
   );
 };
