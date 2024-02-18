@@ -31,12 +31,7 @@ const Loader = ({ children, timeout = 500, show }: UseLoaderProps) => {
     }
   }, [loading, show]);
   return (
-    <i
-      className="relative inline-block"
-      onClickCapture={handleClick}
-      onMouseDownCapture={handleStart}
-      onTouchStartCapture={handleStart}
-    >
+    <i className="relative inline-block" onClickCapture={handleClick} onMouseDownCapture={handleStart}>
       {children}
 
       <Smooth className="w-0">

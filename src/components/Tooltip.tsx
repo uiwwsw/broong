@@ -38,7 +38,15 @@ const Tooltip = ({ slot, children, timeout = 0 }: TooltipProps) => {
     return () => clearTimeout(sti);
   }, [timeout, show]);
   return (
-    <i className="inline-block" ref={ref} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+    <i
+      className="inline-block"
+      ref={ref}
+      onMouseEnter={handleEnter}
+      onTouchStart={() => {
+        able.current = false;
+      }}
+      onMouseLeave={handleLeave}
+    >
       {slot}
       {createPortal(
         <Smooth type="zoom" style={position}>

@@ -10,7 +10,7 @@ import Tooltip from '@/Tooltip';
 const Main = () => {
   const style = 'm-1 flex items-center gap-4 bg-white p-3';
   const [size, setSize] = useState<SIZE>('md');
-  const [color, setColor] = useState<COLOR>('primary');
+  const [color, setColor] = useState<COLOR>('secondary');
   const [number, setNumber] = useState(0);
   const [text, setText] = useState('빈값');
   return (

@@ -82,6 +82,7 @@ const useRipple = (size: UseRippleProps = 70) => {
     onMouseUp: handleEnd,
     onTouchEnd: handleEnd,
     onMouseLeave: handleEnd,
+    onTouchCancel: handleEnd,
     Ripple: ripple.map((x, index) =>
       x === undefined ? null : (
         <i
