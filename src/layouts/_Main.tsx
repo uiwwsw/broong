@@ -1,4 +1,3 @@
-import { useUiContext } from '@/UiProvider';
 import { ReactNode } from 'react';
 interface MainProps {
   children?: ReactNode;
