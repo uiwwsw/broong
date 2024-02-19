@@ -20,7 +20,6 @@ const Main = () => {
         <dt>정보</dt>
         <dd>
           <Select
-            componentName="slt"
             themeColor={color}
             themeSize={size}
             debounce={0}
@@ -33,7 +32,6 @@ const Main = () => {
         </dd>
         <dd>
           <Select
-            componentName="slt"
             themeColor={color}
             themeSize={size}
             defaultValue={size}
@@ -52,7 +50,6 @@ const Main = () => {
         <dd>라벨없음</dd>
         <dd>
           <Select
-            componentName="slt"
             themeColor={color}
             themeSize={size}
             debounce={0}
@@ -64,7 +61,6 @@ const Main = () => {
 
         <dd>
           <Select
-            componentName="slt"
             themeColor={color}
             themeSize={size}
             defaultValue={size}
@@ -86,7 +82,6 @@ const Main = () => {
             onChange={(e) => {
               console.log(e);
             }}
-            componentName="inp"
             themeColor="secondary"
             themeSize="md"
           />
@@ -94,10 +89,9 @@ const Main = () => {
         </dd> */}
         <dd>
           <Tooltip
-            timeout={1000}
+            timeout={3000}
             slot={
               <Button
-                componentName="btn"
                 themeColor={color}
                 themeSize={size}
                 onClick={() => setNumber(number + 1)}
@@ -112,13 +106,7 @@ const Main = () => {
         </dd>
         <dd>
           <Loader timeout={1000}>
-            <Button
-              debounce={1000}
-              componentName="btn"
-              themeColor={color}
-              themeSize={size}
-              onClick={() => setNumber(number + 1)}
-            >
+            <Button debounce={1000} themeColor={color} themeSize={size} onClick={() => setNumber(number + 1)}>
               디바운스 버튼
             </Button>
           </Loader>
@@ -127,7 +115,6 @@ const Main = () => {
           <Loader show={number % 19 === 0}>
             <Button
               debounce={300}
-              componentName="btn"
               themeColor={color}
               themeSize={size}
               onClick={() => setNumber(number + 1)}
@@ -145,7 +132,6 @@ const Main = () => {
           <Input
             placeholder="값을 입력해보아요"
             onChange={(e) => setText(e.target.value)}
-            componentName="inp"
             themeColor={color}
             themeSize={size}
           />
@@ -156,7 +142,6 @@ const Main = () => {
             debounce={400}
             placeholder="값을 입력해보아요"
             onChange={(e) => setText(e.target.value)}
-            componentName="inp"
             themeColor={color}
             themeSize={size}
           >
@@ -164,31 +149,70 @@ const Main = () => {
           </Input>
         </dd>
         <dd>
-          <Tooltip
-            timeout={1000}
-            slot={
-              <Numeric
-                placeholder="-10 < x < 100"
-                min={-9}
-                onChange={(e) => setNumber(+e)}
-                componentName="inp"
-                themeColor={color}
-                themeSize={size}
-              >
-                뉴메릭
-              </Numeric>
-            }
+          <Numeric
+            placeholder="-10 < x < 100"
+            min={-9}
+            onChange={(e) => setNumber(+e)}
+            themeColor={color}
+            themeSize={size}
           >
-            -11이나 100같은 수를 입력해보세요
-          </Tooltip>
+            뉴메릭
+          </Numeric>
         </dd>
       </dl>
       <dl className={style}>
         <dt>폼</dt>
         <dd>
-          <Form validations={{ pw: (v) => v.length > 3, rpw: (x) => x.length > 3 }}>
-            <Input name="pw" componentName="inp" themeColor="secondary" themeSize="sm" />
-            <Input name="rpw" componentName="inp" themeColor="secondary" themeSize="sm" />
+          <Form
+            button={
+              <Loader>
+                <Button debounce={300} type="submit" themeColor="secondary">
+                  전송
+                </Button>
+              </Loader>
+            }
+            onSubmit={async () => {
+              await new Promise((res) => setTimeout(() => res(true), 3000));
+              return { age: '서버에서 내려온 에러. 그냥 나이는 오류' };
+            }}
+            messages={{
+              pw: '비밀번호를 길게입력하세여',
+              rpw: '비밀번호를 동일하게 입력하세요.',
+              age: '나이를 올바르게 입력하세요.',
+            }}
+            validations={{
+              pw: (v) => {
+                console.log(v);
+                if (v) {
+                  return v?.length > 3;
+                }
+                return false;
+              },
+              rpw: (x, values) => {
+                if (x && values) {
+                  return values.pw === x;
+                }
+                return false;
+              },
+              age: (x) => {
+                if (!x) return false;
+                if (+x > 25 && +x < 30) {
+                  return true;
+                }
+                return false;
+              },
+            }}
+          >
+            <Input name="pw" themeColor="secondary" themeSize="sm" type="password">
+              비밀번호
+            </Input>
+
+            <Input name="rpw" themeColor="secondary" themeSize="sm" type="password">
+              비밀번호확인
+            </Input>
+            <Numeric placeholder="25~30" name="age" themeColor="secondary" themeSize="sm">
+              나이
+            </Numeric>
           </Form>
         </dd>
       </dl>

@@ -7,21 +7,9 @@ const Main = () => {
   };
   return (
     <Base title="회원가입" backgroundColor="gray">
-      <Input
-        onChange={test}
-        placeholder="이름을 입력해주세요"
-        componentName="inp"
-        themeColor="secondary"
-        themeSize="md"
-      />
+      <Input onChange={test} placeholder="이름을 입력해주세요" />
       <Validator validate={(val) => val.length === 3}>
-        <Input
-          onChange={test}
-          placeholder="이름을 입력해주세요"
-          componentName="inp"
-          themeColor="secondary"
-          themeSize="md"
-        />
+        <Input onChange={test} placeholder="이름을 입력해주세요" />
       </Validator>
     </Base>
   );

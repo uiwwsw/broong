@@ -1,12 +1,14 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Smooth from './Smooth';
-interface TooltipProps {
+import useTheme, { WithTheme } from '#/useTheme';
+interface TooltipProps extends WithTheme<'tooltip'> {
   children?: ReactNode;
   slot?: ReactNode;
   timeout?: number;
 }
-const Tooltip = ({ slot, children, timeout = 0 }: TooltipProps) => {
+const Tooltip = ({ slot, children, timeout = 0, componentName = 'tooltip', ...props }: TooltipProps) => {
+  const theme = useTheme({ ...props, componentName });
   const ref = useRef<HTMLElement>(null);
   const able = useRef(true);
   const [show, setShow] = useState(false);
@@ -50,9 +52,7 @@ const Tooltip = ({ slot, children, timeout = 0 }: TooltipProps) => {
       {slot}
       {createPortal(
         <Smooth type="zoom" style={position}>
-          {show && (
-            <div className="mt-3 rounded-md bg-slate-700 px-2 py-1 text-xs font-thin text-white">{children}</div>
-          )}
+          {show && <div className={theme}>{children}</div>}
         </Smooth>,
         document.body,
       )}

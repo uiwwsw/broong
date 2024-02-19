@@ -38,7 +38,7 @@ const Button = ({
   debounce = 0,
   onClick,
   className,
-  componentName,
+  componentName = 'btn',
   themeColor,
   themeSize,
   ...props

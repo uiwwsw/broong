@@ -40,9 +40,9 @@ const Sample = ({ max, min = 1, onChange, debounce = 0 }: SampleProps) => {
   }, [value]);
 
   return (
-    <div className="inline-flex rounded-md border border-slate-700">
+    <div className="inline-flex rounded-md border border-slate-500">
       <Button
-        className="relative overflow-hidden border-r border-slate-700 p-2"
+        className="relative overflow-hidden border-r border-slate-500 p-2"
         onClick={handlePlus}
         onHold={handlePlus}
       >
@@ -66,11 +66,10 @@ const Sample = ({ max, min = 1, onChange, debounce = 0 }: SampleProps) => {
         onChange={handleChange}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        componentName="inp"
         className={`w-20 text-center font-bold${invalid ? ' animate-pulse border-red-500' : ''}`}
       />
       <Button
-        className="relative overflow-hidden border-l border-slate-700 p-2"
+        className="relative overflow-hidden border-l border-slate-500 p-2"
         onClick={handleMinus}
         onHold={handleMinus}
       >

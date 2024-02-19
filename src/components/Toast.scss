@@ -1,13 +1,13 @@
-.btn {
-  @apply relative box-border overflow-hidden border;
+.toast {
+  @apply z-50 mb-6 scale-150 px-2 py-1 text-xs font-thin;
   &--sm {
-    @apply rounded-sm p-1 py-0 text-sm;
+    @apply rounded-sm px-2 py-1 text-xs;
   }
   &--md {
-    @apply rounded-md p-2 py-1;
+    @apply rounded-md px-3 py-1.5;
   }
   &--lg {
-    @apply rounded-lg p-4 py-1.5 text-lg;
+    @apply rounded-lg px-4 py-2.5 text-lg;
   }
 
   &--primary {

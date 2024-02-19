@@ -26,7 +26,7 @@ const Select = ({
   onChange,
   options,
   className,
-  componentName,
+  componentName = 'slt',
   themeColor,
   themeSize,
   ...props
@@ -55,7 +55,7 @@ const Select = ({
         ))}
       </select>
       {children ? (
-        <Label componentName="lbl" themeColor={themeColor} themeSize={themeSize}>
+        <Label themeColor={themeColor} themeSize={themeSize}>
           {children}
         </Label>
       ) : null}

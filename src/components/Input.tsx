@@ -11,7 +11,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement>, WithT
   onSubmit?: (e?: unknown) => void;
 }
 const Input = ({
-  componentName,
+  componentName = 'inp',
   themeColor,
   themeSize,
   children,
@@ -20,6 +20,7 @@ const Input = ({
   onChange,
   onSubmit,
   debounce = 0,
+  maxLength,
   ...props
 }: InputProps) => {
   const theme = useTheme({ componentName, themeColor, themeSize });
@@ -27,8 +28,15 @@ const Input = ({
   const [value, setValue] = useState('');
   const debounceChange = useDebounce(onChange, debounce);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.currentTarget.value;
+    if (maxLength) e.currentTarget.value = newValue.substring(0, maxLength);
+    // if (newValue === value) {
+    //   e.preventDefault();
+    //   e.stopPropagation();
+    //   return;
+    // }
     debounceChange(e);
-    setValue(e.currentTarget.value);
+    setValue(newValue);
   };
   return (
     <label {...rippleProps} className={mergeClassName(theme, className)}>
@@ -42,7 +50,7 @@ const Input = ({
         title={value}
       />
       {children ? (
-        <Label componentName="lbl" themeColor={themeColor} themeSize={themeSize}>
+        <Label themeColor={themeColor} themeSize={themeSize}>
           {children}
         </Label>
       ) : null}

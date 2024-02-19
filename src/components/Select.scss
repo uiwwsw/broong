@@ -44,15 +44,15 @@
   }
 
   &--primary {
-    @apply border-purple-700 bg-purple-700 text-white;
+    @apply border-cyan-500 bg-cyan-500 text-white;
     select {
-      @apply border-purple-700 bg-purple-700;
+      @apply border-cyan-500 bg-cyan-500;
     }
   }
   &--secondary {
-    @apply border-slate-700 bg-slate-700 text-white;
+    @apply border-slate-500 bg-slate-500 text-white;
     select {
-      @apply border-slate-700 bg-slate-700;
+      @apply border-slate-500 bg-slate-500;
     }
   }
   &--placeholder {

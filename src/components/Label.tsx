@@ -8,8 +8,8 @@ interface LabelProps extends WithTheme<'lbl'> {
   children?: ReactNode;
   className?: string;
 }
-const Label = ({ className, children, ...props }: LabelProps) => {
-  const theme = useTheme(props);
+const Label = ({ className, children, componentName = 'lbl', ...props }: LabelProps) => {
+  const theme = useTheme({ ...props, componentName });
 
   return (
     <p className={mergeClassName(theme, className)}>
