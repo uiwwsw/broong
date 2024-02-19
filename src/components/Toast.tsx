@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Smooth from './Smooth';
 import useTheme, { WithTheme } from '#/useTheme';
+import useThrottle from '#/useThrottle';
 interface ToastProps extends WithTheme<'toast'> {
   show?: boolean;
   timeout?: number;
@@ -11,20 +12,18 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
   const theme = useTheme({ ...props, componentName });
   const [hide, setHide] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const throttleResize = useThrottle(() => {
+    const vv = window.visualViewport ?? { height: 0, width: 0 };
+    const { scrollY, scrollX } = window;
+    setPosition({ top: vv.height + scrollY, left: vv.width / 2 + scrollX });
+  }, 300);
   useEffect(() => {
-    const handleResize = () => {
-      if (window.visualViewport) {
-        const vv = window.visualViewport;
-        const { scrollY, scrollX } = window;
-        setPosition({ top: vv.height + scrollY, left: vv.width / 2 + scrollX });
-      }
-    };
-    handleResize();
-    window.addEventListener('scroll', handleResize);
-    window.addEventListener('resize', handleResize);
+    throttleResize(undefined);
+    window.addEventListener('scroll', throttleResize);
+    window.addEventListener('resize', throttleResize);
     return () => {
-      window.removeEventListener('scroll', handleResize);
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', throttleResize);
+      window.removeEventListener('resize', throttleResize);
     };
   }, [show]);
   useEffect(() => {
