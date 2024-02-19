@@ -84,7 +84,6 @@ const Form = ({ requires, validations, messages, children, onSubmit, button }: F
 
   return (
     <form onChangeCapture={handleValidate} className="[&>*+*]:mt-8" onSubmit={handleSubmit}>
-      {state}
       {children?.map((x, i) => (
         <div key={i} className="flex items-center gap-3">
           <div className="relative">

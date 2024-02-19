@@ -12,11 +12,17 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
   const [hide, setHide] = useState(false);
   const [top, setTop] = useState(0);
   useEffect(() => {
-    if (window.visualViewport) {
-      const vv = window.visualViewport;
+    const handleResize = () => {
+      if (window.visualViewport) {
+        const vv = window.visualViewport;
 
-      setTop(vv.height);
-    }
+        setTop(vv.height);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [show]);
+  useEffect(() => {
     if (!timeout || !show) return;
     setHide(false);
     const sti = setTimeout(() => setHide(true), timeout);
