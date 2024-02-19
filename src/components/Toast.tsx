@@ -10,18 +10,19 @@ interface ToastProps extends WithTheme<'toast'> {
 const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props }: ToastProps) => {
   const theme = useTheme({ ...props, componentName });
   const [hide, setHide] = useState(false);
-  const [top, setTop] = useState(0);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
   useEffect(() => {
     const handleResize = () => {
       if (window.visualViewport) {
         const vv = window.visualViewport;
-
-        setTop(vv.height);
+        const { scrollY, scrollX } = window;
+        console.log(scrollY);
+        setPosition({ top: vv.height + scrollY, left: vv.width / 2 + scrollX });
       }
     };
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener('scroll', handleResize);
+    return () => window.removeEventListener('scroll', handleResize);
   }, [show]);
   useEffect(() => {
     if (!timeout || !show) return;
@@ -30,7 +31,7 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
     return () => clearTimeout(sti);
   }, [timeout, show]);
   return createPortal(
-    <Smooth type="drop" style={{ top }}>
+    <Smooth type="drop" style={position}>
       {show && !hide && <div className={theme}>{children}</div>}
     </Smooth>,
     document.body,
