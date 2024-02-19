@@ -19,6 +19,7 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
         setTop(vv.height);
       }
     };
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [show]);
