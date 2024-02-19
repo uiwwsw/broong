@@ -9,7 +9,7 @@ import { COLOR, SIZE, colorArr, sizeArr } from '#/useTheme';
 import Tooltip from '@/Tooltip';
 import Form from '@/Form';
 const Main = () => {
-  const style = 'm-1 flex items-center gap-4 bg-white p-3';
+  const style = 'm-1 overflow-hidden bg-white p-3 [&>*]:float-left [&>*]:m-2';
   const [size, setSize] = useState<SIZE>('md');
   const [color, setColor] = useState<COLOR>('secondary');
   const [number, setNumber] = useState(0);
