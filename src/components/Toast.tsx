@@ -21,9 +21,11 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
     };
     handleResize();
     window.addEventListener('scroll', handleResize);
+    window.addEventListener('focus', handleResize);
     window.addEventListener('blur', handleResize);
     return () => {
       window.removeEventListener('scroll', handleResize);
+      window.removeEventListener('focus', handleResize);
       window.removeEventListener('blur', handleResize);
     };
   }, [show]);
