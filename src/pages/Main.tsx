@@ -7,6 +7,7 @@ import Loader from '@/Loader';
 import Numeric from '@/Numeric';
 import { COLOR, SIZE, colorArr, sizeArr } from '#/useTheme';
 import Tooltip from '@/Tooltip';
+import Form from '@/Form';
 const Main = () => {
   const style = 'm-1 flex items-center gap-4 bg-white p-3';
   const [size, setSize] = useState<SIZE>('md');
@@ -182,66 +183,15 @@ const Main = () => {
           </Tooltip>
         </dd>
       </dl>
-
-      {/* <dl className={style}>
-        <dt>인풋</dt>
+      <dl className={style}>
+        <dt>폼</dt>
         <dd>
-          <Input
-            onChange={(e) => setNumber(+e.target.value)}
-            componentName="inp"
-            themeColor="secondary"
-            themeSize="md"
-            debounce={0}
-          >
-            가나다
-          </Input>
-        </dd>
-        <dd>
-          <Input
-            onChange={(e) => setText1(e.target.value)}
-            componentName="inp"
-            themeColor="secondary"
-            themeSize="md"
-            debounce={300}
-          >
-            디바운스 가나다
-          </Input>
+          <Form validations={{ pw: (v) => v.length > 3, rpw: (x) => x.length > 3 }}>
+            <Input name="pw" componentName="inp" themeColor="secondary" themeSize="sm" />
+            <Input name="rpw" componentName="inp" themeColor="secondary" themeSize="sm" />
+          </Form>
         </dd>
       </dl>
-      <dl className="m-1 flex h-12 items-center gap-4 bg-white p-3">
-        <dt>셀렉</dt>
-        <dd>{text2}</dd>
-        <dd>
-          <Select
-            componentName="slt"
-            themeColor="primary"
-            themeSize="lg"
-            debounce={0}
-            onChange={(e) => setText2(e.target.value)}
-            options={[
-              { label: '0', value: '0' },
-              { label: '300', value: '300' },
-            ]}
-          >
-            아이디
-          </Select>
-        </dd>
-        <dd>
-          <Select
-            componentName="slt"
-            themeColor="primary"
-            themeSize="lg"
-            debounce={300}
-            onChange={(e) => setText2(e.target.value)}
-            options={[
-              { label: '0', value: '0' },
-              { label: '300', value: '300' },
-            ]}
-          >
-            디바운스 아이디
-          </Select>
-        </dd>
-      </dl> */}
     </Base>
   );
 };

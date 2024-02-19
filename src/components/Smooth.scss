@@ -24,7 +24,7 @@
   }
 }
 .drop {
-  @apply fixed bottom-0 left-1/2;
+  @apply fixed left-1/2;
   &--in {
     animation: drop-in 0.5s forwards;
   }
@@ -33,18 +33,18 @@
   }
   @keyframes drop-in {
     0% {
-      transform: translate(-50%, 100%);
+      transform: translate(-50%, 0);
     }
     100% {
-      transform: translate(-50%, 0);
+      transform: translate(-50%, -100%);
     }
   }
   @keyframes drop-out {
     0% {
-      transform: translate(-50%, 0);
+      transform: translate(-50%, -100%);
     }
     100% {
-      transform: translate(-50%, 100%);
+      transform: translate(-50%, 0);
     }
   }
 }
