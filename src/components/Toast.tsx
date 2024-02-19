@@ -16,13 +16,16 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
       if (window.visualViewport) {
         const vv = window.visualViewport;
         const { scrollY, scrollX } = window;
-        console.log(scrollY);
         setPosition({ top: vv.height + scrollY, left: vv.width / 2 + scrollX });
       }
     };
     handleResize();
     window.addEventListener('scroll', handleResize);
-    return () => window.removeEventListener('scroll', handleResize);
+    window.addEventListener('blur', handleResize);
+    return () => {
+      window.removeEventListener('scroll', handleResize);
+      window.removeEventListener('blur', handleResize);
+    };
   }, [show]);
   useEffect(() => {
     if (!timeout || !show) return;
