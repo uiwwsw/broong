@@ -2,7 +2,6 @@ import { ReactNode, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Smooth from './Smooth';
 import useTheme, { WithTheme } from '#/useTheme';
-import useDebounce from '#/useDebounce';
 interface ToastProps extends WithTheme<'toast'> {
   show?: boolean;
   timeout?: number;
@@ -12,18 +11,20 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
   const theme = useTheme({ ...props, componentName });
   const [hide, setHide] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
-  const debounceResize = useDebounce(() => {
-    const vv = window.visualViewport ?? { height: 0, width: 0 };
-    const { scrollY, scrollX } = window;
-    setPosition({ top: vv.height + scrollY, left: vv.width / 2 + scrollX });
-  }, 300);
+  const handleResize = () => {
+    if (window.visualViewport) {
+      const vv = window.visualViewport;
+      const { scrollY, scrollX } = window;
+      setPosition({ top: vv.height + scrollY, left: vv.width / 2 + scrollX });
+    }
+  };
   useEffect(() => {
-    debounceResize(undefined);
-    window.addEventListener('scroll', debounceResize);
-    window.addEventListener('resize', debounceResize);
+    handleResize();
+    window.addEventListener('scroll', handleResize);
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener('scroll', debounceResize);
-      window.removeEventListener('resize', debounceResize);
+      window.removeEventListener('scroll', handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, [show]);
   useEffect(() => {
