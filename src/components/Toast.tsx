@@ -34,9 +34,11 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
     return () => clearTimeout(sti);
   }, [timeout, show]);
   return createPortal(
-    <Smooth type="drop" style={position}>
-      {show && !hide && <div className={theme}>{children}</div>}
-    </Smooth>,
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <Smooth type="drop" style={position} className="pointer-events-auto">
+        {show && !hide && <div className={theme}>{children}</div>}
+      </Smooth>
+    </div>,
     document.body,
   );
 };

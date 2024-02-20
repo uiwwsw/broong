@@ -2,7 +2,7 @@ export const sizeArr = ['sm', 'md', 'lg'] as const;
 export const colorArr = ['primary', 'secondary'] as const;
 export type SIZE = (typeof sizeArr)[number];
 export type COLOR = (typeof colorArr)[number];
-export interface WithTheme<T = undefined> {
+export interface WithTheme<T> {
   themeColor?: COLOR;
   themeSize?: SIZE;
   componentName?: T;

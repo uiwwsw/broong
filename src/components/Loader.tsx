@@ -1,23 +1,21 @@
-import { MouseEvent, ReactNode, TouchEvent, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import Smooth from './Smooth';
 import Spinner from './Spinner';
 interface UseLoaderProps {
   children?: ReactNode;
   show?: boolean;
   timeout?: number;
+  press?: string;
 }
-const Loader = ({ children, timeout = 500, show }: UseLoaderProps) => {
+const Loader = ({ children, timeout = 500, show, press = 'onClickCapture' }: UseLoaderProps) => {
   const isPropsMode = show !== undefined;
   const sti = useRef(setTimeout(() => null));
   const [loading, setLoading] = useState(!!show);
-  const handleClick = (e: MouseEvent) => {
+  const handleClick = (e: Event) => {
     if (loading) return blockEvent(e);
     if (!isPropsMode) setLoading(true);
   };
-  const handleStart = (e: MouseEvent | TouchEvent) => {
-    if (loading) return blockEvent(e);
-  };
-  const blockEvent = (e: MouseEvent | TouchEvent) => {
+  const blockEvent = (e: Event) => {
     e.preventDefault();
     e.stopPropagation();
     return;
@@ -31,7 +29,7 @@ const Loader = ({ children, timeout = 500, show }: UseLoaderProps) => {
     }
   }, [loading, show]);
   return (
-    <i className="relative inline-block" onClickCapture={handleClick} onMouseDownCapture={handleStart}>
+    <i className="relative inline-block" {...{ [press]: handleClick }}>
       {children}
 
       <Smooth className="w-0">

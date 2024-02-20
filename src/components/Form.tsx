@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, ReactElement, cloneElement, useMemo, useRef, useState } from 'react';
 import Smooth from './Smooth';
 import Toast from './Toast';
+import Loader from './Loader';
 type Validate = (value?: string, values?: Record<string, string>) => boolean;
 interface FormProps {
   children?: ReactElement[];
@@ -46,13 +47,13 @@ const Form = ({ requires, validations, messages, children, onSubmit, button }: F
     const res = validation(currentValue, values.current);
     // setResults((prev) => ({ ...prev, [currentKey]: res }));
     setResults((prev) => {
-      const entries = Object.entries(prev);
+      const keys = Object.keys(prev);
       return {
-        ...entries.reduce((a, [key, value]) => {
+        ...keys.reduce((a, key) => {
           // ([key, value]) => (value ? validations[key](currentValue, values.current) : false)
           return {
             ...a,
-            [key]: value ? validations[key](values.current[key], values.current) : false,
+            [key]: validations[key](values.current[key], values.current),
           };
         }, {}),
         [currentKey]: res,
@@ -87,7 +88,10 @@ const Form = ({ requires, validations, messages, children, onSubmit, button }: F
       {children?.map((x, i) => (
         <div key={i} className="flex items-center gap-3">
           <div className="relative">
-            {cloneElement(x, { disabled: loading })}
+            {/* {cloneElement(x, { disabled: loading })} */}
+            <Loader press="onKeyDown" show={loading}>
+              {x}
+            </Loader>
             <Smooth>
               {results[x.props.name] && (
                 <span className="absolute right-0 top-1/2 -translate-y-1/2 p-1">
