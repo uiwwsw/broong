@@ -59,7 +59,7 @@ const Info = ({ isRequire, isValid, message }: InfoProps) => {
             </Smooth>
           }
         >
-          {message || isValid === false ? '오류가 발생했습니다.' : '입력하지 않아도 됩니다유'}
+          {message || isValid === false ? '값이 올바르지 않아요. 다른 값을 입력해주세요.' : '선택 사항'}
         </Tooltip>
         <Smooth>
           <p className="text-red-700">{message}</p>
@@ -67,26 +67,6 @@ const Info = ({ isRequire, isValid, message }: InfoProps) => {
       </>
     );
   }
-  // return results[x.props.name] || (results[x.props.name] === undefined && requireKeys.includes(x.props.name)) ? (
-  //   <Smooth>
-  //     <svg
-  //       xmlns="http://www.w3.org/2000/svg"
-  //       fill="none"
-  //       viewBox="0 0 24 24"
-  //       strokeWidth={1.5}
-  //       stroke="currentColor"
-  //       className={`h-6 w-6${results[x.props.name] ? ' stroke-green-700' : ' stroke-slate-400'} `}
-  //     >
-  //       <path
-  //         strokeLinecap="round"
-  //         strokeLinejoin="round"
-  //         d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
-  //       />
-  //     </svg>
-  //   </Smooth>
-  // ) : error[x.props.name] ? (
-
-  // ) : null;
 };
 
 interface FormProps {
