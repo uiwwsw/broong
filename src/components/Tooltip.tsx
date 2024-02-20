@@ -25,8 +25,8 @@ const Tooltip = ({ slot, children, timeout = 0, componentName = 'tooltip', ...pr
       const x = innerWidth / 2 > (right - left) / 2 + left;
       setShow(true);
       setPosition({
-        [x ? 'left' : 'right']: x ? left : innerWidth - right,
-        [y ? 'top' : 'bottom']: y ? top : innerHeight - bottom,
+        [x ? 'left' : 'right']: x ? right : innerWidth - left,
+        [y ? 'top' : 'bottom']: y ? bottom : innerHeight - bottom,
       });
     }
   };
@@ -41,7 +41,7 @@ const Tooltip = ({ slot, children, timeout = 0, componentName = 'tooltip', ...pr
   }, [timeout, show]);
   return (
     <i
-      className="inline-block"
+      className="inline-block not-italic"
       ref={ref}
       onMouseEnter={handleEnter}
       onTouchStart={() => {

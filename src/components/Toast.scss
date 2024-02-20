@@ -1,5 +1,5 @@
 .toast {
-  @apply z-50 mb-6 scale-150 px-2 py-1 text-xs font-thin;
+  @apply z-50 mb-6 px-2 py-1 text-xs font-thin;
   &--sm {
     @apply rounded-sm px-2 py-1 text-xs;
   }

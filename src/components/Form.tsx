@@ -2,7 +2,94 @@ import { ChangeEvent, FormEvent, ReactElement, cloneElement, useMemo, useRef, us
 import Smooth from './Smooth';
 import Toast from './Toast';
 import Loader from './Loader';
+import Tooltip from './Tooltip';
 type Validate = (value?: string, values?: Record<string, string>) => boolean;
+interface InfoProps {
+  isRequire?: boolean;
+  isValid?: boolean;
+  message?: string;
+}
+const Info = ({ isRequire, isValid, message }: InfoProps) => {
+  if (isValid === false || (message && !isValid)) {
+    return (
+      <>
+        <Tooltip
+          themeColor="secondary"
+          slot={
+            <Smooth className="flex gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-6 w-6 stroke-red-700"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                />
+              </svg>
+            </Smooth>
+          }
+        >
+          오류가 발생했습니다.
+        </Tooltip>
+        <Smooth>
+          <p className="text-red-700">{message}</p>
+        </Smooth>
+      </>
+    );
+  }
+  if (isRequire) {
+    return (
+      <Tooltip
+        slot={
+          <Smooth>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className={`h-6 w-6${isValid ? ' stroke-green-700' : ' stroke-slate-400'} `}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+              />
+            </svg>
+          </Smooth>
+        }
+      >
+        필수 입력 사항입니다.
+      </Tooltip>
+    );
+  }
+  // return results[x.props.name] || (results[x.props.name] === undefined && requireKeys.includes(x.props.name)) ? (
+  //   <Smooth>
+  //     <svg
+  //       xmlns="http://www.w3.org/2000/svg"
+  //       fill="none"
+  //       viewBox="0 0 24 24"
+  //       strokeWidth={1.5}
+  //       stroke="currentColor"
+  //       className={`h-6 w-6${results[x.props.name] ? ' stroke-green-700' : ' stroke-slate-400'} `}
+  //     >
+  //       <path
+  //         strokeLinecap="round"
+  //         strokeLinejoin="round"
+  //         d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+  //       />
+  //     </svg>
+  //   </Smooth>
+  // ) : error[x.props.name] ? (
+
+  // ) : null;
+};
+
 interface FormProps {
   width?: number;
   children?: ReactElement[];
@@ -13,11 +100,6 @@ interface FormProps {
   onSubmit?: (values: Record<string, string>) => Promise<unknown> | unknown | void;
   button?: ReactElement;
 }
-const enum STATE {
-  INIT,
-  COMPLETE,
-  ERROR,
-}
 const Form = ({ width = 300, requires, validations, messages, children, onSubmit, button }: FormProps) => {
   const [loading, setLoading] = useState(false);
   const values = useRef<Record<string, string>>({});
@@ -27,8 +109,8 @@ const Form = ({ width = 300, requires, validations, messages, children, onSubmit
     () => requires ?? children?.map((x) => x.props.name) ?? [],
     [requires, children],
   );
-  const isComplete: STATE = useMemo(() => {
-    if (requireKeys.every((x) => results[x])) return true;
+  const isComplete = useMemo(() => {
+    if (requireKeys.every((x) => results[x]) && !Object.values(results).filter((x) => x === false).length) return true;
     return false;
   }, [results, requireKeys]);
   const message = useMemo(() => {
@@ -44,7 +126,11 @@ const Form = ({ width = 300, requires, validations, messages, children, onSubmit
       ...values.current,
       [currentKey]: currentValue,
     };
-    const res = validation(currentValue, values.current);
+    const res =
+      !requireKeys.includes(currentKey) && values.current[currentKey] === ''
+        ? true
+        : validation(currentValue, values.current);
+
     // setResults((prev) => ({ ...prev, [currentKey]: res }));
     setResults((prev) => {
       const keys = Object.keys(prev);
@@ -98,65 +184,38 @@ const Form = ({ width = 300, requires, validations, messages, children, onSubmit
             </div>
           </Loader>
 
-          {results[x.props.name] ? (
-            <Smooth>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-green-700"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
-                />
-              </svg>
-            </Smooth>
-          ) : error[x.props.name] ? (
-            <Smooth className="flex gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 stroke-red-700"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-                />
-              </svg>
-              <p className="text-red-700">{error[x.props.name]}</p>
-            </Smooth>
-          ) : null}
+          <Info
+            message={error[x.props.name]}
+            isRequire={requireKeys.includes(x.props.name)}
+            isValid={results[x.props.name]}
+          />
         </div>
       ))}
-      <Toast show={!!message}>{message}</Toast>
+      <Toast themeSize="lg" show={!!message}>
+        {message}
+      </Toast>
       <div className="flex items-center gap-3">
         <div className="flex justify-end" style={{ minWidth: width }}>
           {button && cloneElement(button, { show: loading })}
         </div>
-        {isComplete && (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6 stroke-green-700"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
-            />
-          </svg>
-        )}
+        <Smooth>
+          {isComplete && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-6 w-6 stroke-green-700"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+              />
+            </svg>
+          )}
+        </Smooth>
       </div>
     </form>
   );
