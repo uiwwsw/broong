@@ -10,45 +10,39 @@ interface InfoProps {
   message?: string;
 }
 const Info = ({ isRequire, isValid, message }: InfoProps) => {
-  if (isValid || (isRequire && isValid !== false && !message)) {
-    return (
+  const isDirty = isValid !== undefined || message;
+  return (
+    <>
       <Tooltip
         slot={
-          <Smooth>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className={`h-6 w-6 ${isValid ? 'stroke-green-700' : 'stroke-slate-400'} `}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
-              />
-            </svg>
-          </Smooth>
-        }
-      >
-        {isValid ? '올바른 값입니다.' : '필수 입력 사항입니다.'}
-      </Tooltip>
-    );
-  } else {
-    return (
-      <>
-        <Tooltip
-          themeColor="secondary"
-          slot={
-            <Smooth className="flex gap-2">
+          <Smooth
+            className={`${
+              !isDirty ? '[&>*]:stroke-slate-400' : isValid ? '[&>*]:stroke-green-700' : '[&>*]:stroke-red-700'
+            }`}
+          >
+            {isRequire ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className={`h-6 w-6 ${message || isValid === false ? 'stroke-red-700' : 'stroke-slate-400'}`}
+                className="h-6 w-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+                />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-6 w-6"
               >
                 <path
                   strokeLinecap="round"
@@ -56,17 +50,25 @@ const Info = ({ isRequire, isValid, message }: InfoProps) => {
                   d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
                 />
               </svg>
-            </Smooth>
-          }
-        >
-          {message || isValid === false ? '값이 올바르지 않아요. 다른 값을 입력해주세요.' : '선택 사항'}
-        </Tooltip>
-        <Smooth>
-          <p className="text-red-700">{message}</p>
-        </Smooth>
-      </>
-    );
-  }
+            )}
+          </Smooth>
+        }
+      >
+        {isRequire
+          ? !isDirty
+            ? '필수 입력 사항입니다.'
+            : isValid
+              ? '올바른 값입니다.'
+              : '값을 확인해 주세요.'
+          : !isDirty
+            ? '선택 사항입니다.'
+            : isValid
+              ? '올바른 값입니다.'
+              : '값을 확인해 주세요. 아예 입력하지 않아도 가입할 수 있습니다.'}
+      </Tooltip>
+      <Smooth>{message && isValid === false && <p className="text-red-700">{message}</p>}</Smooth>
+    </>
+  );
 };
 
 interface FormProps {

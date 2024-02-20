@@ -11,6 +11,7 @@ import Form from '@/Form';
 import Currency from '@/Currency';
 const Main = () => {
   const style = 'm-1 bg-white p-3 [&>*]:inline-block [&>*]:m-2';
+  const [test, setTest] = useState(false);
   const [size, setSize] = useState<SIZE>('md');
   const [color, setColor] = useState<COLOR>('secondary');
   const [number, setNumber] = useState(0);
@@ -113,17 +114,24 @@ const Main = () => {
           </Loader>
         </dd>
         <dd>
-          <Loader show={number % 19 === 0}>
-            <Button
-              debounce={300}
-              themeColor={color}
-              themeSize={size}
-              onClick={() => setNumber(number + 1)}
-              onHold={() => setNumber((prev) => prev + 1)}
-            >
-              19배수일때 로딩
-            </Button>
-          </Loader>
+          <Tooltip
+            timeout={3000}
+            slot={
+              <Loader show={number !== 0 && number % 19 === 0}>
+                <Button
+                  debounce={300}
+                  themeColor={color}
+                  themeSize={size}
+                  onClick={() => setNumber(number + 1)}
+                  onHold={() => setNumber((prev) => prev + 1)}
+                >
+                  19배수일때 로딩
+                </Button>
+              </Loader>
+            }
+          >
+            홀드해보세요!
+          </Tooltip>
         </dd>
       </dl>
       <dl className={style}>
@@ -173,9 +181,13 @@ const Main = () => {
               </Loader>
             }
             onSubmit={async (x) => {
-              console.log(x);
-              await new Promise((res) => setTimeout(() => res(true), 3000));
-              return { age: '서버에서 내려온 에러. 그냥 나이는 오류' };
+              setTest(true);
+              if (!test) {
+                await new Promise((res) => setTimeout(() => res(true), 3000));
+                return { email: '중복된 아이디가 있어요. 바꿔주세요옷' };
+              }
+              alert('가입이 완료됐어요.');
+              return true;
             }}
             messages={{
               email: '이메일형태를 입력해주세요.',

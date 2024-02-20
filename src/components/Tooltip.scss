@@ -1,5 +1,19 @@
 .tooltip {
-  @apply z-50 border px-2 py-1 text-xs font-thin;
+  @apply z-50 px-2 py-1 text-xs font-thin outline;
+  @apply after:absolute after:h-3 after:w-3 after:skew-x-12 after:bg-inherit;
+  [style*='left'][style*='top'] & {
+    @apply before:-left-0.5 before:-top-0.5 before:rotate-6;
+    @apply after:left-0 after:top-0 after:rotate-6;
+  }
+  [style*='right'][style*='top'] & {
+    @apply after:right-0 after:top-0 after:rotate-[-84deg];
+  }
+  [style*='left'][style*='bottom'] & {
+    @apply after:bottom-0 after:left-0 after:rotate-[-84deg];
+  }
+  [style*='right'][style*='bottom'] & {
+    @apply after:bottom-0 after:right-0 after:rotate-6;
+  }
   &--sm {
     @apply rounded-sm px-2 py-1 text-xs;
   }
