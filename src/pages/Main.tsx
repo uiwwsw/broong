@@ -172,7 +172,8 @@ const Main = () => {
                 </Button>
               </Loader>
             }
-            onSubmit={async () => {
+            onSubmit={async (x) => {
+              console.log(x);
               await new Promise((res) => setTimeout(() => res(true), 3000));
               return { age: '서버에서 내려온 에러. 그냥 나이는 오류' };
             }}
@@ -204,6 +205,8 @@ const Main = () => {
               age: (x) => {
                 if (!x) return false;
                 if (+x > 25 && +x < 30) {
+                  console.log(x);
+
                   return true;
                 }
                 return false;
@@ -220,9 +223,19 @@ const Main = () => {
             <Input name="rpw" themeColor="secondary" themeSize="sm" type="password">
               비밀번호확인
             </Input>
-            <Numeric placeholder="25~30" name="age" themeColor="secondary" themeSize="sm">
+            {/* <Numeric placeholder="25~30" name="age" themeColor="secondary" themeSize="sm">
               나이
-            </Numeric>
+            </Numeric> */}
+            <Select
+              name="age"
+              ableEmpty
+              options={[
+                { label: 26, value: 26 },
+                { label: 30, value: 30 },
+              ]}
+            >
+              나이
+            </Select>
           </Form>
         </dd>
       </dl>

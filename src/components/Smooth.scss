@@ -24,7 +24,7 @@
   }
 }
 .drop {
-  @apply absolute left-1/2;
+  @apply absolute left-1/2 origin-bottom;
   &--in {
     animation: drop-in 0.5s forwards;
   }
@@ -50,6 +50,18 @@
 }
 .zoom {
   @apply fixed;
+  &[style*='left'][style*='top'] {
+    @apply origin-top-left;
+  }
+  &[style*='right'][style*='top'] {
+    @apply origin-top-right;
+  }
+  &[style*='left'][style*='bottom'] {
+    @apply origin-bottom-left;
+  }
+  &[style*='right'][style*='bottom'] {
+    @apply origin-bottom-right;
+  }
   &--in {
     animation: zoom-in 0.9s forwards;
   }

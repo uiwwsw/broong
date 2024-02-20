@@ -8,6 +8,7 @@ import mergeClassName from '#/mergeClassName';
 import useRipple from '#/useRipple';
 
 interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'value'>, WithTheme<'slt'> {
+  ableEmpty?: boolean;
   children?: ReactNode;
   placeholder?: string;
   debounce?: number;
@@ -19,6 +20,7 @@ interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'val
   }[];
 }
 const Select = ({
+  ableEmpty = false,
   children,
   placeholder = '선택해주세요.',
   defaultValue = '',
@@ -37,7 +39,7 @@ const Select = ({
   const [open, setOpen] = useState(false);
   const label = useMemo(() => (open || !children ? '' : children + ': '), [open]);
   const memoOption = useMemo<SelectProps['options']>(
-    () => [{ value: '', label: placeholder ?? '', disabled: true }, ...(options ?? [])],
+    () => [{ value: '', label: placeholder ?? '', disabled: !ableEmpty }, ...(options ?? [])],
     [options, placeholder],
   );
   const isPlaceholder = useMemo(() => value === '', [value]);

@@ -5,11 +5,12 @@ import Loader from './Loader';
 import Tooltip from './Tooltip';
 type Validate = (value?: string, values?: Record<string, string>) => boolean;
 interface InfoProps {
+  value?: string;
   isRequire?: boolean;
   isValid?: boolean;
   message?: string;
 }
-const Info = ({ isRequire, isValid, message }: InfoProps) => {
+const Info = ({ value, isRequire, isValid, message }: InfoProps) => {
   if (isValid === false || (message && !isValid)) {
     return (
       <>
@@ -42,7 +43,7 @@ const Info = ({ isRequire, isValid, message }: InfoProps) => {
       </>
     );
   }
-  if (isRequire) {
+  if (isRequire || (isValid && value !== '')) {
     return (
       <Tooltip
         slot={
@@ -187,6 +188,7 @@ const Form = ({ width = 300, requires, validations, messages, children, onSubmit
           <Info
             message={error[x.props.name]}
             isRequire={requireKeys.includes(x.props.name)}
+            value={values.current[x.props.name]}
             isValid={results[x.props.name]}
           />
         </div>
