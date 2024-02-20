@@ -29,7 +29,7 @@ const Loader = ({ children, timeout = 500, show, press = 'onClickCapture' }: Use
     }
   }, [loading, show]);
   return (
-    <i className="relative inline-block" {...{ [press]: handleClick }}>
+    <i className="relative inline-block not-italic" {...{ [press]: handleClick }}>
       {children}
 
       <Smooth className="w-0">

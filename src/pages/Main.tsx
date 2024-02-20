@@ -9,7 +9,7 @@ import { COLOR, SIZE, colorArr, sizeArr } from '#/useTheme';
 import Tooltip from '@/Tooltip';
 import Form from '@/Form';
 const Main = () => {
-  const style = 'm-1 overflow-hidden bg-white p-3 [&>*]:float-left [&>*]:m-2';
+  const style = 'm-1 bg-white p-3 [&>*]:inline-block [&>*]:m-2';
   const [size, setSize] = useState<SIZE>('md');
   const [color, setColor] = useState<COLOR>('secondary');
   const [number, setNumber] = useState(0);
@@ -164,9 +164,10 @@ const Main = () => {
         <dt>폼</dt>
         <dd>
           <Form
+            requires={['email', 'pw', 'rpw']}
             button={
               <Loader>
-                <Button debounce={300} type="submit" themeColor="secondary">
+                <Button debounce={300} type="submit">
                   전송
                 </Button>
               </Loader>
@@ -176,11 +177,17 @@ const Main = () => {
               return { age: '서버에서 내려온 에러. 그냥 나이는 오류' };
             }}
             messages={{
+              email: '이메일형태를 입력해주세요.',
               pw: '비밀번호를 길게입력하세여',
               rpw: '비밀번호를 동일하게 입력하세요.',
               age: '나이를 올바르게 입력하세요.',
             }}
             validations={{
+              email: (email) => {
+                const regex =
+                  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return regex.test(email ?? '');
+              },
               pw: (v) => {
                 console.log(v);
                 if (v) {
@@ -203,6 +210,9 @@ const Main = () => {
               },
             }}
           >
+            <Input name="email" themeColor="secondary" themeSize="sm">
+              이메일
+            </Input>
             <Input name="pw" themeColor="secondary" themeSize="sm" type="password">
               비밀번호
             </Input>

@@ -41,14 +41,7 @@ const Input = ({
   return (
     <label {...rippleProps} className={mergeClassName(theme, className)}>
       {/* <label {...holdProps} style={{ clipPath: 'border-box' }}> */}
-      <input
-        {...props}
-        className="peer select-none"
-        style={{ textAlign: 'inherit' }}
-        onChange={handleChange}
-        type={type}
-        title={value}
-      />
+      <input {...props} className="peer select-none" onChange={handleChange} type={type} title={value} />
       {children ? (
         <Label themeColor={themeColor} themeSize={themeSize}>
           {children}

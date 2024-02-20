@@ -1,7 +1,7 @@
 .inp {
   @apply relative box-border inline-flex flex-row-reverse items-center border;
   input {
-    @apply h-full w-full flex-1 truncate bg-transparent outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none;
+    @apply h-full w-full flex-1 truncate bg-transparent text-right outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none;
   }
 
   &--sm {
