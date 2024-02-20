@@ -20,8 +20,7 @@ const Currency = ({ onChange, themeSize, themeColor, ...props }: CurrencyProps) 
 
     const number = Number(newValue);
     if (isNaN(number)) return value;
-
-    return newValue.trim().replace(/\b0+(\d+)/g, '$1');
+    return newValue.trim().replace(/^0+(\d+)/g, '$1');
   };
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = getValue(e.target.value);

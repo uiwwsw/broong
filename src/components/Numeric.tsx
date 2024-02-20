@@ -21,7 +21,8 @@ const Numeric = ({ onChange, themeSize, themeColor, ...props }: NumericProps) =>
     //     return '';
     //   }
     // }
-    return newValue.trim().replace(/\b0+(\d+)/g, '$1');
+
+    return newValue.trim().replace(/^0+(\d+)/g, '$1');
   };
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = getValue(e.target.value);

@@ -26,7 +26,7 @@ const Tooltip = ({ slot, children, timeout = 0, componentName = 'tooltip', ...pr
       setShow(true);
       setPosition({
         [x ? 'left' : 'right']: x ? right : innerWidth - left,
-        [y ? 'top' : 'bottom']: y ? bottom : innerHeight - bottom,
+        [y ? 'top' : 'bottom']: y ? bottom : innerHeight - top,
       });
     }
   };

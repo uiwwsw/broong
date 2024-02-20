@@ -1,5 +1,5 @@
 .tooltip {
-  @apply z-50 mb-6 border px-2 py-1 text-xs font-thin;
+  @apply z-50 border px-2 py-1 text-xs font-thin;
   &--sm {
     @apply rounded-sm px-2 py-1 text-xs;
   }

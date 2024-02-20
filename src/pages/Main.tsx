@@ -8,6 +8,7 @@ import Numeric from '@/Numeric';
 import { COLOR, SIZE, colorArr, sizeArr } from '#/useTheme';
 import Tooltip from '@/Tooltip';
 import Form from '@/Form';
+import Currency from '@/Currency';
 const Main = () => {
   const style = 'm-1 bg-white p-3 [&>*]:inline-block [&>*]:m-2';
   const [size, setSize] = useState<SIZE>('md');
@@ -149,15 +150,14 @@ const Main = () => {
           </Input>
         </dd>
         <dd>
-          <Numeric
-            placeholder="-10 < x < 100"
-            min={-9}
-            onChange={(e) => setNumber(+e)}
-            themeColor={color}
-            themeSize={size}
-          >
+          <Numeric onChange={(e) => setNumber(+e)} themeColor={color} themeSize={size}>
             뉴메릭
           </Numeric>
+        </dd>
+        <dd>
+          <Currency onChange={(e) => setNumber(+e)} themeColor={color} themeSize={size}>
+            커런시
+          </Currency>
         </dd>
       </dl>
       <dl className={style}>
