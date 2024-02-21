@@ -1,6 +1,6 @@
 // import { MouseEvent } from 'react';
 
-import { WithTheme } from '#/useTheme';
+import useTheme, { WithTheme } from '#/useTheme';
 import { createPortal } from 'react-dom';
 
 import Input, { InputProps } from './Input';
@@ -20,21 +20,24 @@ interface ComboProps extends Omit<InputProps, 'onChange'>, WithTheme {
 }
 const Combo = ({
   children,
-  // placeholder = '선택해주세요.',
+  placeholder = '선택해주세요.',
   defaultValue = '',
-  // debounce = 0,
   onChange,
   options,
+  componentName = 'combo',
+  themeColor,
+  themeSize,
   // className,
-  // ...props
+  ...props
 }: ComboProps) => {
   const sto = useRef(0);
   const ref = useRef<HTMLLabelElement>(null);
+  const theme = useTheme({ themeColor, themeSize, componentName });
   const [value, setValue] = useState(defaultValue);
   const [filter, setFilter] = useState('');
   const [visible, setVisible] = useState(false);
   const label = useMemo(
-    () => (visible ? filter : options?.find((x) => x.value === value)?.label),
+    () => (visible ? filter : options?.find((x) => x.value === value)?.label ?? ''),
     [filter, value, visible],
   );
   const { position, trigger } = usePosition({ ref, hasWidth: true });
@@ -48,9 +51,9 @@ const Combo = ({
   const handleFocusCapture = () => clearTimeout(sto.current);
   const handleBlur = () => (sto.current = setTimeout(() => setVisible(false), 500));
   const handleChange = (newValue: string) => {
-    onChange && onChange(newValue);
     setValue(newValue);
     setVisible(false);
+    onChange && onChange(newValue);
   };
   useEffect(() => {
     window.addEventListener('resize', handleBlur);
@@ -63,6 +66,10 @@ const Combo = ({
   return (
     <>
       <Input
+        {...props}
+        placeholder={visible ? '검색어를 입력해보아요.' : placeholder}
+        themeColor={themeColor}
+        themeSize={themeSize}
         reverseLabel={position?.bottom !== undefined}
         onChange={handleFilter}
         value={label}
@@ -75,13 +82,11 @@ const Combo = ({
       {createPortal(
         <Smooth>
           {visible && (
-            <div
-              onFocusCapture={handleFocusCapture}
-              style={position}
-              className="absolute shadow-lg [&[style*='left']]:-translate-x-full [&[style*='right']]:translate-x-full"
-            >
+            <div onFocusCapture={handleFocusCapture} style={position} className={theme}>
               {filteredOptions?.map((option) => (
                 <Button
+                  themeColor={themeColor}
+                  themeSize={themeSize}
                   key={option.value}
                   disabled={option.disabled}
                   onClick={() => handleChange(option.value)}
@@ -91,7 +96,7 @@ const Combo = ({
                 </Button>
               ))}
               {!filteredOptions?.length && (
-                <div className="h-11 text-center">{filter ? '검색결과가 없습니다' : '내용이 없습니다'}</div>
+                <div className="combo__empty">{filter ? '검색결과가 없습니다' : '내용이 없습니다'}</div>
               )}
             </div>
           )}

@@ -113,6 +113,7 @@ const Form = ({ width = 300, requires, validations, messages, children, onSubmit
       ...values.current,
       [currentKey]: currentValue,
     };
+    console.log(currentKey);
     const pass = !requireKeys.includes(currentKey) && values.current[currentKey] === '';
     const res = validation(currentValue, values.current);
 

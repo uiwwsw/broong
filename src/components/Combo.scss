@@ -1,0 +1,22 @@
+.combo {
+  @apply absolute flex flex-col gap-1 shadow-lg [&[style*='left']]:-translate-x-full [&[style*='right']]:translate-x-full;
+  &__empty {
+    @apply p-[inherit] text-center;
+  }
+  &--sm {
+    @apply rounded-sm p-1 shadow-sm;
+  }
+  &--md {
+    @apply rounded-md p-2 shadow;
+  }
+  &--lg {
+    @apply rounded-lg p-3 shadow-lg;
+  }
+
+  &--primary {
+    @apply bg-cyan-600 text-white;
+  }
+  &--secondary {
+    @apply bg-slate-600 text-white;
+  }
+}

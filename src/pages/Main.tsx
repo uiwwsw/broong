@@ -71,7 +71,6 @@ const Main = () => {
             themeColor={color}
             themeSize={size}
             defaultValue={size}
-            debounce={400}
             onChange={(e) => setNumber(+e)}
             options={[
               { label: '1', value: '1' },
@@ -80,7 +79,7 @@ const Main = () => {
               { label: '4', value: '4' },
             ]}
           >
-            디바운스12323112
+            디바운스
           </Combo>
         </dd>
       </dl>
@@ -249,6 +248,17 @@ const Main = () => {
             {/* <Numeric placeholder="25~30" name="age" themeColor="secondary" themeSize="sm">
               나이
             </Numeric> */}
+            <Combo
+              name="age"
+              themeColor="secondary"
+              themeSize="sm"
+              options={[
+                { label: '성인', value: '27' },
+                { label: '청소년', value: '0' },
+              ]}
+            >
+              나이
+            </Combo>
           </Form>
         </dd>
       </dl>
