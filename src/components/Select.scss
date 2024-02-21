@@ -8,7 +8,7 @@
   }
 
   &__caret {
-    @apply absolute right-[3.5%] top-1/2 origin-center -translate-y-1/3 rotate-45 peer-focus-within:-translate-y-2/3 peer-focus-within:rotate-[225deg];
+    @apply pointer-events-none absolute right-[3.5%] top-1/2 origin-center -translate-y-1/3 rotate-45 peer-focus-within:-translate-y-2/3 peer-focus-within:rotate-[225deg];
     @apply after:absolute after:h-[1px] after:w-full after:bg-white;
     @apply before:absolute before:h-full before:w-[1px] before:bg-white;
   }

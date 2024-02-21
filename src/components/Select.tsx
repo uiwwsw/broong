@@ -1,7 +1,7 @@
 // import { MouseEvent } from 'react';
 
 import useDebounce from '#/useDebounce';
-import { ChangeEvent, ReactNode, SelectHTMLAttributes, useMemo, useState } from 'react';
+import { ChangeEvent, ReactNode, SelectHTMLAttributes, useMemo, useRef, useState } from 'react';
 import Label from '@/Label';
 import useTheme, { WithTheme } from '#/useTheme';
 import mergeClassName from '#/mergeClassName';
@@ -33,6 +33,7 @@ const Select = ({
   themeSize,
   ...props
 }: SelectProps) => {
+  const ref = useRef<HTMLParagraphElement>(null);
   const theme = useTheme({ componentName, themeColor, themeSize });
   const { Ripple, ...rippleProps } = useRipple();
   const [value, setValue] = useState(defaultValue);
@@ -63,7 +64,7 @@ const Select = ({
         ))}
       </select>
       {children ? (
-        <Label className="slt__lbl" themeColor={themeColor} themeSize={themeSize}>
+        <Label ref={ref} className="slt__lbl" themeColor={themeColor} themeSize={themeSize}>
           {children}
         </Label>
       ) : null}

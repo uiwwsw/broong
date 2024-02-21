@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Base from './_Base';
 import Button from '@/Button';
 import Input from '@/Input';
-import Select from '@/Select';
+import Combo from '@/Combo';
 import Loader from '@/Loader';
 import Numeric from '@/Numeric';
 import { COLOR, SIZE, colorArr, sizeArr } from '#/useTheme';
@@ -21,28 +21,28 @@ const Main = () => {
       <dl className={style}>
         <dt>정보</dt>
         <dd>
-          <Select
+          <Combo
             themeColor={color}
             themeSize={size}
             debounce={0}
             defaultValue={color}
-            onChange={(e) => setColor(e.target.value as COLOR)}
+            onChange={(e) => setColor(e as COLOR)}
             options={colorArr.map((x) => ({ label: x, value: x }))}
           >
             컬러
-          </Select>
+          </Combo>
         </dd>
         <dd>
-          <Select
+          <Combo
             themeColor={color}
             themeSize={size}
             defaultValue={size}
             debounce={0}
-            onChange={(e) => setSize(e.target.value as SIZE)}
+            onChange={(e) => setSize(e as SIZE)}
             options={sizeArr.map((x) => ({ label: x, value: x }))}
           >
             사이즈
-          </Select>
+          </Combo>
         </dd>
         <dd>number: {number}</dd>
         <dd>text: {text}</dd>
@@ -51,27 +51,37 @@ const Main = () => {
         <dt>셀렉트</dt>
         <dd>라벨없음</dd>
         <dd>
-          <Select
+          <Combo
             themeColor={color}
             themeSize={size}
             debounce={0}
             defaultValue={color}
-            onChange={(e) => setNumber(+e.target.value)}
-            options={[1, 2, 3, 4, 5, 6, 7, 8].map((x) => ({ label: x, value: x }))}
+            onChange={(e) => setNumber(+e)}
+            options={[
+              { label: '1', value: '1' },
+              { label: '2', value: '2' },
+              { label: '3', value: '3' },
+              { label: '4', value: '4' },
+            ]}
           />
         </dd>
 
         <dd>
-          <Select
+          <Combo
             themeColor={color}
             themeSize={size}
             defaultValue={size}
             debounce={400}
-            onChange={(e) => setNumber(+e.target.value)}
-            options={[1, 2, 3, 4, 5, 6, 7, 8].map((x) => ({ label: x, value: x }))}
+            onChange={(e) => setNumber(+e)}
+            options={[
+              { label: '1', value: '1' },
+              { label: '2', value: '2' },
+              { label: '3', value: '3' },
+              { label: '4', value: '4' },
+            ]}
           >
-            디바운스
-          </Select>
+            디바운스12323112
+          </Combo>
         </dd>
       </dl>
       <dl className={style}>
@@ -239,16 +249,6 @@ const Main = () => {
             {/* <Numeric placeholder="25~30" name="age" themeColor="secondary" themeSize="sm">
               나이
             </Numeric> */}
-            <Select
-              name="age"
-              ableEmpty
-              options={[
-                { label: 26, value: 26 },
-                { label: 30, value: 30 },
-              ]}
-            >
-              나이
-            </Select>
           </Form>
         </dd>
       </dl>

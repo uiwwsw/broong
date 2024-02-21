@@ -1,16 +1,16 @@
 // import { MouseEvent } from 'react';
 
-import useDebounce from '#/useDebounce';
-import { ChangeEvent, ReactNode, SelectHTMLAttributes, useMemo, useState } from 'react';
-import Label from '@/Label';
-import useTheme, { WithTheme } from '#/useTheme';
-import mergeClassName from '#/mergeClassName';
-import useRipple from '#/useRipple';
+import { WithTheme } from '#/useTheme';
+import { createPortal } from 'react-dom';
 
-interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'value'>, WithTheme {
-  children?: ReactNode;
-  placeholder?: string;
-  debounce?: number;
+import Input, { InputProps } from './Input';
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import Smooth from './Smooth';
+import usePosition from '#/usePosition';
+import Button from './Button';
+
+interface ComboProps extends Omit<InputProps, 'onChange'>, WithTheme {
+  onChange?: (value: string) => unknown;
   defaultValue?: string;
   options?: {
     disabled?: boolean;
@@ -18,51 +18,88 @@ interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'val
     label: string;
   }[];
 }
-const Select = ({
+const Combo = ({
   children,
-  placeholder = '선택해주세요.',
+  // placeholder = '선택해주세요.',
   defaultValue = '',
-  debounce = 0,
+  // debounce = 0,
   onChange,
   options,
-  className,
-  componentName = 'slt',
-  themeColor,
-  themeSize,
-  ...props
-}: SelectProps) => {
-  const theme = useTheme({ componentName, themeColor, themeSize });
-  const { Ripple, ...rippleProps } = useRipple();
+  // className,
+  // ...props
+}: ComboProps) => {
+  const sto = useRef(0);
+  const ref = useRef<HTMLLabelElement>(null);
   const [value, setValue] = useState(defaultValue);
-  const memoOption = useMemo<SelectProps['options']>(
-    () => [{ value: '', label: placeholder ?? '', disabled: true }, ...(options ?? [])],
-    [options, placeholder],
+  const [filter, setFilter] = useState('');
+  const [visible, setVisible] = useState(false);
+  const label = useMemo(
+    () => (visible ? filter : options?.find((x) => x.value === value)?.label),
+    [filter, value, visible],
   );
-  const isPlaceholder = useMemo(() => value === '', [value]);
-  const debounceChange = useDebounce(onChange, debounce);
-  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setValue(e.target.value);
-    debounceChange(e);
-    e.target.blur();
+  const { position, trigger } = usePosition({ ref, hasWidth: true });
+  const filteredOptions = useMemo(() => options?.filter((option) => option.label.includes(filter)), [options, filter]);
+  const handleFocus = () => {
+    clearTimeout(sto.current);
+    setVisible(true);
+    trigger();
   };
+  const handleFilter = (e: ChangeEvent<HTMLInputElement>) => setFilter(e.currentTarget.value);
+  const handleFocusCapture = () => clearTimeout(sto.current);
+  const handleBlur = () => (sto.current = setTimeout(() => setVisible(false), 500));
+  const handleChange = (newValue: string) => {
+    onChange && onChange(newValue);
+    setValue(newValue);
+    setVisible(false);
+  };
+  useEffect(() => {
+    window.addEventListener('resize', handleBlur);
+    window.addEventListener('scroll', handleBlur);
+    return () => {
+      window.removeEventListener('resize', handleBlur);
+      window.removeEventListener('scroll', handleBlur);
+    };
+  }, []);
   return (
-    <label {...rippleProps} className={mergeClassName(theme, className, isPlaceholder && 'slt--placeholder')}>
-      <select {...props} className="peer" value={value} onChange={handleChange}>
-        {memoOption?.map((option) => (
-          <option key={option.value} disabled={option.disabled} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      {children ? (
-        <Label themeColor={themeColor} themeSize={themeSize}>
-          {children}
-        </Label>
-      ) : null}
-      <i className="slt__caret" />
-      <i className="ripple--wrap">{Ripple}</i>
-    </label>
+    <>
+      <Input
+        reverseLabel={position?.bottom !== undefined}
+        onChange={handleFilter}
+        value={label}
+        ref={ref}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      >
+        {children}
+      </Input>
+      {createPortal(
+        <Smooth>
+          {visible && (
+            <div
+              onFocusCapture={handleFocusCapture}
+              style={position}
+              className="absolute shadow-lg [&[style*='left']]:-translate-x-full [&[style*='right']]:translate-x-full"
+            >
+              {filteredOptions?.map((option) => (
+                <Button
+                  key={option.value}
+                  disabled={option.disabled}
+                  onClick={() => handleChange(option.value)}
+                  className="w-full"
+                >
+                  {option.label}
+                </Button>
+              ))}
+              {!filteredOptions?.length && (
+                <div className="h-11 text-center">{filter ? '검색결과가 없습니다' : '내용이 없습니다'}</div>
+              )}
+            </div>
+          )}
+        </Smooth>,
+        document.body,
+      )}
+    </>
   );
 };
 
-export default Select;
+export default Combo;
