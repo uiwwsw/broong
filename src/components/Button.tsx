@@ -28,7 +28,7 @@ import { ButtonHTMLAttributes } from 'react';
 // export default generateRipple;
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, WithTheme<'btn'> {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, WithTheme {
   onHold?: ButtonProps['onClick'];
   debounce?: number;
 }

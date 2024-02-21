@@ -7,7 +7,7 @@ import useTheme, { WithTheme } from '#/useTheme';
 import mergeClassName from '#/mergeClassName';
 import useRipple from '#/useRipple';
 
-interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'value'>, WithTheme<'slt'> {
+interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'value'>, WithTheme {
   ableEmpty?: boolean;
   children?: ReactNode;
   placeholder?: string;
@@ -36,8 +36,6 @@ const Select = ({
   const theme = useTheme({ componentName, themeColor, themeSize });
   const { Ripple, ...rippleProps } = useRipple();
   const [value, setValue] = useState(defaultValue);
-  const [open, setOpen] = useState(false);
-  const label = useMemo(() => (open || !children ? '' : children + ': '), [open]);
   const memoOption = useMemo<SelectProps['options']>(
     () => [{ value: '', label: placeholder ?? '', disabled: !ableEmpty }, ...(options ?? [])],
     [options, placeholder],
@@ -49,8 +47,6 @@ const Select = ({
     debounceChange(e);
     e.target.blur();
   };
-  const handleFocus = () => setOpen(true);
-  const handleBlur = () => setOpen(false);
   return (
     <label {...rippleProps} className={mergeClassName(theme, className, isPlaceholder && 'slt--placeholder')}>
       <select
@@ -58,12 +54,11 @@ const Select = ({
         className="peer"
         value={value}
         onChange={handleChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        style={{ textAlign: children ? 'right' : 'left' }}
       >
         {memoOption?.map((option) => (
           <option key={option.value} disabled={option.disabled} value={option.value}>
-            {label + option.label}
+            {option.label}
           </option>
         ))}
       </select>

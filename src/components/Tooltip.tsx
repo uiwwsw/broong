@@ -10,45 +10,32 @@ interface TooltipProps extends WithTheme<'tooltip'> {
 const Tooltip = ({ slot, children, timeout = 0, componentName = 'tooltip', ...props }: TooltipProps) => {
   const theme = useTheme({ ...props, componentName });
   const ref = useRef<HTMLElement>(null);
-  const able = useRef(true);
+  const sto = useRef(0);
   const [show, setShow] = useState(false);
   const [position, setPosition] = useState<
     { top?: number; right?: number; bottom?: number; left?: number } | undefined
   >();
   const handleEnter = () => {
-    if (ref.current && able.current) {
-      able.current = false;
-
-      const { innerWidth, innerHeight } = window;
-      const { top, right, bottom, left } = ref.current.getBoundingClientRect();
-      const y = innerHeight / 2 > (bottom - top) / 2 + top;
-      const x = innerWidth / 2 > (right - left) / 2 + left;
-      setShow(true);
-      setPosition({
-        [x ? 'left' : 'right']: x ? right : innerWidth - left,
-        [y ? 'top' : 'bottom']: y ? bottom : innerHeight - top,
-      });
-    }
+    if (!ref.current) return;
+    clearTimeout(sto.current);
+    const { innerWidth, innerHeight } = window;
+    const { top, right, bottom, left } = ref.current.getBoundingClientRect();
+    const y = innerHeight / 2 > (bottom - top) / 2 + top;
+    const x = innerWidth / 2 > (right - left) / 2 + left;
+    setShow(true);
+    setPosition({
+      [x ? 'left' : 'right']: x ? right : innerWidth - left,
+      [y ? 'top' : 'bottom']: y ? bottom : innerHeight - top,
+    });
   };
-  const handleLeave = () => {
-    able.current = true;
-    setShow(false);
-  };
+  const handleLeave = () => (sto.current = setTimeout(() => setShow(false), 500));
   useEffect(() => {
     if (!show || !timeout) return;
     const sti = setTimeout(() => setShow(false), timeout);
     return () => clearTimeout(sti);
   }, [timeout, show]);
   return (
-    <i
-      className="inline-block not-italic"
-      ref={ref}
-      onMouseEnter={handleEnter}
-      onTouchStart={() => {
-        able.current = false;
-      }}
-      onMouseLeave={handleLeave}
-    >
+    <i className="inline-block not-italic" ref={ref} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       {slot}
       {createPortal(
         <Smooth type="zoom" style={position}>

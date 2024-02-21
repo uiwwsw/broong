@@ -4,7 +4,7 @@ import mergeClassName from '#/mergeClassName';
 import useTheme, { WithTheme } from '#/useTheme';
 import { ReactNode } from 'react';
 
-interface LabelProps extends WithTheme<'lbl'> {
+interface LabelProps extends WithTheme {
   children?: ReactNode;
   className?: string;
 }

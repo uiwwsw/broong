@@ -1,15 +1,14 @@
 .lbl {
   @apply pointer-events-none flex items-center border-inherit bg-inherit transition-transform after:content-[':'];
-  @apply peer-focus-within:absolute peer-focus-within:-left-[1px] peer-focus-within:h-full peer-focus-within:-translate-y-full peer-focus-within:rounded-b-none peer-focus-within:border;
-  @apply before:absolute before:-left-[1px] before:bottom-0 before:bg-inherit before:pr-[inherit] before:transition-transform;
+  @apply peer-focus-within:absolute peer-focus-within:-bottom-1 peer-focus-within:left-[-1px] peer-focus-within:h-full peer-focus-within:-translate-y-full peer-focus-within:translate-x-0 peer-focus-within:rounded-b-none peer-focus-within:border;
   &--sm {
-    @apply rounded-sm pl-1 before:h-1 peer-focus-within:pr-1 peer-focus-within:before:translate-y-1;
+    @apply rounded-sm pl-1 peer-focus-within:pr-1;
   }
   &--md {
-    @apply rounded-md pl-2 before:h-2 peer-focus-within:pr-2 peer-focus-within:before:translate-y-2;
+    @apply rounded-md pl-2 peer-focus-within:pr-2;
   }
   &--lg {
-    @apply rounded-lg pl-3 before:h-3 peer-focus-within:pr-3 peer-focus-within:before:translate-y-3;
+    @apply rounded-lg pl-3 peer-focus-within:pr-3;
   }
 
   &--primary {

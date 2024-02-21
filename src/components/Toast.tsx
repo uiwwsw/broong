@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Smooth from './Smooth';
 import useTheme, { WithTheme } from '#/useTheme';
-interface ToastProps extends WithTheme<'toast'> {
+interface ToastProps extends WithTheme {
   show?: boolean;
   timeout?: number;
   children?: ReactNode;

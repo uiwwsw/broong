@@ -9,6 +9,7 @@ import { COLOR, SIZE, colorArr, sizeArr } from '#/useTheme';
 import Tooltip from '@/Tooltip';
 import Form from '@/Form';
 import Currency from '@/Currency';
+import Toast from '@/Toast';
 const Main = () => {
   const style = 'm-1 bg-white p-3 [&>*]:inline-block [&>*]:m-2';
   const [test, setTest] = useState(false);
@@ -174,25 +175,26 @@ const Main = () => {
           <Form
             requires={['email', 'pw', 'rpw']}
             button={
-              <Loader>
-                <Button debounce={300} type="submit">
-                  전송
-                </Button>
-              </Loader>
+              <Button debounce={300} type="submit">
+                전송
+              </Button>
             }
             onSubmit={async (x) => {
+              console.log(x);
               setTest(true);
               if (!test) {
                 await new Promise((res) => setTimeout(() => res(true), 3000));
                 return { email: '중복된 아이디가 있어요. 바꿔주세요옷' };
               }
+              await new Promise((res) => setTimeout(() => res(true), 1000));
+
               alert('가입이 완료됐어요.');
               return true;
             }}
             messages={{
-              email: '이메일형태를 입력해주세요.',
-              pw: '비밀번호를 길게입력하세여',
-              rpw: '비밀번호를 동일하게 입력하세요.',
+              email: '이메일을 입력해주세요.',
+              pw: '비밀번호를 입력해주세요.',
+              rpw: '동일한 비밀번호를 입력해주세요.',
               age: '나이를 올바르게 입력하세요.',
             }}
             validations={{
@@ -249,6 +251,10 @@ const Main = () => {
               나이
             </Select>
           </Form>
+        </dd>
+        <dd>
+          <Toast show>가나다</Toast>
+          <Toast show>마바사</Toast>
         </dd>
       </dl>
     </Base>

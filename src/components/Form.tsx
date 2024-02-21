@@ -94,6 +94,12 @@ const Form = ({ width = 300, requires, validations, messages, children, onSubmit
     if (requireKeys.every((x) => results[x]) && !Object.values(results).filter((x) => x === false).length) return true;
     return false;
   }, [results, requireKeys]);
+  const hasError = useMemo(
+    () =>
+      !!Object.entries(error).filter(([key]) => !results[key]).length ||
+      !!Object.values(results).filter((x) => x === false).length,
+    [results, error],
+  );
   const message = useMemo(() => {
     const key = Object.entries(results).find(([_, value]) => !value)?.[0];
     if (key) return messages![key]!;
@@ -186,7 +192,7 @@ const Form = ({ width = 300, requires, validations, messages, children, onSubmit
       </Toast>
       <div className="flex items-center gap-3">
         <div className="flex justify-end" style={{ minWidth: width }}>
-          {button && cloneElement(button, { show: loading })}
+          <Loader show={loading}>{button && cloneElement(button, { disabled: hasError })}</Loader>
         </div>
         <Smooth>
           {isComplete && (
