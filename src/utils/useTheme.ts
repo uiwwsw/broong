@@ -5,7 +5,7 @@ export type COLOR = (typeof colorArr)[number];
 export interface WithTheme {
   themeColor?: COLOR;
   themeSize?: SIZE;
-  componentName?: string;
+  componentName?: string | null;
   suffix?: string;
 }
 

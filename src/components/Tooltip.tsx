@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Smooth from './Smooth';
 import useTheme, { WithTheme } from '#/useTheme';
-interface TooltipProps extends WithTheme<'tooltip'> {
+interface TooltipProps extends WithTheme {
   children?: ReactNode;
   slot?: ReactNode;
   timeout?: number;

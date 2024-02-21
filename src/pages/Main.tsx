@@ -9,7 +9,6 @@ import { COLOR, SIZE, colorArr, sizeArr } from '#/useTheme';
 import Tooltip from '@/Tooltip';
 import Form from '@/Form';
 import Currency from '@/Currency';
-import Toast from '@/Toast';
 const Main = () => {
   const style = 'm-1 bg-white p-3 [&>*]:inline-block [&>*]:m-2';
   const [test, setTest] = useState(false);
@@ -251,10 +250,6 @@ const Main = () => {
               나이
             </Select>
           </Form>
-        </dd>
-        <dd>
-          <Toast show>가나다</Toast>
-          <Toast show>마바사</Toast>
         </dd>
       </dl>
     </Base>

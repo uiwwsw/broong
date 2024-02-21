@@ -1,31 +1,32 @@
 .tooltip {
-  @apply z-50 px-2 py-1 text-xs font-thin outline;
-  @apply before:absolute before:-z-10 before:h-3 before:w-3 before:skew-x-12 before:bg-white before:outline before:outline-white;
+  @apply z-50 px-2 py-1 text-xs font-thin;
+  /* @apply z-50 px-2 py-1 text-xs font-thin outline; */
+  /* @apply before:absolute before:-z-10 before:h-3 before:w-3 before:skew-x-12 before:bg-white before:outline before:outline-white; */
   @apply after:absolute after:h-3 after:w-3 after:skew-x-12 after:bg-inherit;
   [style*='left'][style*='top'] & {
-    @apply before:left-0 before:top-0 before:rotate-6;
+    /* @apply before:left-0 before:top-0 before:rotate-6; */
     @apply after:left-0 after:top-0 after:rotate-6;
   }
   [style*='right'][style*='top'] & {
-    @apply before:right-0 before:top-0 before:rotate-[-84deg];
+    /* @apply before:right-0 before:top-0 before:rotate-[-84deg]; */
     @apply after:right-0 after:top-0 after:rotate-[-84deg];
   }
   [style*='left'][style*='bottom'] & {
-    @apply before:bottom-0 before:left-0 before:rotate-[-84deg];
+    /* @apply before:bottom-0 before:left-0 before:rotate-[-84deg]; */
     @apply after:bottom-0 after:left-0 after:rotate-[-84deg];
   }
   [style*='right'][style*='bottom'] & {
-    @apply before:bottom-0 before:right-0 before:rotate-6;
+    /* @apply before:bottom-0 before:right-0 before:rotate-6; */
     @apply after:bottom-0 after:right-0 after:rotate-6;
   }
   &--sm {
-    @apply rounded-sm px-2 py-1 text-xs;
+    @apply rounded-sm px-2 py-1 text-xs shadow-sm;
   }
   &--md {
-    @apply rounded-md px-3 py-1.5;
+    @apply rounded-md px-3 py-1.5 shadow;
   }
   &--lg {
-    @apply rounded-lg px-4 py-2.5 text-lg;
+    @apply rounded-lg px-4 py-2.5 text-lg shadow-lg;
   }
 
   &--primary {
