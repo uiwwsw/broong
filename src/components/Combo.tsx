@@ -82,10 +82,10 @@ const Combo = ({
   };
   const handleFilter = (e: ChangeEvent<HTMLInputElement>) => setFilter(e.currentTarget.value);
   const handleFocusCapture = () => clearTimeout(sto.current);
-  const handleBlurForClose = () => (sto.current = setTimeout(() => setVisible(false), 300));
+  const handleBlurForClose = () => (sto.current = setTimeout(() => setVisible(false), 0));
   const handleChange = (newValue: string) => {
     setValue(newValue);
-    setVisible(false);
+    handleBlurForClose();
     onChange && onChange(newValue);
   };
 
