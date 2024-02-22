@@ -8,13 +8,13 @@
     @apply peer-focus-within:-top-1 peer-focus-within:translate-y-full peer-focus-within:rounded-t-none;
   }
   &--sm {
-    @apply rounded-sm pl-1 peer-focus-within:pr-1 peer-focus-within:shadow-sm;
+    @apply rounded-sm pl-1 peer-focus-within:pr-1;
   }
   &--md {
-    @apply rounded-md pl-2 peer-focus-within:pr-2 peer-focus-within:shadow;
+    @apply rounded-md pl-2 peer-focus-within:pr-2;
   }
   &--lg {
-    @apply rounded-lg pl-3 peer-focus-within:pr-3 peer-focus-within:shadow-lg;
+    @apply rounded-lg pl-3 peer-focus-within:pr-3;
   }
 
   &--primary {

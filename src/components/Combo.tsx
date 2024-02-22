@@ -4,7 +4,7 @@ import useTheme, { WithTheme } from '#/useTheme';
 import { createPortal } from 'react-dom';
 
 import Input, { InputProps } from './Input';
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, FocusEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
 import Smooth from './Smooth';
 import usePosition from '#/usePosition';
 import Button from './Button';
@@ -35,6 +35,7 @@ const Combo = ({
 }: ComboProps) => {
   const sto = useRef(0);
   const ref = useRef<HTMLLabelElement>(null);
+  const layerRef = useRef<HTMLDivElement>(null);
   const theme = useTheme({ themeColor, themeSize, componentName });
   const [value, setValue] = useState(defaultValue);
   const [filter, setFilter] = useState('');
@@ -46,26 +47,42 @@ const Combo = ({
   const { position, trigger } = usePosition({ ref, hasWidth: true });
   const filteredOptions = useMemo(() => options?.filter((option) => option.label.includes(filter)), [options, filter]);
   const isEmpty = !filteredOptions?.length;
-
-  const handleFocus = () => {
+  const handleKeyDownForNextFocus = (e: KeyboardEvent) => {
+    if (e.code === 'Tab' && layerRef.current) {
+      const firstTarget = layerRef.current.childNodes[0];
+      if (firstTarget instanceof HTMLButtonElement) firstTarget.focus();
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.code === 'Tab' && layerRef.current) {
+      const childNodes = layerRef.current.childNodes;
+      if (childNodes[childNodes.length - 1] === e.target) {
+        ref.current?.focus();
+      }
+    }
+  };
+  const handleFocusForOpen = () => {
     clearTimeout(sto.current);
     setVisible(true);
     trigger();
   };
   const handleFilter = (e: ChangeEvent<HTMLInputElement>) => setFilter(e.currentTarget.value);
   const handleFocusCapture = () => clearTimeout(sto.current);
-  const handleBlur = () => (sto.current = setTimeout(() => setVisible(false), 500));
+  const handleBlurForClose = () => (sto.current = setTimeout(() => setVisible(false), 0));
   const handleChange = (newValue: string) => {
     setValue(newValue);
-    setVisible(false);
+    handleBlurForClose();
     onChange && onChange(newValue);
   };
+
   useEffect(() => {
-    window.addEventListener('resize', handleBlur);
-    window.addEventListener('scroll', handleBlur);
+    window.addEventListener('resize', handleBlurForClose);
+    window.addEventListener('scroll', handleBlurForClose);
     return () => {
-      window.removeEventListener('resize', handleBlur);
-      window.removeEventListener('scroll', handleBlur);
+      window.removeEventListener('resize', handleBlurForClose);
+      window.removeEventListener('scroll', handleBlurForClose);
     };
   }, []);
   return (
@@ -82,15 +99,22 @@ const Combo = ({
         onChange={handleFilter}
         value={label}
         ref={ref}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        onKeyDown={handleKeyDownForNextFocus}
+        onFocus={handleFocusForOpen}
+        onBlur={handleBlurForClose}
       >
         {children}
       </Input>
       {createPortal(
         <Smooth>
           {visible && (
-            <div onFocusCapture={handleFocusCapture} style={position} className={theme}>
+            <div
+              ref={layerRef}
+              onFocusCapture={handleFocusCapture}
+              onKeyDownCapture={handleKeyDown}
+              style={position}
+              className={theme}
+            >
               {filteredOptions?.map((option) => (
                 <Button
                   value={option.value}

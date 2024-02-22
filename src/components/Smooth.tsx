@@ -9,7 +9,7 @@ interface UseSmoothProps {
 const Smooth = ({ children, className, type = 'fade', ...props }: UseSmoothProps) => {
   const [show, setShow] = useState(false);
   const [clone, setClone] = useState(children);
-  const [hide, setHide] = useState(false);
+  const [hide, setHide] = useState(true);
   const handleAnimationEnd = () => {
     if (!show) setHide(true);
   };
@@ -21,13 +21,13 @@ const Smooth = ({ children, className, type = 'fade', ...props }: UseSmoothProps
     setShow(true);
   }, [children]);
   return hide ? null : (
-    <div
+    <i
       {...props}
-      className={mergeClassName(type, `${type}--${show ? 'in' : 'out'}`, className)}
+      className={mergeClassName(type, `${type}--${show ? 'in' : 'out'}`, className, 'not-italic')}
       onAnimationEnd={handleAnimationEnd}
     >
       {clone}
-    </div>
+    </i>
   );
 };
 

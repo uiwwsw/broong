@@ -1,16 +1,16 @@
 .combo {
-  @apply absolute flex flex-col gap-1 shadow-lg [&[style*='left']]:-translate-x-full [&[style*='right']]:translate-x-full;
+  @apply absolute flex flex-col gap-1 outline [&[style*='left']]:-translate-x-full [&[style*='right']]:translate-x-full;
   &__empty {
     @apply p-[inherit] text-center;
   }
   &--sm {
-    @apply rounded-sm p-1 shadow-sm;
+    @apply rounded-sm p-1 shadow-lg;
   }
   &--md {
-    @apply rounded-md p-2 shadow;
+    @apply rounded-md p-1.5 shadow-xl;
   }
   &--lg {
-    @apply rounded-lg p-3 shadow-lg;
+    @apply rounded-lg p-2 shadow-2xl;
   }
 
   &--primary {
