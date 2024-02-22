@@ -56,9 +56,10 @@ const Combo = ({
     }
   };
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.code === 'Tab' && !e.shiftKey && layerRef.current) {
+    if (e.code === 'Tab' && layerRef.current) {
       const childNodes = layerRef.current.childNodes;
-      if (childNodes[childNodes.length - 1] === e.target) ref.current?.focus();
+      if (!e.shiftKey && childNodes[childNodes.length - 1] === e.target) ref.current?.focus();
+      if (e.shiftKey && childNodes[0] === e.target) ref.current?.focus();
     }
   };
   const handleFocusForOpen = () => {
@@ -68,10 +69,10 @@ const Combo = ({
   };
   const handleFilter = (e: ChangeEvent<HTMLInputElement>) => setFilter(e.currentTarget.value);
   const handleFocusCapture = () => clearTimeout(sto.current);
-  const handleBlurForClose = () => (sto.current = setTimeout(() => setVisible(false), 0));
+  const handleBlurForClose = () => (sto.current = setTimeout(() => setVisible(false), 300));
   const handleChange = (newValue: string) => {
     setValue(newValue);
-    handleBlurForClose();
+    setVisible(false);
     onChange && onChange(newValue);
   };
 
