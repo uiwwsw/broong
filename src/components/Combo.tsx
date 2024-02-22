@@ -4,7 +4,7 @@ import useTheme, { WithTheme } from '#/useTheme';
 import { createPortal } from 'react-dom';
 
 import Input, { InputProps } from './Input';
-import { ChangeEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useMemo, useRef, useState } from 'react';
 import Smooth from './Smooth';
 import usePosition from '#/usePosition';
 import Button from './Button';
@@ -44,7 +44,20 @@ const Combo = ({
     () => (visible ? filter : options?.find((x) => x.value === value)?.label ?? ''),
     [filter, value, visible],
   );
-  const { position, trigger } = usePosition({ ref, hasWidth: true });
+  const { position, trigger } = usePosition({ ref });
+  const adapterPosition = useMemo(() => {
+    if (!position) return;
+    const { innerHeight, scrollY } = window;
+    const { top, bottom, left, width, height } = position;
+    const { scrollHeight } = document.body;
+    const y = innerHeight / 2 > height / 2 + top;
+    console.log(y, scrollHeight, top);
+    return {
+      left,
+      [y ? 'top' : 'bottom']: y ? bottom + scrollY : scrollHeight - scrollY - top,
+      width,
+    };
+  }, [position]);
   const filteredOptions = useMemo(() => options?.filter((option) => option.label.includes(filter)), [options, filter]);
   const isEmpty = !filteredOptions?.length;
   const handleKeyDownForNextFocus = (e: KeyboardEvent) => {
@@ -76,14 +89,14 @@ const Combo = ({
     onChange && onChange(newValue);
   };
 
-  useEffect(() => {
-    window.addEventListener('resize', handleBlurForClose);
-    window.addEventListener('scroll', handleBlurForClose);
-    return () => {
-      window.removeEventListener('resize', handleBlurForClose);
-      window.removeEventListener('scroll', handleBlurForClose);
-    };
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener('resize', handleBlurForClose);
+  //   window.addEventListener('scroll', handleBlurForClose);
+  //   return () => {
+  //     window.removeEventListener('resize', handleBlurForClose);
+  //     window.removeEventListener('scroll', handleBlurForClose);
+  //   };
+  // }, []);
   return (
     <>
       <Delay show={visible && isEmpty} before={5000} after={1000}>
@@ -94,7 +107,7 @@ const Combo = ({
         placeholder={visible ? '검색어를 입력해보아요.' : placeholder}
         themeColor={themeColor}
         themeSize={themeSize}
-        reverseLabel={position?.bottom !== undefined}
+        reverseLabel={adapterPosition?.bottom !== undefined}
         onChange={handleFilter}
         value={label}
         ref={ref}
@@ -111,7 +124,7 @@ const Combo = ({
               ref={layerRef}
               onFocusCapture={handleFocusCapture}
               onKeyDownCapture={handleKeyDown}
-              style={position}
+              style={adapterPosition}
               className={theme}
             >
               {filteredOptions?.map((option) => (

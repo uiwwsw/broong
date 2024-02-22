@@ -1,5 +1,5 @@
 .combo {
-  @apply absolute flex flex-col gap-1 outline [&[style*='left']]:-translate-x-full [&[style*='right']]:translate-x-full;
+  @apply absolute flex flex-col gap-1 outline;
   &__empty {
     @apply p-[inherit] text-center;
   }

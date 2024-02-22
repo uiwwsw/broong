@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Smooth from './Smooth';
 import useTheme, { WithTheme } from '#/useTheme';
@@ -13,6 +13,17 @@ const Tooltip = ({ slot, children, timeout = 0, componentName = 'tooltip', ...pr
   const ref = useRef<HTMLElement>(null);
   const sto = useRef(0);
   const { position, trigger } = usePosition({ ref });
+  const adapterPosition = useMemo(() => {
+    if (!position) return;
+    const { innerWidth, innerHeight } = window;
+    const { top, right, bottom, left } = position;
+    const y = innerHeight / 2 > (bottom - top) / 2 + top;
+    const x = innerWidth / 2 > (right - left) / 2 + left;
+    return {
+      [x ? 'left' : 'right']: x ? right : innerWidth - left,
+      [y ? 'top' : 'bottom']: y ? bottom : innerHeight - top,
+    };
+  }, [position]);
   const [show, setShow] = useState(false);
   const handleEnter = () => {
     if (!ref.current) return;
@@ -30,7 +41,7 @@ const Tooltip = ({ slot, children, timeout = 0, componentName = 'tooltip', ...pr
     <i className="inline-block not-italic" ref={ref} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       {slot}
       {createPortal(
-        <Smooth type="zoom" style={position}>
+        <Smooth type="zoom" style={adapterPosition}>
           {show && <div className={theme}>{children}</div>}
         </Smooth>,
         document.body,
