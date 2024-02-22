@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, ReactElement, cloneElement, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, ReactElement, cloneElement, useMemo, useRef, useState } from 'react';
 import Smooth from './Smooth';
 import Toast from './Toast';
 import Loader from './Loader';
@@ -105,22 +105,19 @@ const Form = ({ width = 300, requires, validations, messages, children, onSubmit
     if (key) return messages![key]!;
     return '';
   }, [messages, results]);
-  const handleValidate = (e: ChangeEvent<HTMLFormElement>) => {
-    const currentKey = e.target.name;
-    const currentValue = e.target.value;
-    const validation = validations[currentKey];
+  const action = (key: string, value: string) => {
+    const validation = validations[key];
+
     values.current = {
       ...values.current,
-      [currentKey]: currentValue,
+      [key]: value,
     };
-    console.log(currentKey);
-    const pass = !requireKeys.includes(currentKey) && values.current[currentKey] === '';
-    const res = validation(currentValue, values.current);
+    const pass = !requireKeys.includes(key) && values.current[key] === '';
+    const res = validation(value, values.current);
 
-    // setResults((prev) => ({ ...prev, [currentKey]: res }));
     setResults((prev) => {
       if (pass) {
-        delete prev[currentKey];
+        delete prev[key];
         return {
           ...prev,
         };
@@ -139,9 +136,24 @@ const Form = ({ width = 300, requires, validations, messages, children, onSubmit
           },
           {} as Record<string, boolean>,
         ),
-        [currentKey]: res,
+        [key]: res,
       };
     });
+  };
+  const handleChange = (e: ChangeEvent<HTMLFormElement>) => {
+    const currentKey = e.target.name;
+    if (!currentKey) return;
+    const currentValue = e.target.value;
+    action(currentKey, currentValue);
+  };
+  const handleClick = (e: MouseEvent<HTMLFormElement>) => {
+    const target = e.target;
+
+    if (!(target instanceof HTMLButtonElement)) return;
+    const currentKey = target.name;
+    if (!currentKey) return;
+    const currentValue = target.value;
+    action(currentKey, currentValue);
   };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -172,7 +184,7 @@ const Form = ({ width = 300, requires, validations, messages, children, onSubmit
   };
 
   return (
-    <form onChangeCapture={handleValidate} className="[&>*+*]:mt-8" onSubmit={handleSubmit}>
+    <form onClickCapture={handleClick} onChangeCapture={handleChange} className="[&>*+*]:mt-8" onSubmit={handleSubmit}>
       {children?.map((x, i) => (
         <div key={i} className="flex items-center gap-3">
           <Loader press="onKeyDown" show={loading}>

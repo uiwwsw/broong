@@ -8,6 +8,8 @@ import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import Smooth from './Smooth';
 import usePosition from '#/usePosition';
 import Button from './Button';
+import Toast from './Toast';
+import Delay from './Delay';
 
 interface ComboProps extends Omit<InputProps, 'onChange'>, WithTheme {
   onChange?: (value: string) => unknown;
@@ -27,6 +29,7 @@ const Combo = ({
   componentName = 'combo',
   themeColor,
   themeSize,
+  name,
   // className,
   ...props
 }: ComboProps) => {
@@ -42,6 +45,8 @@ const Combo = ({
   );
   const { position, trigger } = usePosition({ ref, hasWidth: true });
   const filteredOptions = useMemo(() => options?.filter((option) => option.label.includes(filter)), [options, filter]);
+  const isEmpty = !filteredOptions?.length;
+
   const handleFocus = () => {
     clearTimeout(sto.current);
     setVisible(true);
@@ -65,6 +70,9 @@ const Combo = ({
   }, []);
   return (
     <>
+      <Delay show={visible && isEmpty} before={5000} after={1000}>
+        <Toast show={visible && isEmpty}>검색 결과가 없을 땐 검색어를 바꿔보세요~</Toast>
+      </Delay>
       <Input
         {...props}
         placeholder={visible ? '검색어를 입력해보아요.' : placeholder}
@@ -85,6 +93,8 @@ const Combo = ({
             <div onFocusCapture={handleFocusCapture} style={position} className={theme}>
               {filteredOptions?.map((option) => (
                 <Button
+                  value={option.value}
+                  name={name}
                   themeColor={themeColor}
                   themeSize={themeSize}
                   key={option.value}
@@ -95,9 +105,7 @@ const Combo = ({
                   {option.label}
                 </Button>
               ))}
-              {!filteredOptions?.length && (
-                <div className="combo__empty">{filter ? '검색결과가 없습니다' : '내용이 없습니다'}</div>
-              )}
+              {isEmpty && <div className="combo__empty">{filter ? '검색결과가 없습니다' : '내용이 없습니다'}</div>}
             </div>
           )}
         </Smooth>,
