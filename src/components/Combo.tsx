@@ -48,7 +48,7 @@ const Combo = ({
   const filteredOptions = useMemo(() => options?.filter((option) => option.label.includes(filter)), [options, filter]);
   const isEmpty = !filteredOptions?.length;
   const handleKeyDownForNextFocus = (e: KeyboardEvent) => {
-    if (e.code === 'Tab' && layerRef.current) {
+    if (e.code === 'Tab' && !e.shiftKey && layerRef.current) {
       const firstTarget = layerRef.current.childNodes[0];
       if (firstTarget instanceof HTMLButtonElement) firstTarget.focus();
       e.preventDefault();
@@ -56,11 +56,9 @@ const Combo = ({
     }
   };
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.code === 'Tab' && layerRef.current) {
+    if (e.code === 'Tab' && !e.shiftKey && layerRef.current) {
       const childNodes = layerRef.current.childNodes;
-      if (childNodes[childNodes.length - 1] === e.target) {
-        ref.current?.focus();
-      }
+      if (childNodes[childNodes.length - 1] === e.target) ref.current?.focus();
     }
   };
   const handleFocusForOpen = () => {
