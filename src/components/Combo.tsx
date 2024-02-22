@@ -4,7 +4,7 @@ import useTheme, { WithTheme } from '#/useTheme';
 import { createPortal } from 'react-dom';
 
 import Input, { InputProps } from './Input';
-import { ChangeEvent, FocusEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
 import Smooth from './Smooth';
 import usePosition from '#/usePosition';
 import Button from './Button';
