@@ -8,7 +8,6 @@ import mergeClassName from '#/mergeClassName';
 import useRipple from '#/useRipple';
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement>, WithTheme {
   debounce?: number;
-  onSubmit?: (e?: unknown) => void;
   reverseLabel?: boolean;
 }
 const Input = forwardRef<HTMLLabelElement, InputProps>(
@@ -22,7 +21,6 @@ const Input = forwardRef<HTMLLabelElement, InputProps>(
       className,
       type = 'text',
       onChange,
-      onSubmit,
       debounce = 0,
       maxLength,
       ...props

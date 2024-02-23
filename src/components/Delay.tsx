@@ -12,7 +12,7 @@ const Delay = ({ show, children, before, after, ...props }: DelayProps) => {
     if (show === undefined) return;
     const sti = setTimeout(() => setVisible(show), (show ? before : after) ?? 0);
     return () => clearTimeout(sti);
-  }, [show]);
+  }, [show, before, after]);
   return visible && children ? cloneElement(children, props) : null;
 };
 

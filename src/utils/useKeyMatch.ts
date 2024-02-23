@@ -2,8 +2,8 @@ import { KeyboardEvent, useRef } from 'react';
 
 interface UseHoldProps {
   code?: string;
-  onDown: Function | false;
-  onUp: Function | false;
+  onDown: (e: KeyboardEvent) => unknown | false;
+  onUp: (e: KeyboardEvent) => unknown | false;
 }
 const useKeyMatch = ({ code = 'Enter', onDown, onUp }: UseHoldProps) => {
   const once = useRef(false);

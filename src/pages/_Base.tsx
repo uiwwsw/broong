@@ -1,4 +1,4 @@
-import { useUiContext } from '@/UiProvider';
+import useUiContext from '#/useUIContext';
 import { ReactNode, useEffect } from 'react';
 interface BaseProps {
   title?: string;
@@ -10,11 +10,11 @@ const Base = ({ title, backgroundColor, children }: BaseProps) => {
   useEffect(() => {
     setTitle(title);
     return () => setTitle();
-  }, [title]);
+  }, [title, setTitle]);
   useEffect(() => {
     setBackgroundColor(backgroundColor);
     return () => setBackgroundColor();
-  }, [backgroundColor]);
+  }, [backgroundColor, setBackgroundColor]);
   return children;
 };
 

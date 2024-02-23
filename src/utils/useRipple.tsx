@@ -75,7 +75,7 @@ const useRipple = (size: UseRippleProps = 70) => {
 
   useEffect(() => {
     ripple.length && reset();
-  }, [ripple]);
+  }, [ripple, reset]);
   return {
     onMouseDown: handleStart,
     onTouchStart: handleStart,

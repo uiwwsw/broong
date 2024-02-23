@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import useDebounce from '#/useDebounce';
 
 interface ScrollProps {
@@ -8,28 +8,28 @@ interface ScrollProps {
 }
 const Scroll = ({ onScroll, infinity = false, debounce = 0 }: ScrollProps) => {
   const loadingRef = useRef(false);
-  const handleScroll = infinity
-    ? useDebounce<unknown>(onScroll, debounce)
-    : async () => {
-        // if (!ctn) clearEvent();
-        if (loadingRef.current) return;
+  const debounceScroll = useDebounce<unknown>(onScroll, debounce);
+  const handleScroll = useCallback(async () => {
+    if (infinity) return debounceScroll(undefined);
+    // if (!ctn) clearEvent();
+    if (loadingRef.current) return;
 
-        const { scrollY, innerHeight } = window;
-        const { clientHeight } = document.body;
+    const { scrollY, innerHeight } = window;
+    const { offsetHeight } = document.body;
+    console.log(scrollY, innerHeight, offsetHeight - 50);
 
-        if (scrollY + innerHeight >= clientHeight - 50) {
-          loadingRef.current = true;
-          if ((await onScroll()) === false) clearEvent();
-          loadingRef.current = false;
-        }
-      };
-  const clearEvent = () => window.removeEventListener('scroll', handleScroll);
+    if (scrollY + innerHeight >= offsetHeight - 50) {
+      loadingRef.current = true;
+      if ((await debounceScroll(undefined)) === false) window.removeEventListener('scroll', handleScroll);
+      loadingRef.current = false;
+    }
+  }, [debounceScroll, infinity]);
 
   useEffect(() => {
-    handleScroll(undefined);
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
-    return () => clearEvent();
-  }, []);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   return null;
 };

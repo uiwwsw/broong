@@ -42,7 +42,7 @@ const Combo = ({
   const [visible, setVisible] = useState(false);
   const label = useMemo(
     () => (visible ? filter : options?.find((x) => x.value === value)?.label ?? ''),
-    [filter, value, visible],
+    [filter, value, visible, options],
   );
   const { position, trigger } = usePosition({ ref });
   const adapterPosition = useMemo(() => {

@@ -27,7 +27,7 @@ const Loader = ({ children, timeout = 500, show, press = 'onClickCapture' }: Use
       clearTimeout(sti.current);
       sti.current = setTimeout(() => setLoading(false), timeout);
     }
-  }, [loading, show]);
+  }, [loading, show, isPropsMode, timeout]);
   return (
     <i className="relative inline-block not-italic" {...{ [press]: handleClick }}>
       {children}

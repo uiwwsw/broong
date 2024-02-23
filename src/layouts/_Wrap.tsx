@@ -1,4 +1,4 @@
-import { useUiContext } from '@/UiProvider';
+import useUiContext from '#/useUIContext';
 import { ReactNode } from 'react';
 interface WrapProps {
   children?: ReactNode;

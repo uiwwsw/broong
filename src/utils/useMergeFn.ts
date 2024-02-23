@@ -1,5 +1,5 @@
 type UseHoldProps = {
-  [key in string]: Record<string, Function>;
+  [key in string]: Record<string, (e: unknown) => unknown>;
 };
 const useMergeFn = ({ main, ...other }: UseHoldProps) => {
   return Object.entries(main).reduce(

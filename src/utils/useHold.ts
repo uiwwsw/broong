@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 import useAnimation from '#/useAnimation';
 interface UseHoldProps {
-  onHold?: Function;
+  onHold?: () => unknown;
   timeout?: number;
 }
 const useHold = ({ onHold, timeout = 1000 }: UseHoldProps) => {
@@ -11,12 +11,12 @@ const useHold = ({ onHold, timeout = 1000 }: UseHoldProps) => {
   const handleStart = useCallback(() => {
     if (!onHold) return;
     sti.current = setTimeout(() => startAnimation(), timeout);
-  }, [onHold, timeout]);
+  }, [onHold, timeout, startAnimation]);
 
   const handleStop = useCallback(() => {
     clearTimeout(sti.current);
     stopAnimation();
-  }, []);
+  }, [stopAnimation]);
 
   return {
     onMouseDown: handleStart,

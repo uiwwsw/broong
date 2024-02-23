@@ -101,7 +101,7 @@ const Form = ({ width = 300, requires, validations, messages, children, onSubmit
     [results, error],
   );
   const message = useMemo(() => {
-    const key = Object.entries(results).find(([_, value]) => !value)?.[0];
+    const key = Object.entries(results).find(([, value]) => !value)?.[0];
     if (key) return messages![key]!;
     return '';
   }, [messages, results]);

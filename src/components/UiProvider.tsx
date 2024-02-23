@@ -1,23 +1,9 @@
-import { ReactNode, createContext, useContext, useState } from 'react';
+import { UiContext } from '#/useUIContext';
+import { ReactNode, useState } from 'react';
 interface UiProviderProps {
   children?: ReactNode;
 }
-interface ContextProps {
-  title?: string;
-  setTitle: (title?: string) => void;
-  backgroundColor?: string;
-  setBackgroundColor: (bg?: string) => void;
-  underlineColor?: string;
-  setUnderlineColor: (underlineColor: string) => void;
-}
-const UiContext = createContext<ContextProps>({
-  title: undefined,
-  setTitle: () => null,
-  backgroundColor: undefined,
-  setBackgroundColor: () => null,
-  underlineColor: undefined,
-  setUnderlineColor: () => null,
-});
+
 export const UiProvider = ({ children }: UiProviderProps) => {
   const [title, setTitle] = useState<string>();
   const [backgroundColor, setBackgroundColor] = useState<string>();
@@ -37,4 +23,3 @@ export const UiProvider = ({ children }: UiProviderProps) => {
     </UiContext.Provider>
   );
 };
-export const useUiContext = () => useContext(UiContext);

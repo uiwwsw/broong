@@ -39,7 +39,7 @@ const Select = ({
   const [value, setValue] = useState(defaultValue);
   const memoOption = useMemo<SelectProps['options']>(
     () => [{ value: '', label: placeholder ?? '', disabled: !ableEmpty }, ...(options ?? [])],
-    [options, placeholder],
+    [options, placeholder, ableEmpty],
   );
   const isPlaceholder = useMemo(() => value === '', [value]);
   const debounceChange = useDebounce(onChange, debounce);
