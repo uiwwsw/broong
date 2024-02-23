@@ -5,11 +5,7 @@ interface WrapProps {
 }
 const Wrap = ({ children }: WrapProps) => {
   const { backgroundColor } = useUiContext();
-  return (
-    <div className="flex min-h-screen w-full flex-auto flex-col" style={{ backgroundColor }}>
-      {children}
-    </div>
-  );
+  return <div className={`flex min-h-screen w-full flex-auto flex-col ${backgroundColor}`}>{children}</div>;
 };
 
 export default Wrap;

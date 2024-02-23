@@ -20,7 +20,7 @@ const Main = () => {
   const [number, setNumber] = useState(0);
   const [text, setText] = useState('빈값');
   return (
-    <Base title="메인" backgroundColor="gray">
+    <Base title="메인">
       <Modal show={test}>가입이 완료됐습니닷</Modal>
       <Delay before={5000} show>
         <Toast show>

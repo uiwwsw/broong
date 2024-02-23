@@ -6,7 +6,7 @@ interface ContextProps {
   backgroundColor?: string;
   setBackgroundColor: (bg?: string) => void;
   underlineColor?: string;
-  setUnderlineColor: (underlineColor: string) => void;
+  setUnderlineColor: (underlineColor?: string) => void;
 }
 export const UiContext = createContext<ContextProps>({
   title: undefined,

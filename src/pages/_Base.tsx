@@ -8,10 +8,12 @@ interface BaseProps {
 const Base = ({ title, backgroundColor, children }: BaseProps) => {
   const { setTitle, setBackgroundColor } = useUiContext();
   useEffect(() => {
+    if (!title) return;
     setTitle(title);
     return () => setTitle();
   }, [title, setTitle]);
   useEffect(() => {
+    if (!backgroundColor) return;
     setBackgroundColor(backgroundColor);
     return () => setBackgroundColor();
   }, [backgroundColor, setBackgroundColor]);

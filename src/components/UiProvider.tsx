@@ -6,8 +6,8 @@ interface UiProviderProps {
 
 export const UiProvider = ({ children }: UiProviderProps) => {
   const [title, setTitle] = useState<string>();
-  const [backgroundColor, setBackgroundColor] = useState<string>();
-  const [underlineColor, setUnderlineColor] = useState<string>();
+  const [backgroundColor, setBackgroundColor] = useState<string | undefined>('bg-gray-200');
+  const [underlineColor, setUnderlineColor] = useState<string | undefined>('bg-teal-700');
   return (
     <UiContext.Provider
       value={{
