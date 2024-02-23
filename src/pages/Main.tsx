@@ -12,22 +12,16 @@ import Currency from '@/Currency';
 import Toast from '@/Toast';
 import Delay from '@/Delay';
 import Modal from '@/Modal';
-import ModalWithBtn from '@/ModalWithBtn';
 const Main = () => {
   const style = 'm-1 bg-white p-3 [&>*]:inline-block [&>*]:m-2';
-  const [test, setTest] = useState(false);
+  const [test, setTest] = useState<boolean>();
   const [size, setSize] = useState<SIZE>('md');
   const [color, setColor] = useState<COLOR>('secondary');
   const [number, setNumber] = useState(0);
   const [text, setText] = useState('빈값');
   return (
     <Base title="메인" backgroundColor="gray">
-      <Modal show>
-        반가워요
-        <ModalWithBtn removeLayer btnText="안녕하시오">
-          우하하하하
-        </ModalWithBtn>
-      </Modal>
+      <Modal show={test}>가입이 완료됐습니닷</Modal>
       <Delay before={5000} show>
         <Toast show>
           tab 버튼을 눌러보세요~. 콤보박스가 열리고 옵션이동 후 다음 엘리먼트로 포커스가 잘 이동됩니다.
@@ -203,15 +197,12 @@ const Main = () => {
               </Button>
             }
             onSubmit={async (x) => {
-              console.log(x);
-              setTest(true);
-              if (!test) {
-                await new Promise((res) => setTimeout(() => res(true), 3000));
+              await new Promise((res) => setTimeout(() => res(true), 1000));
+              const newTest = test === false ? true : false;
+              setTest(newTest);
+              if (!newTest) {
                 return { email: '중복된 아이디가 있어요. 바꿔주세요옷' };
               }
-              await new Promise((res) => setTimeout(() => res(true), 1000));
-
-              alert('가입이 완료됐어요.');
               return true;
             }}
             messages={{

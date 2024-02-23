@@ -37,9 +37,7 @@ const Modal = ({
   }, [timeout, show]);
   return createPortal(
     <>
-      <Smooth>
-        {show && !hide && !removeLayer && <i className="fixed inset-0 z-50 bg-slate-800 bg-opacity-30" />}
-      </Smooth>
+      <Smooth className="fixed inset-0 z-50 bg-slate-800 bg-opacity-30">{show && !hide && !removeLayer}</Smooth>
 
       <Smooth type="modal" className={mergeClassName(theme)} onEnd={handleEnd}>
         {show && !hide && (

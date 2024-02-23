@@ -1,16 +1,15 @@
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import Modal, { ModalProps } from './Modal';
-import Button from './Button';
 
 interface ModalWithBtnProps extends ModalProps {
-  btnText?: string;
+  button?: ReactElement;
 }
-const ModalWithBtn = ({ btnText, ...props }: ModalWithBtnProps) => {
+const ModalWithBtn = ({ button, ...props }: ModalWithBtnProps) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   return (
     <>
-      <Button onClick={() => setShow(true)}>{btnText}</Button>
+      {button}
       <Modal {...props} show={show} onClose={handleClose} />
     </>
   );

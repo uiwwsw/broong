@@ -58,7 +58,10 @@ const Combo = ({
       width,
     };
   }, [position]);
-  const filteredOptions = useMemo(() => options?.filter((option) => option.label.includes(filter)), [options, filter]);
+  const filteredOptions = useMemo(
+    () => options?.filter((option) => new RegExp(filter, 'i').test(option.label)),
+    [options, filter],
+  );
   const isEmpty = !filteredOptions?.length;
   const handleKeyDownForNextFocus = (e: KeyboardEvent) => {
     if (e.code === 'Tab' && !e.shiftKey && layerRef.current) {
