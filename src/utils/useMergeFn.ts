@@ -1,18 +1,18 @@
-type UseHoldProps = {
-  [key in string]: Record<string, (e: unknown) => unknown>;
+type UseHoldProps<T> = {
+  [key in string]: Record<string, (e: T) => unknown>;
 };
-const useMergeFn = ({ main, ...other }: UseHoldProps) => {
+const useMergeFn = <T>({ main, ...other }: UseHoldProps<T>) => {
   return Object.entries(main).reduce(
     (arr, [name, fn]) => ({
       ...arr,
-      [name]: <T>(e: T) => {
+      [name]: (e: T) => {
         fn(e);
         for (const oth of Object.values(other)) {
           oth[name]?.(e);
         }
       },
     }),
-    {} as UseHoldProps['main'],
+    {} as UseHoldProps<T>['main'],
   );
 };
 

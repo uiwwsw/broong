@@ -1,12 +1,12 @@
-import { useCallback, useRef } from 'react';
+import { MouseEvent, MouseEventHandler, useCallback, useRef } from 'react';
 import useAnimation from '#/useAnimation';
 interface UseHoldProps {
-  onHold?: () => unknown;
+  onHold?: MouseEventHandler;
   timeout?: number;
 }
 const useHold = ({ onHold, timeout = 1000 }: UseHoldProps) => {
   const sti = useRef(setTimeout(() => null));
-  const { startAnimation, stopAnimation } = useAnimation({ animate: () => onHold && onHold() });
+  const { startAnimation, stopAnimation } = useAnimation<MouseEvent>({ animate: (e) => e && onHold && onHold(e) });
 
   const handleStart = useCallback(() => {
     if (!onHold) return;
