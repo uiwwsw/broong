@@ -25,6 +25,9 @@
 
   &--primary {
     @apply border-cyan-500 bg-cyan-500 text-white;
+    input {
+      @apply placeholder:text-white placeholder:text-opacity-60;
+    }
   }
   &--secondary {
     @apply border-slate-500 bg-slate-500 text-white;
