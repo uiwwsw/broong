@@ -35,13 +35,17 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
     window.addEventListener('scroll', handleResize);
     window.addEventListener('resize', handleResize);
     // console.log(visible);
-
+    if (!visible) {
+      clearInterval(sti);
+      window.removeEventListener('scroll', handleResize);
+      window.removeEventListener('resize', handleResize);
+    }
     return () => {
       clearInterval(sti);
       window.removeEventListener('scroll', handleResize);
       window.removeEventListener('resize', handleResize);
     };
-  }, [handleResize]);
+  }, [visible, handleResize]);
   useEffect(() => {
     if (!show) return;
     setHide(false);
