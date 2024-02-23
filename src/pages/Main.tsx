@@ -12,9 +12,9 @@ import Currency from '@/Currency';
 import Toast from '@/Toast';
 import Delay from '@/Delay';
 import Modal from '@/Modal';
+import ModalWithBtn from '@/ModalWithBtn';
 const Main = () => {
   const style = 'm-1 bg-white p-3 [&>*]:inline-block [&>*]:m-2';
-  const [visible, setVisible] = useState(false);
   const [test, setTest] = useState(false);
   const [size, setSize] = useState<SIZE>('md');
   const [color, setColor] = useState<COLOR>('secondary');
@@ -23,10 +23,10 @@ const Main = () => {
   return (
     <Base title="메인" backgroundColor="gray">
       <Modal show>
-        <Button onClick={() => setVisible(!visible)}>dawdwa</Button>
-        <Modal removeLayer show={visible}>
-          dawdawd
-        </Modal>
+        반가워요
+        <ModalWithBtn removeLayer btnText="안녕하시오">
+          우하하하하
+        </ModalWithBtn>
       </Modal>
       <Delay before={5000} show>
         <Toast show>

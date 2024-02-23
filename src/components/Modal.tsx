@@ -4,18 +4,29 @@ import Smooth from './Smooth';
 import useTheme, { WithTheme } from '#/useTheme';
 import Button from './Button';
 import mergeClassName from '#/mergeClassName';
-interface ModalProps extends WithTheme {
+export interface ModalProps extends WithTheme {
   show?: boolean;
   timeout?: number;
   children?: ReactNode;
   removeLayer?: boolean;
+  onClose?: () => unknown;
 }
-const Modal = ({ removeLayer = false, children, show, timeout = 0, componentName = 'modal', ...props }: ModalProps) => {
+const Modal = ({
+  onClose,
+  removeLayer = false,
+  children,
+  show,
+  timeout = 0,
+  componentName = 'modal',
+  ...props
+}: ModalProps) => {
   const theme = useTheme({ ...props, componentName });
   const [hide, setHide] = useState(false);
 
   const handleClick = () => setHide(true);
-
+  const handleEnd = (show: boolean) => {
+    if (!show && onClose) onClose();
+  };
   useEffect(() => {
     if (!show) return;
     setHide(false);
@@ -30,7 +41,7 @@ const Modal = ({ removeLayer = false, children, show, timeout = 0, componentName
         {show && !hide && !removeLayer && <i className="fixed inset-0 z-50 bg-slate-800 bg-opacity-30" />}
       </Smooth>
 
-      <Smooth type="modal" className={mergeClassName(theme)}>
+      <Smooth type="modal" className={mergeClassName(theme)} onEnd={handleEnd}>
         {show && !hide && (
           <>
             {children}
