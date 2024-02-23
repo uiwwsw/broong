@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import Smooth from './Smooth';
 import useTheme, { WithTheme } from '#/useTheme';
 import Button from './Button';
+import mergeClassName from '#/mergeClassName';
 interface ToastProps extends WithTheme {
   show?: boolean;
   timeout?: number;
@@ -20,6 +21,12 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
     }
   };
   const handleClick = () => setHide(true);
+  // const handleStart = () => {
+  //   document.body.style.overflow = 'hidden';
+  // };
+  // const handleEnd = () => {
+  //   document.body.style.overflow = '';
+  // };
   useEffect(() => {
     handleResize();
     window.addEventListener('scroll', handleResize);
@@ -38,35 +45,33 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
     return () => clearTimeout(sti);
   }, [timeout, show]);
   return createPortal(
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <Smooth type="drop" style={position} className="pointer-events-auto">
-        {show && !hide && (
-          <div className={theme}>
-            {children}
-            <Button
-              onClick={handleClick}
-              componentName={null}
-              className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 overflow-hidden rounded-full bg-inherit"
+    <Smooth type="drop" style={position} className={mergeClassName(theme)}>
+      {show && !hide && (
+        <>
+          {children}
+          <Button
+            onClick={handleClick}
+            componentName={null}
+            className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 overflow-hidden rounded-full bg-inherit"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-6 w-6"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                />
-              </svg>
-            </Button>
-          </div>
-        )}
-      </Smooth>
-    </div>,
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </Button>
+        </>
+      )}
+    </Smooth>,
     document.body,
   );
 };

@@ -41,8 +41,8 @@ const Tooltip = ({ slot, children, timeout = 0, componentName = 'tooltip', ...pr
     <i className="inline-block not-italic" ref={ref} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       {slot}
       {createPortal(
-        <Smooth type="zoom" style={adapterPosition}>
-          {show && <div className={theme}>{children}</div>}
+        <Smooth type="zoom" style={adapterPosition} className={theme}>
+          {show && children}
         </Smooth>,
         document.body,
       )}

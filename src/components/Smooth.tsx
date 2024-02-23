@@ -5,12 +5,18 @@ interface UseSmoothProps {
   className?: string;
   type?: 'fade' | 'drop' | 'zoom';
   style?: CSSProperties;
+  onStart?: (show: boolean) => unknown;
+  onEnd?: (show: boolean) => unknown;
 }
-const Smooth = ({ children, className, type = 'fade', ...props }: UseSmoothProps) => {
+const Smooth = ({ onStart, onEnd, children, className, type = 'fade', ...props }: UseSmoothProps) => {
   const [show, setShow] = useState(false);
   const [clone, setClone] = useState(children);
   const [hide, setHide] = useState(true);
+  const handleAnimationStart = () => {
+    onStart && onStart(show);
+  };
   const handleAnimationEnd = () => {
+    onEnd && onEnd(show);
     if (!show) setHide(true);
   };
   useEffect(() => {
@@ -25,6 +31,7 @@ const Smooth = ({ children, className, type = 'fade', ...props }: UseSmoothProps
       {...props}
       className={mergeClassName(type, `${type}--${show ? 'in' : 'out'}`, className, 'not-italic')}
       onAnimationEnd={handleAnimationEnd}
+      onAnimationStart={handleAnimationStart}
     >
       {clone}
     </i>
