@@ -1,6 +1,6 @@
 // import { MouseEvent } from 'react';
 
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import Input, { InputProps } from './Input';
 interface NumericProps extends Omit<InputProps, 'onChange'> {
   onChange?: (value: string) => void;
