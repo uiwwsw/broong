@@ -16,7 +16,7 @@ const Header = () => {
   };
   return (
     <>
-      <Scroll onScroll={handleScroll} debounce={0} />
+      <Scroll infinity onScroll={handleScroll} debounce={0} />
 
       <header ref={headRef} className="sticky top-0 z-50 origin-left border-b bg-white bg-opacity-0 p-3">
         <h1>{title}</h1>

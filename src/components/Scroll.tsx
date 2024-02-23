@@ -15,10 +15,9 @@ const Scroll = ({ onScroll, infinity = false, debounce = 0 }: ScrollProps) => {
     if (loadingRef.current) return;
 
     const { scrollY, innerHeight } = window;
-    const { offsetHeight } = document.body;
-    console.log(scrollY, innerHeight, offsetHeight - 50);
+    const { scrollHeight } = document.body;
 
-    if (scrollY + innerHeight >= offsetHeight - 50) {
+    if (scrollY + innerHeight >= scrollHeight - 50) {
       loadingRef.current = true;
       if ((await debounceScroll(undefined)) === false) window.removeEventListener('scroll', handleScroll);
       loadingRef.current = false;
