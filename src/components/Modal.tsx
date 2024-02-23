@@ -4,38 +4,17 @@ import Smooth from './Smooth';
 import useTheme, { WithTheme } from '#/useTheme';
 import Button from './Button';
 import mergeClassName from '#/mergeClassName';
-interface ToastProps extends WithTheme {
+interface ModalProps extends WithTheme {
   show?: boolean;
   timeout?: number;
   children?: ReactNode;
 }
-const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props }: ToastProps) => {
+const Modal = ({ children, show, timeout = 0, componentName = 'modal', ...props }: ModalProps) => {
   const theme = useTheme({ ...props, componentName });
   const [hide, setHide] = useState(false);
-  const [position, setPosition] = useState({ top: 0, left: 0 });
-  const handleResize = () => {
-    if (window.visualViewport) {
-      const vv = window.visualViewport;
-      const { scrollY, scrollX } = window;
-      setPosition({ top: vv.height + scrollY, left: vv.width / 2 + scrollX });
-    }
-  };
+
   const handleClick = () => setHide(true);
-  // const handleStart = () => {
-  //   document.body.style.overflow = 'hidden';
-  // };
-  // const handleEnd = () => {
-  //   document.body.style.overflow = '';
-  // };
-  useEffect(() => {
-    handleResize();
-    window.addEventListener('scroll', handleResize);
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('scroll', handleResize);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [show]);
+
   useEffect(() => {
     if (!show) return;
     setHide(false);
@@ -45,7 +24,7 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
     return () => clearTimeout(sti);
   }, [timeout, show]);
   return createPortal(
-    <Smooth type="toast" style={position} className={mergeClassName(theme)}>
+    <Smooth type="modal" className={mergeClassName(theme)}>
       {show && !hide && (
         <>
           {children}
@@ -76,4 +55,4 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
   );
 };
 
-export default Toast;
+export default Modal;

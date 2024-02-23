@@ -8,23 +8,24 @@ interface CurrencyProps extends Omit<InputProps, 'onChange'> {
 const Currency = ({ onChange, themeSize, themeColor, ...props }: CurrencyProps) => {
   const [value, setValue] = useState('');
   const displayValue = useMemo(() => {
-    if (value === '') return '';
+    if (value === '-' || value === '') return value;
+    const newValue = value.replace(/^0+(\d+)/g, '$1');
 
-    const index = value.indexOf('.');
-    if (index !== -1) return (+value.substring(0, index)).toLocaleString() + value.substring(index);
+    const index = newValue.indexOf('.');
+    if (index === -1) return (+newValue).toLocaleString();
 
-    return (+value).toLocaleString();
+    return (+newValue.substring(0, index)).toLocaleString() + newValue.substring(index);
   }, [value]);
   const getValue = (newValue: string) => {
-    newValue = newValue.replace(/,/g, '');
-
-    const number = Number(newValue);
-    if (isNaN(number)) return value;
-    return newValue.trim().replace(/^0+(\d+)/g, '$1');
+    newValue = newValue.trim().replace(/,/g, '');
+    if (newValue === '-') return newValue;
+    if (isNaN(Number(newValue))) return value;
+    return newValue;
   };
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = getValue(e.target.value);
     setValue(newValue);
+    if (isNaN(Number(newValue))) return;
     onChange && onChange(newValue);
   };
   return (

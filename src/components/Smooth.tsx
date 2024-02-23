@@ -3,7 +3,7 @@ import { CSSProperties, ReactNode, useEffect, useState } from 'react';
 interface UseSmoothProps {
   children?: ReactNode;
   className?: string;
-  type?: 'fade' | 'drop' | 'zoom';
+  type?: string;
   style?: CSSProperties;
   onStart?: (show: boolean) => unknown;
   onEnd?: (show: boolean) => unknown;

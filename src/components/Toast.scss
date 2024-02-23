@@ -1,5 +1,29 @@
 .toast {
-  @apply z-50 -mt-6 px-2 py-1 text-xs font-thin;
+  @apply absolute left-1/2 z-50 -mt-6 origin-bottom px-2 py-1 text-xs font-thin;
+
+  &--in {
+    animation: toast-in 0.5s forwards;
+  }
+  &--out {
+    animation: toast-out 0.3s forwards;
+  }
+  @keyframes toast-in {
+    0% {
+      transform: translate(-50%, 0);
+    }
+    100% {
+      transform: translate(-50%, -100%);
+    }
+  }
+  @keyframes toast-out {
+    0% {
+      transform: translate(-50%, -100%);
+    }
+    100% {
+      transform: translate(-50%, 0);
+    }
+  }
+
   &--sm {
     @apply rounded-sm px-2 py-1 text-xs shadow-sm;
   }
