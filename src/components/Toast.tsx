@@ -17,6 +17,7 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const handleResize = usePreThrottle(() => {
     if (window.visualViewport) {
+      console.log(111);
       const vv = window.visualViewport;
       const { scrollY, scrollX } = window;
       setPosition({ top: vv.height + scrollY, left: vv.width / 2 + scrollX });
@@ -34,17 +35,13 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
     window.addEventListener('scroll', handleResize);
     window.addEventListener('resize', handleResize);
     // console.log(visible);
-    // if (!visible) {
-    //   clearInterval(sti);
-    //   window.removeEventListener('scroll', handleResize);
-    //   window.removeEventListener('resize', handleResize);
-    // }
+
     return () => {
       clearInterval(sti);
       window.removeEventListener('scroll', handleResize);
       window.removeEventListener('resize', handleResize);
     };
-  }, [visible]);
+  }, [handleResize]);
   useEffect(() => {
     if (!show) return;
     setHide(false);
