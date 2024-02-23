@@ -1,9 +1,10 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Smooth from './Smooth';
 import useTheme, { WithTheme } from '#/useTheme';
 import Button from './Button';
 import mergeClassName from '#/mergeClassName';
+import usePreThrottle from '#/usePreThrottle';
 interface ToastProps extends WithTheme {
   show?: boolean;
   timeout?: number;
@@ -12,14 +13,15 @@ interface ToastProps extends WithTheme {
 const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props }: ToastProps) => {
   const theme = useTheme({ ...props, componentName });
   const [hide, setHide] = useState(false);
+  const visible = useMemo(() => show && !hide, [show, hide]);
   const [position, setPosition] = useState({ top: 0, left: 0 });
-  const handleResize = () => {
+  const handleResize = usePreThrottle(() => {
     if (window.visualViewport) {
       const vv = window.visualViewport;
       const { scrollY, scrollX } = window;
       setPosition({ top: vv.height + scrollY, left: vv.width / 2 + scrollX });
     }
-  };
+  }, 10);
   const handleClick = () => setHide(true);
   // const handleStart = () => {
   //   document.body.style.overflow = 'hidden';
@@ -28,14 +30,21 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
   //   document.body.style.overflow = '';
   // };
   useEffect(() => {
-    handleResize();
+    const sti = setInterval(handleResize, 100);
     window.addEventListener('scroll', handleResize);
     window.addEventListener('resize', handleResize);
+    // console.log(visible);
+    // if (!visible) {
+    //   clearInterval(sti);
+    //   window.removeEventListener('scroll', handleResize);
+    //   window.removeEventListener('resize', handleResize);
+    // }
     return () => {
+      clearInterval(sti);
       window.removeEventListener('scroll', handleResize);
       window.removeEventListener('resize', handleResize);
     };
-  }, [show]);
+  }, [visible]);
   useEffect(() => {
     if (!show) return;
     setHide(false);
@@ -46,7 +55,7 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
   }, [timeout, show]);
   return createPortal(
     <Smooth type="toast" style={position} className={mergeClassName(theme)}>
-      {show && !hide && (
+      {visible && (
         <>
           {children}
           <Button

@@ -1,14 +1,14 @@
 import { useRef } from 'react';
 
-const useThrottle = <T>(fn?: (e: T) => unknown, delay: number = 300) => {
+const usePreThrottle = <T>(fn?: (e: T) => unknown, delay: number = 300) => {
   const sto = useRef(0);
   if (!fn) return () => null;
   if (!delay) return fn;
   const handleRun = (e: T) => {
     if (!sto.current) {
+      fn(e);
       clearTimeout(sto.current);
       sto.current = setTimeout(() => {
-        fn(e);
         sto.current = 0;
       }, delay);
     }
@@ -17,4 +17,4 @@ const useThrottle = <T>(fn?: (e: T) => unknown, delay: number = 300) => {
   return handleRun;
 };
 
-export default useThrottle;
+export default usePreThrottle;

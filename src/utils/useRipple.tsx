@@ -1,7 +1,7 @@
 import { MouseEvent, TouchEvent, useEffect, useMemo, useRef, useState } from 'react';
 import useAnimation from '#/useAnimation';
 import useDebounce from '#/useDebounce';
-import useThrottle from './useThrottle';
+import usePreThrottle from './usePreThrottle';
 interface Active {
   width?: number;
   height?: number;
@@ -36,7 +36,7 @@ const useRipple = (size: UseRippleProps = 70) => {
 
   const handleAnimateEnd = (index: number) => setRipple((prev) => prev.map((x, i) => (i === index ? undefined : x)));
 
-  const handleStart = useThrottle((e: MouseEvent | TouchEvent) => {
+  const handleStart = usePreThrottle((e: MouseEvent | TouchEvent) => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     setRipple((prev) => {
       const left =

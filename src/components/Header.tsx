@@ -17,7 +17,7 @@ const Header = () => {
   };
   return (
     <>
-      <Scroll infinity onScroll={handleScroll} debounce={0} />
+      <Scroll infinity onScroll={handleScroll} throttle={10} />
       <header ref={headRef} className="sticky top-0 z-50 origin-left bg-white bg-opacity-0 p-3 backdrop-blur-lg">
         <h1>{title}</h1>
         <i className={`absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 ${underlineColor}`} ref={iRef} />

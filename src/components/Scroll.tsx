@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useRef } from 'react';
-import useDebounce from '#/useDebounce';
+import usePreThrottle from '#/usePreThrottle';
 
 interface ScrollProps {
   onScroll: () => Promise<unknown | boolean> | unknown;
-  debounce?: number;
+  throttle?: number;
   infinity?: boolean;
 }
-const Scroll = ({ onScroll, infinity = false, debounce = 0 }: ScrollProps) => {
+const Scroll = ({ onScroll, infinity = false, throttle = 0 }: ScrollProps) => {
   const loadingRef = useRef(false);
-  const debounceScroll = useDebounce<unknown>(onScroll, debounce);
+  const throttleScroll = usePreThrottle<unknown>(onScroll, throttle);
   const handleScroll = useCallback(async () => {
-    if (infinity) return debounceScroll(undefined);
+    if (infinity) return throttleScroll(undefined);
     // if (!ctn) clearEvent();
     if (loadingRef.current) return;
 
@@ -19,10 +19,10 @@ const Scroll = ({ onScroll, infinity = false, debounce = 0 }: ScrollProps) => {
 
     if (scrollY + innerHeight >= scrollHeight - 50) {
       loadingRef.current = true;
-      if ((await debounceScroll(undefined)) === false) window.removeEventListener('scroll', handleScroll);
+      if ((await throttleScroll(undefined)) === false) window.removeEventListener('scroll', handleScroll);
       loadingRef.current = false;
     }
-  }, [debounceScroll, infinity]);
+  }, [throttleScroll, infinity]);
 
   useEffect(() => {
     handleScroll();
