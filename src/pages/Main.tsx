@@ -197,6 +197,7 @@ const Main = () => {
               </Button>
             }
             onSubmit={async (x) => {
+              console.log(x);
               await new Promise((res) => setTimeout(() => res(true), 1000));
               const newTest = test === false ? true : false;
               setTest(newTest);
