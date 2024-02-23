@@ -14,6 +14,7 @@ import Delay from '@/Delay';
 import Modal from '@/Modal';
 const Main = () => {
   const style = 'm-1 bg-white p-3 [&>*]:inline-block [&>*]:m-2';
+  const [visible, setVisible] = useState(false);
   const [test, setTest] = useState(false);
   const [size, setSize] = useState<SIZE>('md');
   const [color, setColor] = useState<COLOR>('secondary');
@@ -21,7 +22,12 @@ const Main = () => {
   const [text, setText] = useState('빈값');
   return (
     <Base title="메인" backgroundColor="gray">
-      <Modal show>dawjkdlawjdaw</Modal>
+      <Modal show>
+        <Button onClick={() => setVisible(!visible)}>dawdwa</Button>
+        <Modal removeLayer show={visible}>
+          dawdawd
+        </Modal>
+      </Modal>
       <Delay before={5000} show>
         <Toast show>
           tab 버튼을 눌러보세요~. 콤보박스가 열리고 옵션이동 후 다음 엘리먼트로 포커스가 잘 이동됩니다.

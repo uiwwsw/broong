@@ -104,6 +104,7 @@ const Combo = ({
       </Delay>
       <Input
         {...props}
+        type={visible ? 'search' : 'text'}
         placeholder={visible ? '검색어를 입력해보아요.' : placeholder}
         themeColor={themeColor}
         themeSize={themeSize}
