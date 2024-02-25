@@ -1,6 +1,8 @@
 words:
   # 브랜드네임
   - untitled
+  # 카카오맵 관련 카카오 영문표기
+  - kakao
 
   # plugins
   - commitlint
