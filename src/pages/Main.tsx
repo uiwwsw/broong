@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Base from './_Base';
 import Button from '@/Button';
 import Input from '@/Input';
@@ -12,6 +12,7 @@ import Currency from '@/Currency';
 import Toast from '@/Toast';
 import Delay from '@/Delay';
 import Modal from '@/Modal';
+import Map from '@/Map';
 const Main = () => {
   const style = 'm-1 bg-white p-3 [&>*]:inline-block [&>*]:m-2';
   const [test, setTest] = useState<boolean>();
@@ -19,8 +20,10 @@ const Main = () => {
   const [color, setColor] = useState<COLOR>('secondary');
   const [number, setNumber] = useState(0);
   const [text, setText] = useState('빈값');
+
   return (
     <Base title="메인">
+      <Map />
       <Modal show={test}>가입이 완료됐습니닷</Modal>
       <Delay before={5000} show>
         <Toast show>
