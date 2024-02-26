@@ -17,7 +17,6 @@ const Toast = ({ children, show, timeout = 0, componentName = 'toast', ...props 
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const handleResize = usePreThrottle(() => {
     if (window.visualViewport) {
-      console.log(111);
       const vv = window.visualViewport;
       const { scrollY, scrollX } = window;
       setPosition({ top: vv.height + scrollY, left: vv.width / 2 + scrollX });

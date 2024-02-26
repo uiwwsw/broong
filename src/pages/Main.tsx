@@ -11,17 +11,16 @@ import Form from '@/Form';
 import Currency from '@/Currency';
 import Toast from '@/Toast';
 import Delay from '@/Delay';
-import Modal from '@/Modal';
+import { useSignUp, Arg } from '!/test/applications/post-sign-up';
 const Main = () => {
   const style = 'm-1 bg-white p-3 [&>*]:inline-block [&>*]:m-2';
-  const [test, setTest] = useState<boolean>();
+  const { trigger } = useSignUp();
   const [size, setSize] = useState<SIZE>('md');
   const [color, setColor] = useState<COLOR>('secondary');
   const [number, setNumber] = useState(0);
   const [text, setText] = useState('빈값');
   return (
     <Base title="메인">
-      <Modal show={test}>가입이 완료됐습니닷</Modal>
       <Delay before={5000} show>
         <Toast show>
           tab 버튼을 눌러보세요~. 콤보박스가 열리고 옵션이동 후 다음 엘리먼트로 포커스가 잘 이동됩니다.
@@ -189,59 +188,36 @@ const Main = () => {
       <dl className={style}>
         <dt>폼</dt>
         <dd>
-          <Form
+          <Form<Arg>
             requires={['email', 'pw', 'rpw']}
             button={
               <Button debounce={300} type="submit">
                 전송
               </Button>
             }
-            onSubmit={async (x) => {
-              console.log(x);
-              await new Promise((res) => setTimeout(() => res(true), 1000));
-              const newTest = test === false ? true : false;
-              setTest(newTest);
-              if (!newTest) {
-                return { email: '중복된 아이디가 있어요. 바꿔주세요옷' };
-              }
-              return true;
-            }}
-            messages={{
-              email: '이메일을 입력해주세요.',
-              pw: '비밀번호를 입력해주세요.',
-              rpw: '동일한 비밀번호를 입력해주세요.',
-              age: '나이를 올바르게 입력하세요.',
-            }}
+            onSubmit={trigger}
             validations={{
               email: (email) => {
                 const regex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-                return regex.test(email ?? '');
+                if (!regex.test(email ?? '')) return '이메일 입력하세요.';
+
+                return true;
               },
               pw: (v) => {
-                console.log(v);
-                if (v) {
-                  return v?.length > 3;
-                }
-                return false;
+                if (v && v?.length < 3) return '비번입력하세요';
+                return true;
               },
               rpw: (x, values) => {
-                if (x && values) {
-                  return values.pw === x;
-                }
-                return false;
+                if (x && values && values.pw !== x) return '비번 같게 입력하세요.';
+                return true;
               },
               age: (x) => {
-                if (!x) return false;
-                if (+x > 25 && +x < 30) {
-                  console.log(x);
-
-                  return true;
-                }
-                return false;
+                if (x && (x > '30' || x < '25')) return `25~30`;
+                return true;
               },
             }}
           >
-            <Input name="email" themeColor="secondary" themeSize="sm">
+            <Input name="email" placeholder="test@test.com" themeColor="secondary" themeSize="sm">
               이메일
             </Input>
             <Input name="pw" themeColor="secondary" themeSize="sm" type="password">
@@ -258,9 +234,17 @@ const Main = () => {
               name="age"
               themeColor="secondary"
               themeSize="sm"
+              emptyAble
               options={[
-                { label: '성인', value: '27' },
-                { label: '청소년', value: '0' },
+                ...[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((x) => ({
+                  label: x,
+                  value: x,
+                  disabled: true,
+                })),
+                ...[21, 22, 23, 24, 25, 26, 27, 28, 29, 30].map((x) => ({
+                  label: x,
+                  value: x,
+                })),
               ]}
             >
               나이

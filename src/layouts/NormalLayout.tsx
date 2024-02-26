@@ -1,15 +1,13 @@
 import Wrap from '@/_Wrap';
 import { UiProvider } from '@/UiProvider';
 import { Outlet } from 'react-router-dom';
-import Main from './_Main';
-
 const NormalLayout = () => {
   return (
     <UiProvider>
       <Wrap>
-        <Main>
+        <div className="flex-auto">
           <Outlet />
-        </Main>
+        </div>
       </Wrap>
     </UiProvider>
   );

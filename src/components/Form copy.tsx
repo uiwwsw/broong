@@ -3,24 +3,20 @@ import Smooth from './Smooth';
 import Toast from './Toast';
 import Loader from './Loader';
 import Tooltip from './Tooltip';
-import Modal from './Modal';
-import { Response } from '!/http/domain';
-type Validate = (value?: string, values?: Record<string, string>) => true | string;
+type Validate = (value?: string, values?: Record<string, string>) => boolean;
 interface InfoProps {
   isRequire?: boolean;
-  message?: string | true;
+  isValid?: boolean;
+  message?: string;
 }
-const Mark = ({ isRequire, message }: InfoProps) => {
+const Mark = ({ isRequire, isValid, message }: InfoProps) => {
+  const isDirty = isValid !== undefined || message;
   return (
     <Tooltip
       slot={
         <Smooth
           className={`${
-            message === undefined
-              ? '[&>*]:stroke-slate-400'
-              : message === true
-                ? '[&>*]:stroke-green-700'
-                : '[&>*]:stroke-red-700'
+            !isDirty ? '[&>*]:stroke-slate-400' : isValid ? '[&>*]:stroke-green-700' : '[&>*]:stroke-red-700'
           }`}
         >
           {isRequire ? (
@@ -58,51 +54,57 @@ const Mark = ({ isRequire, message }: InfoProps) => {
       }
     >
       {isRequire
-        ? message === undefined
+        ? !isDirty
           ? '필수 입력 사항입니다.'
-          : message === true
+          : isValid
             ? '올바른 값입니다.'
             : '값을 확인해 주세요.'
-        : message === undefined
+        : !isDirty
           ? '선택 사항입니다.'
-          : message === true
+          : isValid
             ? '올바른 값입니다.'
             : '값을 확인해 주세요. 아예 입력하지 않아도 가입할 수 있습니다.'}
     </Tooltip>
   );
 };
-const Info = ({ message }: InfoProps) => (
-  <Smooth>{typeof message === 'string' && <p className="pl-10 text-red-700">{message}</p>}</Smooth>
+const Info = ({ isValid, message }: InfoProps) => (
+  <Smooth>{message && isValid !== true && <p className="pl-10 text-red-700">{message}</p>}</Smooth>
 );
 
 interface FormProps<T> {
   width?: number;
   children?: ReactElement[];
   validations: Partial<Record<keyof T, Validate>>;
+  messages?: Partial<Record<keyof T, string>>;
   debounce?: number;
   requires?: Partial<keyof T>[];
-  onSubmit?: (values: T) => Promise<Response<T>>;
+  onSubmit?: (values: T) => Promise<unknown> | unknown | void;
   button?: ReactElement;
 }
-const Form = <T,>({ width = 300, requires, validations, children, onSubmit, button }: FormProps<T>) => {
-  const values = useRef<Record<string, string>>({});
+const Form = <T,>({ width = 300, requires, validations, messages, children, onSubmit, button }: FormProps<T>) => {
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<Record<string, true | string>>({});
-  const [error, setError] = useState('');
-  const [complete, setComplete] = useState('');
+  const values = useRef<Record<string, string>>({});
+  const [results, setResults] = useState<Record<string, boolean>>({});
+  const [error, setError] = useState<Record<string, string>>({});
   const requireKeys: string[] = useMemo(
     () => requires ?? children?.map((x) => x.props.name) ?? [],
     [requires, children],
   );
-  const ableSubmit = useMemo(() => {
-    if (requireKeys.every((x) => results[x] === true)) return true;
+  const isComplete = useMemo(() => {
+    if (requireKeys.every((x) => results[x]) && !Object.values(results).filter((x) => x === false).length) return true;
     return false;
   }, [results, requireKeys]);
   const hasError = useMemo(
-    () => error || Object.values(results).filter((x) => typeof x === 'string').length,
+    () =>
+      !!Object.entries(error).filter(([key]) => !results[key]).length ||
+      !!Object.values(results).filter((x) => x === false).length,
     [results, error],
   );
-
+  const message = useMemo(() => {
+    const key = Object.entries(results).find(([, value]) => !value)?.[0];
+    if (key) return messages![key as keyof T]!;
+    return '';
+  }, [messages, results]);
   const action = (key: string, value: string) => {
     const validation = validations[key as keyof T];
 
@@ -134,7 +136,7 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
               [key]: validation ? validation(values.current[key], values.current) : true,
             };
           },
-          {} as Record<string, true | string>,
+          {} as Record<string, boolean>,
         ),
         [key]: res,
       };
@@ -148,6 +150,7 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
   };
   const handleClick = (e: MouseEvent<HTMLFormElement>) => {
     const target = e.target;
+
     if (!(target instanceof HTMLButtonElement)) return;
     const currentKey = target.name;
     if (!currentKey) return;
@@ -156,27 +159,29 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
   };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (onSubmit && ableSubmit) {
-      setError('');
+    if (onSubmit && isComplete) {
+      setError({});
       setLoading(true);
       try {
         const res = await onSubmit(values.current as T);
         setLoading(false);
-        if (res.result === true) {
-          setComplete(res.message ?? '성공');
-          return true;
-        }
+        if (res === true) return true;
         const newResults = { ...results };
-
         for (const [key] of Object.entries(results)) {
-          const msg = (res.data as typeof results)[key];
-          if (typeof msg !== 'string') continue;
-          newResults[key] = msg;
+          if ((res as typeof results)[key] === undefined) continue;
+          newResults[key] = false;
         }
         setResults(newResults);
+        setError(res as typeof error);
         return false;
       } catch (err) {
-        setError(err as string);
+        const newResults = { ...results };
+        for (const [key] of Object.entries(results)) {
+          if ((err as typeof results)[key] === undefined) continue;
+          newResults[key] = false;
+        }
+        setResults(newResults);
+        setError(err as typeof error);
         setLoading(false);
 
         return false;
@@ -184,7 +189,11 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
     }
     // requires
     // results
-    setResults(requireKeys.filter((x) => !results[x]).reduce((a, x) => ({ ...a, [x]: '필수입력 사항입니다.' }), {}));
+    requireKeys
+      .filter((x) => !results[x])
+      .forEach((x) => {
+        setError((prev) => ({ ...prev, [x]: '필수항목입니다.' }));
+      });
   };
 
   return (
@@ -192,20 +201,26 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
       {children?.map((x, i) => (
         <div key={i}>
           <div className="flex items-center justify-end gap-3">
-            <Mark message={results[x.props.name]} isRequire={requireKeys.includes(x.props.name)} />
+            <Mark
+              message={error[x.props.name]}
+              isRequire={requireKeys.includes(x.props.name)}
+              isValid={results[x.props.name]}
+            />
             <Loader press="onKeyDown" show={loading}>
               <div style={{ width }} className="[&>*]:w-full">
-                {x && cloneElement(x, { readOnly: !!complete })}
+                {x}
               </div>
             </Loader>
           </div>
-          <Info message={results[x.props.name]} />
+          <Info message={error[x.props.name]} isValid={results[x.props.name]} />
         </div>
       ))}
-
+      <Toast themeSize="lg" show={!!message}>
+        {message}
+      </Toast>
       <div className="flex items-center justify-end gap-3">
         <Smooth>
-          {ableSubmit && (
+          {isComplete && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -226,10 +241,6 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
           <Loader show={loading}>{button && cloneElement(button, { disabled: hasError })}</Loader>
         </div>
       </div>
-      <Toast themeSize="lg" show={!!error}>
-        {error}
-      </Toast>
-      <Modal show={!!complete}>{complete}</Modal>
     </form>
   );
 };

@@ -1,5 +1,8 @@
 .btn {
   @apply relative box-border overflow-hidden border;
+  &[disabled] {
+    @apply cursor-not-allowed opacity-35;
+  }
   &--sm {
     @apply rounded-sm p-1 py-0 text-sm;
   }

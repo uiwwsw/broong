@@ -3,8 +3,6 @@ import Smooth from './Smooth';
 import Toast from './Toast';
 import Loader from './Loader';
 import Tooltip from './Tooltip';
-import Modal from './Modal';
-import { Response } from '!/http/domain';
 type Validate = (value?: string, values?: Record<string, string>) => true | string;
 interface InfoProps {
   isRequire?: boolean;
@@ -81,7 +79,7 @@ interface FormProps<T> {
   validations: Partial<Record<keyof T, Validate>>;
   debounce?: number;
   requires?: Partial<keyof T>[];
-  onSubmit?: (values: T) => Promise<Response<T>>;
+  onSubmit?: (values: T) => Promise<unknown> | unknown | void;
   button?: ReactElement;
 }
 const Form = <T,>({ width = 300, requires, validations, children, onSubmit, button }: FormProps<T>) => {
@@ -89,12 +87,11 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<Record<string, true | string>>({});
   const [error, setError] = useState('');
-  const [complete, setComplete] = useState('');
   const requireKeys: string[] = useMemo(
     () => requires ?? children?.map((x) => x.props.name) ?? [],
     [requires, children],
   );
-  const ableSubmit = useMemo(() => {
+  const isComplete = useMemo(() => {
     if (requireKeys.every((x) => results[x] === true)) return true;
     return false;
   }, [results, requireKeys]);
@@ -148,6 +145,7 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
   };
   const handleClick = (e: MouseEvent<HTMLFormElement>) => {
     const target = e.target;
+
     if (!(target instanceof HTMLButtonElement)) return;
     const currentKey = target.name;
     if (!currentKey) return;
@@ -156,22 +154,19 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
   };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (onSubmit && ableSubmit) {
+    if (onSubmit && isComplete) {
       setError('');
       setLoading(true);
       try {
         const res = await onSubmit(values.current as T);
         setLoading(false);
-        if (res.result === true) {
-          setComplete(res.message ?? '성공');
-          return true;
-        }
+        if (res === true) return true;
         const newResults = { ...results };
 
         for (const [key] of Object.entries(results)) {
-          const msg = (res.data as typeof results)[key];
-          if (typeof msg !== 'string') continue;
-          newResults[key] = msg;
+          const msg = (res as typeof results)[key];
+          if (msg === undefined) continue;
+          newResults[key] = msg as string;
         }
         setResults(newResults);
         return false;
@@ -195,17 +190,19 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
             <Mark message={results[x.props.name]} isRequire={requireKeys.includes(x.props.name)} />
             <Loader press="onKeyDown" show={loading}>
               <div style={{ width }} className="[&>*]:w-full">
-                {x && cloneElement(x, { readOnly: !!complete })}
+                {x}
               </div>
             </Loader>
           </div>
           <Info message={results[x.props.name]} />
         </div>
       ))}
-
+      <Toast themeSize="lg" show={!!error}>
+        {error}
+      </Toast>
       <div className="flex items-center justify-end gap-3">
         <Smooth>
-          {ableSubmit && (
+          {isComplete && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -226,10 +223,6 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
           <Loader show={loading}>{button && cloneElement(button, { disabled: hasError })}</Loader>
         </div>
       </div>
-      <Toast themeSize="lg" show={!!error}>
-        {error}
-      </Toast>
-      <Modal show={!!complete}>{complete}</Modal>
     </form>
   );
 };

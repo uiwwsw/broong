@@ -1,5 +1,5 @@
 .toast {
-  @apply absolute left-1/2 z-50 -mt-6 origin-bottom px-2 py-1 text-xs font-thin;
+  @apply absolute left-1/2 z-50 origin-bottom -translate-x-1/2 px-2 py-1 text-xs font-thin opacity-0;
 
   &--in {
     animation: toast-in 0.5s forwards;
@@ -9,18 +9,22 @@
   }
   @keyframes toast-in {
     0% {
-      transform: translate(-50%, 0);
+      opacity: 0;
+      transform: translate(-50%, -100%);
     }
     100% {
-      transform: translate(-50%, -100%);
+      opacity: 1;
+      transform: translate(-50%, -200%);
     }
   }
   @keyframes toast-out {
     0% {
-      transform: translate(-50%, -100%);
+      opacity: 1;
+      transform: translate(-50%, -200%);
     }
     100% {
-      transform: translate(-50%, 0);
+      opacity: 0;
+      transform: translate(-50%, -100%);
     }
   }
 

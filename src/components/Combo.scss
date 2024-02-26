@@ -1,5 +1,5 @@
 .combo {
-  @apply absolute flex flex-col gap-1 outline;
+  @apply absolute grid gap-1 overflow-auto outline;
   &__empty {
     @apply p-[inherit] text-center;
   }

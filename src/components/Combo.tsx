@@ -14,13 +14,15 @@ import Delay from './Delay';
 interface ComboProps extends Omit<InputProps, 'onChange'>, WithTheme {
   onChange?: (value: string) => unknown;
   defaultValue?: string;
+  emptyAble?: boolean;
   options?: {
     disabled?: boolean;
-    value: string;
-    label: string;
+    value: string | number;
+    label: string | number;
   }[];
 }
 const Combo = ({
+  emptyAble = false,
   children,
   placeholder = '선택해주세요.',
   defaultValue = '',
@@ -30,6 +32,7 @@ const Combo = ({
   themeColor,
   themeSize,
   name,
+  readOnly,
   // className,
   ...props
 }: ComboProps) => {
@@ -48,19 +51,28 @@ const Combo = ({
   const adapterPosition = useMemo(() => {
     if (!position) return;
     const { innerHeight, scrollY, scrollX } = window;
-    const { top, bottom, left, width, height } = position;
+    const { top, bottom, left, width, height: targetHeight } = position;
     const { scrollHeight } = document.body;
-    const y = innerHeight / 2 > height / 2 + top;
+    const vertical = innerHeight / 2 > targetHeight / 2 + top;
+    const y = vertical ? bottom + scrollY : scrollHeight - scrollY - top;
+    const height = innerHeight - y - 100;
     return {
       left: left + scrollX,
-      [y ? 'top' : 'bottom']: y ? bottom + scrollY : scrollHeight - scrollY - top,
+      [vertical ? 'top' : 'bottom']: y,
       width,
+      maxHeight: height,
     };
   }, [position]);
   const filteredOptions = useMemo(() => {
     const reg = new RegExp(filter, 'i');
-    return options?.filter((option) => reg.test(option.label));
-  }, [options, filter]);
+    return Array.prototype
+      .concat(emptyAble ? [{ label: '선택해주세요.', value: '' }] : [], options)
+      .filter((option) => reg.test(option.label));
+    // const reg = new RegExp(filter, 'i');
+    // return (emptyAble ? [{ label: '선택해주세요.', value: '' }] : [])
+    //   .concat(options ?? [])
+    //   .filter((option) => reg.test(option.label));
+  }, [options, filter, emptyAble]);
   const isEmpty = !filteredOptions?.length;
   const handleKeyDownForNextFocus = (e: KeyboardEvent) => {
     if (e.code === 'Tab' && !e.shiftKey && layerRef.current) {
@@ -122,16 +134,16 @@ const Combo = ({
               style={adapterPosition}
               className={theme}
             >
-              {filteredOptions?.map((option) => (
+              {filteredOptions?.map((option, i) => (
                 <Button
                   value={option.value}
                   name={name}
                   themeColor={themeColor}
                   themeSize={themeSize}
-                  key={option.value}
-                  disabled={option.disabled}
+                  key={option.value + i}
+                  disabled={option.disabled || readOnly}
                   onClick={() => handleChange(option.value)}
-                  className="w-full"
+                  className={`w-full${option.value === '' ? ' !text-gray-400' : ''}`}
                 >
                   {option.label}
                 </Button>

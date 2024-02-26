@@ -29,7 +29,7 @@ import { ButtonHTMLAttributes } from 'react';
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, WithTheme {
-  onHold?: ButtonProps['onClick'];
+  onHold?: () => unknown;
   debounce?: number;
 }
 const Button = ({
