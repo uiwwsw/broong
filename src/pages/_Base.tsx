@@ -5,18 +5,13 @@ interface BaseProps {
   backgroundColor?: string;
   children?: ReactNode;
 }
-const Base = ({ title, backgroundColor, children }: BaseProps) => {
-  const { setTitle, setBackgroundColor } = useUiContext();
+const Base = ({ title, children }: BaseProps) => {
+  const { setTitle } = useUiContext();
   useEffect(() => {
     if (!title) return;
     setTitle(title);
     return () => setTitle();
   }, [title, setTitle]);
-  useEffect(() => {
-    if (!backgroundColor) return;
-    setBackgroundColor(backgroundColor);
-    return () => setBackgroundColor();
-  }, [backgroundColor, setBackgroundColor]);
   return children;
 };
 

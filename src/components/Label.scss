@@ -1,11 +1,11 @@
 .lbl {
   @apply pointer-events-none flex items-center border-inherit bg-inherit transition-transform after:content-[':'];
-  @apply peer-focus-within:absolute peer-focus-within:left-[-1px] peer-focus-within:h-full peer-focus-within:translate-x-0 peer-focus-within:border;
+  @apply peer-focus-within:absolute peer-focus-within:left-[-1px] peer-focus-within:z-10 peer-focus-within:h-full peer-focus-within:translate-x-0 peer-focus-within:border;
   &--up {
-    @apply peer-focus-within:-bottom-1 peer-focus-within:-translate-y-full peer-focus-within:rounded-b-none;
+    @apply peer-focus-within:translate-y-[calc(-100%+6px)] peer-focus-within:rounded-b-none;
   }
   &--down {
-    @apply peer-focus-within:-top-1 peer-focus-within:translate-y-full peer-focus-within:rounded-t-none;
+    @apply peer-focus-within:translate-y-[calc(100%-6px)] peer-focus-within:rounded-t-none;
   }
   &--sm {
     @apply rounded-sm pl-1 peer-focus-within:pr-1;

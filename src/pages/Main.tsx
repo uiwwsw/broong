@@ -13,7 +13,7 @@ import Toast from '@/Toast';
 import Delay from '@/Delay';
 import { useSignUp, Arg } from '!/test/applications/post-sign-up';
 const Main = () => {
-  const style = 'm-1 bg-white p-3 [&>*]:inline-block [&>*]:m-2';
+  const style = 'm-1 p-3 [&>*]:inline-block [&>*]:m-2';
   const { trigger } = useSignUp();
   const [size, setSize] = useState<SIZE>('md');
   const [color, setColor] = useState<COLOR>('secondary');

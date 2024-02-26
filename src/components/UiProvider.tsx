@@ -1,22 +1,19 @@
-import { UiContext } from '#/useUIContext';
-import { ReactNode, useState } from 'react';
+import { UiContext, UiSize } from '#/useUIContext';
+import { ReactNode, useLayoutEffect, useState } from 'react';
 interface UiProviderProps {
   children?: ReactNode;
 }
 
 export const UiProvider = ({ children }: UiProviderProps) => {
   const [title, setTitle] = useState<string>();
-  const [backgroundColor, setBackgroundColor] = useState<string | undefined>('bg-gray-200');
-  const [underlineColor, setUnderlineColor] = useState<string | undefined>('bg-teal-700');
+  const [size, setSize] = useState<Record<UiSize, number>>({ header: 0 });
   return (
     <UiContext.Provider
       value={{
         title,
         setTitle,
-        backgroundColor,
-        setBackgroundColor,
-        underlineColor,
-        setUnderlineColor,
+        size,
+        setSize,
       }}
     >
       {children}
