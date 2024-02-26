@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Base from './_Base';
 import Button from '@/Button';
 import Input from '@/Input';
