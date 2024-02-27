@@ -17,7 +17,7 @@ const Header = () => {
   };
   useEffect(() => {
     if (headRef.current) setSize({ header: headRef.current.clientHeight });
-  }, [headRef.current]);
+  }, [headRef, setSize]);
   return (
     <>
       <Scroll infinity onScroll={handleScroll} throttle={10} />
@@ -25,7 +25,7 @@ const Header = () => {
         ref={headRef}
         className="sticky top-0 z-50 origin-left bg-white bg-opacity-0 p-3 shadow backdrop-blur-lg dark:bg-zinc-700"
       >
-        <h1>{title}</h1>
+        <h1 className="after:opacity-25 empty:after:content-['제목없음']">{title}</h1>
         <i className={`absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 bg-teal-700`} ref={iRef} />
       </header>
     </>

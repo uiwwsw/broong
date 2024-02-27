@@ -1,16 +1,15 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
-const useDebounce = <T>(fn?: (e: T) => unknown, delay: number = 300) => {
-  const sto = useRef(setTimeout(() => null));
-  if (!fn) return () => null;
-  if (!delay) return fn;
-  const handleRun = (e: T) => {
-    if (sto.current) clearTimeout(sto.current);
+const useDebounce = () => {
+  const schedule = useRef(0);
 
-    sto.current = setTimeout(() => fn(e), delay);
-  };
-
-  return handleRun;
+  return useCallback(
+    <T>(callback?: T, delay: number = 0) =>
+      (param?: unknown) => {
+        clearTimeout(schedule.current);
+        schedule.current = setTimeout(() => callback instanceof Function && callback(param), delay);
+      },
+    [],
+  );
 };
-
 export default useDebounce;

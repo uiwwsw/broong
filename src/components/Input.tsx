@@ -6,9 +6,8 @@ import Label from '@/Label';
 import useTheme, { WithTheme } from '#/useTheme';
 import mergeClassName from '#/mergeClassName';
 import useRipple from '#/useRipple';
-import Button from './Button';
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement>, WithTheme {
-  debounce?: number;
+  delay?: number;
   reverseLabel?: boolean;
 }
 const Input = forwardRef<HTMLLabelElement, InputProps>(
@@ -22,7 +21,7 @@ const Input = forwardRef<HTMLLabelElement, InputProps>(
       className,
       type = 'text',
       onChange,
-      debounce = 0,
+      delay = 0,
       maxLength,
       ...props
     },
@@ -31,7 +30,8 @@ const Input = forwardRef<HTMLLabelElement, InputProps>(
     const theme = useTheme({ componentName, themeColor, themeSize });
     const { Ripple, ...rippleProps } = useRipple();
     const [value, setValue] = useState('');
-    const debounceChange = useDebounce(onChange, debounce);
+    const debounce = useDebounce();
+    const debounceChange = debounce(onChange, delay);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       const newValue = e.currentTarget.value;
       if (maxLength) e.currentTarget.value = newValue.substring(0, maxLength);

@@ -1,79 +1,72 @@
 // import { MouseEvent } from 'react';
 
-import useDebounce from '#/useDebounce';
-import { ChangeEvent, InputHTMLAttributes, forwardRef, useState } from 'react';
-import Label from '@/Label';
-import useTheme, { WithTheme } from '#/useTheme';
-import mergeClassName from '#/mergeClassName';
-import useRipple from '#/useRipple';
+import { ChangeEvent, FocusEvent, MouseEvent, forwardRef, useEffect, useRef, useState } from 'react';
+import Input, { InputProps } from './Input';
 import Button from './Button';
 import Smooth from './Smooth';
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement>, WithTheme {
-  debounce?: number;
-  reverseLabel?: boolean;
+interface SearchProps extends Omit<InputProps, 'onChange'> {
+  onChange?: (value: string) => void;
 }
-const Input = forwardRef<HTMLLabelElement, InputProps>(
-  (
-    {
-      reverseLabel = false,
-      componentName = 'inp',
-      themeColor,
-      themeSize,
-      children,
-      className,
-      type = 'text',
-      onChange,
-      debounce = 0,
-      maxLength,
-      ...props
-    },
-    ref,
-  ) => {
-    const hasClearBtn = type === 'search';
-
-    const theme = useTheme({ componentName, themeColor, themeSize });
-    const { Ripple, ...rippleProps } = useRipple();
-    const [value, setValue] = useState('');
-    const debounceChange = useDebounce(onChange, debounce);
+const Search = forwardRef<HTMLDivElement, SearchProps>(
+  ({ onChange, themeSize, themeColor, onFocus, onBlur, ...props }, ref) => {
+    const labelRef = useRef<HTMLLabelElement>(null);
+    const [value, setValue] = useState<string | number>('');
+    const [focus, setFocus] = useState(false);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.currentTarget.value;
-      if (maxLength) e.currentTarget.value = newValue.substring(0, maxLength);
-      // if (newValue === value) {
-      //   e.preventDefault();
-      //   e.stopPropagation();
-      //   return;
-      // }
-      debounceChange(e);
+      const newValue = e.target.value;
       setValue(newValue);
+      onChange && onChange(newValue);
     };
-    const handleClear = () => {};
+    const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
+      setFocus(true);
+      onFocus && onFocus(e);
+    };
+    const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+      setFocus(false);
+      onBlur && onBlur(e);
+    };
+    const handleClear = (e: MouseEvent) => {
+      setValue('');
+      onChange && onChange('');
+      if (labelRef.current) labelRef.current.focus();
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    useEffect(() => {
+      if (typeof props.value === 'string' || typeof props.value === 'number') setValue(props.value);
+    }, [props.value]);
     return (
-      <label {...rippleProps} ref={ref} className={mergeClassName(theme, className)}>
-        {/* <label {...holdProps} style={{ clipPath: 'border-box' }}> */}
-        <input
+      <div
+        ref={ref}
+        className="relative inline-block"
+        tabIndex={0}
+        onFocusCapture={handleFocus}
+        onBlurCapture={handleBlur}
+      >
+        <Input
           {...props}
-          className="inp__text peer select-none"
-          style={{ textAlign: children ? 'right' : 'left' }}
+          ref={labelRef}
+          className={`peer transition-all${focus ? ' pr-8' : ''}`}
+          themeColor={themeColor}
+          themeSize={themeSize}
+          value={value}
           onChange={handleChange}
-          type={type}
-          title={value}
         />
-        {children ? (
-          <Label reverse={reverseLabel} themeColor={themeColor} themeSize={themeSize}>
-            {children}
-          </Label>
-        ) : null}
-
         <Smooth>
-          {hasClearBtn && (
-            <Button componentName="" onClick={handleClear} className="inp__btn">
+          {focus && (
+            <Button
+              componentName=""
+              themeColor={themeColor}
+              themeSize={themeSize}
+              className="absolute right-2 top-1/2 z-10 -translate-y-1/2 overflow-hidden"
+              onClick={handleClear}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
+                className="h-6 w-6 stroke-white"
               >
                 <path
                   strokeLinecap="round"
@@ -84,10 +77,9 @@ const Input = forwardRef<HTMLLabelElement, InputProps>(
             </Button>
           )}
         </Smooth>
-        <i className="ripple--wrap">{Ripple}</i>
-      </label>
+      </div>
     );
   },
 );
 
-export default Input;
+export default Search;

@@ -3,13 +3,12 @@
 import useTheme, { WithTheme } from '#/useTheme';
 import { createPortal } from 'react-dom';
 
-import { InputProps } from './Input';
-import { KeyboardEvent, useMemo, useRef, useState } from 'react';
+import Input, { InputProps } from './Input';
+import { ChangeEvent, KeyboardEvent, useMemo, useRef, useState } from 'react';
 import Smooth from './Smooth';
 import usePosition from '#/usePosition';
 import Button from './Button';
 import Toast from './Toast';
-import Search from './Search';
 
 interface ComboProps extends Omit<InputProps, 'onChange'>, WithTheme {
   onChange?: (value: string) => unknown;
@@ -37,7 +36,7 @@ const Combo = ({
   ...props
 }: ComboProps) => {
   const sto = useRef(0);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLLabelElement>(null);
   const layerRef = useRef<HTMLDivElement>(null);
   const theme = useTheme({ themeColor, themeSize, componentName });
   const [value, setValue] = useState(defaultValue);
@@ -94,7 +93,7 @@ const Combo = ({
     setVisible(true);
     trigger();
   };
-  const handleFilter = (e: string) => setFilter(e);
+  const handleFilter = (e: ChangeEvent<HTMLInputElement>) => setFilter(e.currentTarget.value);
   const handleFocusCapture = () => clearTimeout(sto.current);
   const handleBlurForClose = () => (sto.current = setTimeout(() => setVisible(false), 0));
   const handleChange = (newValue: string) => {
@@ -108,7 +107,7 @@ const Combo = ({
       <Toast delay={5000} show={visible && isEmpty}>
         검색 결과가 없을 땐 검색어를 바꿔보세요~
       </Toast>
-      <Search
+      <Input
         {...props}
         type={visible ? 'search' : 'text'}
         placeholder={visible ? '검색어를 입력해보아요.' : placeholder}
@@ -123,7 +122,7 @@ const Combo = ({
         onBlur={handleBlurForClose}
       >
         {children}
-      </Search>
+      </Input>
       {createPortal(
         <Smooth>
           {visible && (

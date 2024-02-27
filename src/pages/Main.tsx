@@ -10,8 +10,8 @@ import Tooltip from '@/Tooltip';
 import Form from '@/Form';
 import Currency from '@/Currency';
 import Toast from '@/Toast';
-import Delay from '@/Delay';
 import { useSignUp, Arg } from '!/test/applications/post-sign-up';
+import Search from '@/Search';
 const Main = () => {
   const style = 'm-1 p-3 [&>*]:inline-block [&>*]:m-2';
   const { trigger } = useSignUp();
@@ -21,18 +21,17 @@ const Main = () => {
   const [text, setText] = useState('빈값');
   return (
     <Base title="메인">
-      <Delay before={5000} show>
-        <Toast show>
-          tab 버튼을 눌러보세요~. 콤보박스가 열리고 옵션이동 후 다음 엘리먼트로 포커스가 잘 이동됩니다.
-        </Toast>
-      </Delay>
+      <Search></Search>
+      <Toast show delay={5000}>
+        tab 버튼을 눌러보세요~. 콤보박스가 열리고 옵션이동 후 다음 엘리먼트로 포커스가 잘 이동됩니다.
+      </Toast>
       <dl className={style}>
         <dt>정보</dt>
         <dd>
           <Combo
             themeColor={color}
             themeSize={size}
-            debounce={0}
+            delay={0}
             defaultValue={color}
             onChange={(e) => setColor(e as COLOR)}
             options={colorArr.map((x) => ({ label: x, value: x }))}
@@ -45,7 +44,7 @@ const Main = () => {
             themeColor={color}
             themeSize={size}
             defaultValue={size}
-            debounce={0}
+            delay={0}
             onChange={(e) => setSize(e as SIZE)}
             options={sizeArr.map((x) => ({ label: x, value: x }))}
           >
@@ -62,7 +61,7 @@ const Main = () => {
           <Combo
             themeColor={color}
             themeSize={size}
-            debounce={0}
+            delay={0}
             defaultValue={color}
             onChange={(e) => setNumber(+e)}
             options={[
@@ -125,7 +124,7 @@ const Main = () => {
         </dd>
         <dd>
           <Loader timeout={1000}>
-            <Button debounce={1000} themeColor={color} themeSize={size} onClick={() => setNumber(number + 1)}>
+            <Button delay={1000} themeColor={color} themeSize={size} onClick={() => setNumber(number + 1)}>
               디바운스 버튼
             </Button>
           </Loader>
@@ -136,7 +135,7 @@ const Main = () => {
             slot={
               <Loader show={number !== 0 && number % 19 === 0}>
                 <Button
-                  debounce={300}
+                  delay={300}
                   themeColor={color}
                   themeSize={size}
                   onClick={() => setNumber(number + 1)}
@@ -165,7 +164,7 @@ const Main = () => {
 
         <dd>
           <Input
-            debounce={400}
+            delay={400}
             placeholder="값을 입력해보아요"
             onChange={(e) => setText(e.target.value)}
             themeColor={color}
@@ -191,7 +190,7 @@ const Main = () => {
           <Form<Arg>
             requires={['email', 'pw', 'rpw']}
             button={
-              <Button debounce={300} type="submit">
+              <Button delay={300} type="submit">
                 전송
               </Button>
             }

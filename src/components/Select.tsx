@@ -11,7 +11,7 @@ interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'val
   ableEmpty?: boolean;
   children?: ReactNode;
   placeholder?: string;
-  debounce?: number;
+  delay?: number;
   defaultValue?: string;
   options?: {
     disabled?: boolean;
@@ -24,7 +24,7 @@ const Select = ({
   children,
   placeholder = '선택해주세요.',
   defaultValue = '',
-  debounce = 0,
+  delay = 0,
   onChange,
   options,
   className,
@@ -42,7 +42,8 @@ const Select = ({
     [options, placeholder, ableEmpty],
   );
   const isPlaceholder = useMemo(() => value === '', [value]);
-  const debounceChange = useDebounce(onChange, debounce);
+  const debounce = useDebounce();
+  const debounceChange = debounce(onChange, delay);
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setValue(e.target.value);
     debounceChange(e);

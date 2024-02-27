@@ -1,20 +1,20 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
-const usePreThrottle = <T>(fn?: (e: T) => unknown, delay: number = 300) => {
-  const sto = useRef(0);
-  if (!fn) return () => null;
-  if (!delay) return fn;
-  const handleRun = (e: T) => {
-    if (!sto.current) {
-      fn(e);
-      clearTimeout(sto.current);
-      sto.current = setTimeout(() => {
-        sto.current = 0;
-      }, delay);
-    }
-  };
+const usePreThrottle = () => {
+  const schedule = useRef(0);
 
-  return handleRun;
+  return useCallback(
+    <T>(callback?: T, delay: number = 0) =>
+      <K>(param?: unknown): K | void => {
+        if (!schedule.current) {
+          clearTimeout(schedule.current);
+          schedule.current = setTimeout(() => {
+            schedule.current = 0;
+          }, delay);
+          if (callback instanceof Function) return callback(param) as K;
+        }
+      },
+    [],
+  );
 };
-
 export default usePreThrottle;

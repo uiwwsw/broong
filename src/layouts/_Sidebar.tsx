@@ -8,7 +8,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className="sticky w-48 p-3 shadow-2xl"
+      className="sticky min-w-48 p-3 shadow-2xl"
       style={{ top: size?.header, height: `calc(100vh - ${size?.header}px)` }}
     >
       <Smooth className="flex h-full flex-col">

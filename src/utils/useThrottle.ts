@@ -1,20 +1,20 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
-const useThrottle = <T>(fn?: (e: T) => unknown, delay: number = 300) => {
-  const sto = useRef(0);
-  if (!fn) return () => null;
-  if (!delay) return fn;
-  const handleRun = (e: T) => {
-    if (!sto.current) {
-      clearTimeout(sto.current);
-      sto.current = setTimeout(() => {
-        fn(e);
-        sto.current = 0;
-      }, delay);
-    }
-  };
+const useDebounce = () => {
+  const schedule = useRef(0);
 
-  return handleRun;
+  return useCallback(
+    <T>(callback?: T, delay: number = 0) =>
+      (param?: unknown): void => {
+        if (!schedule.current) {
+          clearTimeout(schedule.current);
+          schedule.current = setTimeout(() => {
+            callback instanceof Function && callback(param);
+            schedule.current = 0;
+          }, delay);
+        }
+      },
+    [],
+  );
 };
-
-export default useThrottle;
+export default useDebounce;

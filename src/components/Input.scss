@@ -2,12 +2,6 @@
   @apply relative box-border inline-flex flex-row-reverse items-center border;
   input {
     @apply h-full w-full flex-1 truncate bg-transparent outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-search-cancel-button]:hidden;
-    &[type='search'] {
-      @apply pr-8;
-    }
-  }
-  &__btn {
-    @apply absolute right-0 top-1/2 -translate-y-1/2;
   }
 
   &--sm {
@@ -27,6 +21,9 @@
     input {
       @apply p-3 py-1.5;
     }
+  }
+  [class*='w-full'] & {
+    @apply w-full;
   }
 
   &--primary {

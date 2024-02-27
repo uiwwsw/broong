@@ -1,5 +1,5 @@
 import { UiContext, UiSize } from '#/useUIContext';
-import { ReactNode, useLayoutEffect, useState } from 'react';
+import { ReactNode, useState } from 'react';
 interface UiProviderProps {
   children?: ReactNode;
 }

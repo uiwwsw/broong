@@ -30,12 +30,12 @@ import { ButtonHTMLAttributes } from 'react';
 // import viteLogo from '/vite.svg'
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, WithTheme {
   onHold?: () => unknown;
-  debounce?: number;
+  delay?: number;
 }
 const Button = ({
   onHold,
   children,
-  debounce = 0,
+  delay = 0,
   onClick,
   className,
   componentName = 'btn',
@@ -50,11 +50,12 @@ const Button = ({
   });
   const { Ripple, ...rippleProps } = useRipple();
   const holdParams = useHold({ onHold });
+  const debounce = useDebounce();
   const buttonProps = useMergeProps({
     main: rippleProps,
     other: holdParams,
   });
-  const debounceClick = useDebounce(onClick, debounce);
+  const debounceClick = debounce(onClick, delay);
 
   return (
     <button {...props} {...buttonProps} className={mergeClassName(theme, className)} onClick={debounceClick}>
