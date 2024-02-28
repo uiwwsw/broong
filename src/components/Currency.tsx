@@ -1,6 +1,6 @@
 // import { MouseEvent } from 'react';
 
-import { ChangeEvent, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Input, { InputProps } from './Input';
 interface CurrencyProps extends Omit<InputProps, 'onChange'> {
   onChange?: (value: string) => void;
@@ -22,8 +22,8 @@ const Currency = ({ onChange, themeSize, themeColor, ...props }: CurrencyProps) 
     if (isNaN(Number(newValue))) return value;
     return newValue;
   };
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = getValue(e.target.value);
+  const handleChange = (newValue: string) => {
+    newValue = getValue(newValue);
     setValue(newValue);
     if (isNaN(Number(newValue))) return;
     onChange && onChange(newValue);

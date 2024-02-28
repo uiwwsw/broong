@@ -6,9 +6,10 @@ import Label from '@/Label';
 import useTheme, { WithTheme } from '#/useTheme';
 import mergeClassName from '#/mergeClassName';
 import useRipple from '#/useRipple';
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement>, WithTheme {
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'>, WithTheme {
   delay?: number;
   reverseLabel?: boolean;
+  onChange?: (value: string) => void;
 }
 const Input = forwardRef<HTMLLabelElement, InputProps>(
   (
@@ -30,8 +31,7 @@ const Input = forwardRef<HTMLLabelElement, InputProps>(
     const theme = useTheme({ componentName, themeColor, themeSize });
     const { Ripple, ...rippleProps } = useRipple();
     const [value, setValue] = useState('');
-    const debounce = useDebounce();
-    const debounceChange = debounce(onChange, delay);
+    const debounceChange = useDebounce(onChange, delay);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       const newValue = e.currentTarget.value;
       if (maxLength) e.currentTarget.value = newValue.substring(0, maxLength);
@@ -40,8 +40,10 @@ const Input = forwardRef<HTMLLabelElement, InputProps>(
       //   e.stopPropagation();
       //   return;
       // }
-      debounceChange(e);
+      debounceChange(newValue);
       setValue(newValue);
+      e.preventDefault();
+      e.stopPropagation();
     };
     return (
       <label {...rippleProps} ref={ref} className={mergeClassName(theme, className)}>

@@ -1,15 +1,13 @@
 // import { MouseEvent } from 'react';
 
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import Input, { InputProps } from './Input';
-interface NumericProps extends Omit<InputProps, 'onChange'> {
-  onChange?: (value: string) => void;
-}
+interface NumericProps extends InputProps {}
 const Numeric = ({ onChange, themeSize, themeColor, ...props }: NumericProps) => {
   const [value, setValue] = useState('');
   const getValue = (newValue: string) => newValue.trim().replace(/\D/g, '');
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = getValue(e.target.value);
+  const handleChange = (newValue: string) => {
+    newValue = getValue(newValue);
     // if (newValue === value || isNaN(+newValue)) {
     //   e.preventDefault();
     //   e.stopPropagation();

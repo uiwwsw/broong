@@ -8,8 +8,7 @@ interface ScrollProps {
 }
 const Scroll = ({ onScroll, infinity = false, throttle = 0 }: ScrollProps) => {
   const loadingRef = useRef(false);
-  const preThrottle = usePreThrottle();
-  const throttleScroll = preThrottle(onScroll, throttle);
+  const throttleScroll = usePreThrottle(onScroll, throttle);
   const handleScroll = useCallback(async () => {
     if (infinity) return throttleScroll(undefined);
     // if (!ctn) clearEvent();

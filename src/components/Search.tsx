@@ -1,19 +1,21 @@
 // import { MouseEvent } from 'react';
 
-import { ChangeEvent, FocusEvent, MouseEvent, forwardRef, useEffect, useRef, useState } from 'react';
+import { FocusEvent, MouseEvent, forwardRef, useEffect, useRef, useState } from 'react';
 import Input, { InputProps } from './Input';
 import Button from './Button';
 import Smooth from './Smooth';
-interface SearchProps extends Omit<InputProps, 'onChange'> {
+import mergeClassName from '#/mergeClassName';
+import useTheme from '#/useTheme';
+interface SearchProps extends InputProps {
   onChange?: (value: string) => void;
 }
 const Search = forwardRef<HTMLDivElement, SearchProps>(
-  ({ onChange, themeSize, themeColor, onFocus, onBlur, ...props }, ref) => {
+  ({ onChange, themeSize, themeColor, componentName = 'search', onFocus, onBlur, className, ...props }, ref) => {
+    const theme = useTheme({ themeSize, themeColor, componentName });
     const labelRef = useRef<HTMLLabelElement>(null);
     const [value, setValue] = useState<string | number>('');
     const [focus, setFocus] = useState(false);
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value;
+    const handleChange = (newValue: string) => {
       setValue(newValue);
       onChange && onChange(newValue);
     };
@@ -38,7 +40,7 @@ const Search = forwardRef<HTMLDivElement, SearchProps>(
     return (
       <div
         ref={ref}
-        className="relative inline-block"
+        className={mergeClassName(className, theme)}
         tabIndex={0}
         onFocusCapture={handleFocus}
         onBlurCapture={handleBlur}
@@ -55,6 +57,7 @@ const Search = forwardRef<HTMLDivElement, SearchProps>(
         <Smooth>
           {focus && (
             <Button
+              type="button"
               componentName=""
               themeColor={themeColor}
               themeSize={themeSize}

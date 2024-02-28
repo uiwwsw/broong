@@ -50,12 +50,11 @@ const Button = ({
   });
   const { Ripple, ...rippleProps } = useRipple();
   const holdParams = useHold({ onHold });
-  const debounce = useDebounce();
   const buttonProps = useMergeProps({
     main: rippleProps,
     other: holdParams,
   });
-  const debounceClick = debounce(onClick, delay);
+  const debounceClick = useDebounce(onClick, delay);
 
   return (
     <button {...props} {...buttonProps} className={mergeClassName(theme, className)} onClick={debounceClick}>

@@ -1,0 +1,15 @@
+.search {
+  @apply relative inline-block;
+  > label {
+    @apply w-[inherit];
+  }
+  &--sm {
+    @apply w-32;
+  }
+  &--md {
+    @apply w-52;
+  }
+  &--lg {
+    @apply w-72;
+  }
+}

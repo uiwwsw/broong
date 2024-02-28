@@ -11,7 +11,6 @@ import Form from '@/Form';
 import Currency from '@/Currency';
 import Toast from '@/Toast';
 import { useSignUp, Arg } from '!/test/applications/post-sign-up';
-import Search from '@/Search';
 const Main = () => {
   const style = 'm-1 p-3 [&>*]:inline-block [&>*]:m-2';
   const { trigger } = useSignUp();
@@ -21,7 +20,6 @@ const Main = () => {
   const [text, setText] = useState('빈값');
   return (
     <Base title="메인">
-      <Search></Search>
       <Toast show delay={5000}>
         tab 버튼을 눌러보세요~. 콤보박스가 열리고 옵션이동 후 다음 엘리먼트로 포커스가 잘 이동됩니다.
       </Toast>
@@ -154,19 +152,14 @@ const Main = () => {
         <dt>인풋</dt>
         <dd>라벨없음</dd>
         <dd>
-          <Input
-            placeholder="값을 입력해보아요"
-            onChange={(e) => setText(e.target.value)}
-            themeColor={color}
-            themeSize={size}
-          />
+          <Input placeholder="값을 입력해보아요" onChange={(e) => setText(e)} themeColor={color} themeSize={size} />
         </dd>
 
         <dd>
           <Input
             delay={400}
             placeholder="값을 입력해보아요"
-            onChange={(e) => setText(e.target.value)}
+            onChange={(e) => setText(e)}
             themeColor={color}
             themeSize={size}
           >
@@ -216,20 +209,21 @@ const Main = () => {
               },
             }}
           >
-            <Input name="email" placeholder="test@test.com" themeColor="secondary" themeSize="sm">
+            <Input className="w-full" name="email" placeholder="test@test.com" themeColor="secondary" themeSize="sm">
               이메일
             </Input>
-            <Input name="pw" themeColor="secondary" themeSize="sm" type="password">
+            <Input className="w-full" name="pw" themeColor="secondary" themeSize="sm" type="password">
               비밀번호
             </Input>
 
-            <Input name="rpw" themeColor="secondary" themeSize="sm" type="password">
+            <Input className="w-full" name="rpw" themeColor="secondary" themeSize="sm" type="password">
               비밀번호확인
             </Input>
             {/* <Numeric placeholder="25~30" name="age" themeColor="secondary" themeSize="sm">
               나이
             </Numeric> */}
             <Combo
+              className="w-full"
               name="age"
               themeColor="secondary"
               themeSize="sm"

@@ -16,17 +16,14 @@ const Toast = ({ children, delay, show, timeout = 0, componentName = 'toast', ..
   const [hide, setHide] = useState(false);
   const visible = useMemo(() => show && !hide, [show, hide]);
   const [position, setPosition] = useState({ top: 0, left: 0 });
-  const throttle = useThrottle();
-  const handleResize = useCallback(
-    throttle(() => {
-      if (window.visualViewport) {
-        const vv = window.visualViewport;
-        const { scrollY, scrollX } = window;
-        setPosition({ top: vv.height + scrollY, left: vv.width / 2 + scrollX });
-      }
-    }, 10),
-    [setPosition, throttle],
-  );
+  const handleResize = useCallback(() => {
+    if (window.visualViewport) {
+      const vv = window.visualViewport;
+      const { scrollY, scrollX } = window;
+      setPosition({ top: vv.height + scrollY, left: vv.width / 2 + scrollX });
+    }
+  }, [setPosition]);
+  const throttleResize = useThrottle(handleResize, 100);
   const handleClick = () => setHide(true);
   // const handleStart = () => {
   //   document.body.style.overflow = 'hidden';
@@ -35,22 +32,21 @@ const Toast = ({ children, delay, show, timeout = 0, componentName = 'toast', ..
   //   document.body.style.overflow = '';
   // };
   useEffect(() => {
+    if (visible) handleResize();
+  }, [visible, handleResize]);
+  useEffect(() => {
     if (visible) {
-      handleResize(undefined);
-      // const sti = setInterval(handleResize, 100);
-      window.addEventListener('scroll', handleResize);
-      window.addEventListener('resize', handleResize);
-      // clearInterval(sti);
+      window.addEventListener('scroll', throttleResize);
+      window.addEventListener('resize', throttleResize);
     } else {
-      window.removeEventListener('scroll', handleResize);
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', throttleResize);
+      window.removeEventListener('resize', throttleResize);
     }
     return () => {
-      // clearInterval(sti);
-      window.removeEventListener('scroll', handleResize);
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', throttleResize);
+      window.removeEventListener('resize', throttleResize);
     };
-  }, [visible, handleResize]);
+  }, [visible, throttleResize]);
   useEffect(() => {
     if (!show) return;
     setHide(false);

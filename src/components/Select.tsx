@@ -42,8 +42,7 @@ const Select = ({
     [options, placeholder, ableEmpty],
   );
   const isPlaceholder = useMemo(() => value === '', [value]);
-  const debounce = useDebounce();
-  const debounceChange = debounce(onChange, delay);
+  const debounceChange = useDebounce(onChange, delay);
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setValue(e.target.value);
     debounceChange(e);

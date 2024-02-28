@@ -194,9 +194,7 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
           <div className="flex items-center justify-end gap-3">
             <Mark message={results[x.props.name]} isRequire={requireKeys.includes(x.props.name)} />
             <Loader press="onKeyDown" show={loading}>
-              <div style={{ width }} className="[&>*]:w-full">
-                {x && cloneElement(x, { readOnly: !!complete })}
-              </div>
+              <div style={{ width }}>{x && cloneElement(x, { readOnly: !!complete })}</div>
             </Loader>
           </div>
           <Info message={results[x.props.name]} />

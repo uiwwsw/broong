@@ -22,8 +22,7 @@ const useRipple = (size: UseRippleProps = 70) => {
     () => _ripple.map((x, i, { length }) => (i === length - 1 && x ? { ...x, ...active } : x)),
     [_ripple, active],
   );
-  const debounce = useDebounce();
-  const preThrottle = usePreThrottle();
+
   const animate = () => {
     if (active) throw new Error('에니메이션이 끝나지 않고 다시 시작되었습니다.');
     const timeElapsed = new Date().valueOf();
@@ -32,13 +31,13 @@ const useRipple = (size: UseRippleProps = 70) => {
     const rect = size * percent;
     setActive({ width: rect, height: rect, opacity: percent });
   };
-  const reset = debounce(() => setRipple([]), 1000);
+  const reset = useDebounce(() => setRipple([]), 1000);
 
   const { startAnimation, stopAnimation } = useAnimation({ animate });
 
   const handleAnimateEnd = (index: number) => setRipple((prev) => prev.map((x, i) => (i === index ? undefined : x)));
 
-  const handleStart = preThrottle((e: MouseEvent | TouchEvent) => {
+  const handleStart = usePreThrottle((e: MouseEvent | TouchEvent) => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     setRipple((prev) => {
       const left =

@@ -22,9 +22,9 @@
       @apply p-3 py-1.5;
     }
   }
-  [class*='w-full'] & {
+  /* [class*='w-full'] & {
     @apply w-full;
-  }
+  } */
 
   &--primary {
     @apply border-cyan-500 bg-cyan-500 text-white;
