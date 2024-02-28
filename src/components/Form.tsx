@@ -184,7 +184,12 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
     }
     // requires
     // results
-    setResults(requireKeys.filter((x) => !results[x]).reduce((a, x) => ({ ...a, [x]: '필수입력 사항입니다.' }), {}));
+    setResults({
+      ...results,
+      ...requireKeys
+        .filter((x) => results[x] === undefined)
+        .reduce((a, x) => ({ ...a, [x]: '필수입력 사항입니다.' }), {}),
+    });
   };
 
   return (

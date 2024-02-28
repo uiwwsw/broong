@@ -12,7 +12,7 @@ import Currency from '@/Currency';
 import Toast from '@/Toast';
 import { useSignUp, Arg } from '!/test/applications/post-sign-up';
 const Main = () => {
-  const style = 'm-1 p-3 [&>*]:inline-block [&>*]:m-2';
+  const style = 'm-1 p-3 [&>*]:inline-block [&>*]:m-2 [&>*]:align-middle';
   const { trigger } = useSignUp();
   const [size, setSize] = useState<SIZE>('md');
   const [color, setColor] = useState<COLOR>('secondary');
@@ -196,11 +196,11 @@ const Main = () => {
                 return true;
               },
               pw: (v) => {
-                if (v && v?.length < 3) return '비번입력하세요';
+                if (!v || v?.length < 3) return '비번입력하세요';
                 return true;
               },
               rpw: (x, values) => {
-                if (x && values && values.pw !== x) return '비번 같게 입력하세요.';
+                if (!x || (values && values.pw !== x)) return '비번 같게 입력하세요.';
                 return true;
               },
               age: (x) => {
