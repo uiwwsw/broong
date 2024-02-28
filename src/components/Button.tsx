@@ -5,7 +5,7 @@ import useDebounce from '#/useDebounce';
 import useHold from '#/useHold';
 import useMergeProps from '#/useMergeFn';
 import useRipple from '#/useRipple';
-import useTheme, { WithTheme } from '#/useTheme';
+import getClassName, { WithTheme } from '#/theme';
 import { ButtonHTMLAttributes } from 'react';
 
 // const generateRipple = (e: MouseEvent) => {
@@ -32,19 +32,26 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, WithTheme
   onHold?: () => unknown;
   delay?: number;
 }
+const className = {
+  default: 'relative box-border overflow-hidden border disabled:cursor-not-allowed disabled:opacity-35',
+  sm: 'rounded-sm p-1 py-0 text-sm',
+  md: 'rounded-md p-2 py-1',
+  lg: 'rounded-lg p-4 py-1.5 text-lg',
+  primary: 'border-cyan-500 bg-cyan-500 text-white',
+  secondary: 'border-slate-500 bg-slate-500 text-white',
+};
 const Button = ({
   onHold,
   children,
   delay = 0,
   onClick,
-  className,
-  componentName = 'btn',
+  className: inlineClassName,
   themeColor,
   themeSize,
   ...props
 }: ButtonProps) => {
-  const theme = useTheme({
-    componentName,
+  const theme = getClassName({
+    className,
     themeColor,
     themeSize,
   });
@@ -57,7 +64,7 @@ const Button = ({
   const debounceClick = useDebounce(onClick, delay);
 
   return (
-    <button {...props} {...buttonProps} className={mergeClassName(theme, className)} onClick={debounceClick}>
+    <button {...props} {...buttonProps} className={mergeClassName(theme, inlineClassName)} onClick={debounceClick}>
       {children}
       {Ripple}
     </button>

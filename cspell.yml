@@ -4,6 +4,7 @@ words:
 
   # plugins
   - commitlint
+  - clsx
   - tailwindcss
   - pretendard # 폰트
 ignoreWords:
