@@ -37,7 +37,7 @@ const Combo = ({
   ...props
 }: ComboProps) => {
   const sto = useRef(0);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLLabelElement>(null);
   const layerRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(defaultValue);
   const [filter, setFilter] = useState('');

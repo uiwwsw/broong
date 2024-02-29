@@ -20,6 +20,11 @@ const Main = () => {
   const [text, setText] = useState('빈값');
   return (
     <Base title="메인">
+      <code>
+        {`<Toast show delay={5000}>
+          tab 버튼을 눌러보세요~. 콤보박스가 열리고 옵션이동 후 다음 엘리먼트로 포커스가 잘 이동됩니다.
+        </Toast>`}
+      </code>
       <Toast show delay={5000}>
         tab 버튼을 눌러보세요~. 콤보박스가 열리고 옵션이동 후 다음 엘리먼트로 포커스가 잘 이동됩니다.
       </Toast>
