@@ -1,18 +1,25 @@
 import { lazy } from 'react';
 
-const Main = lazy(() => import('src/pages/Main'));
-const Test = lazy(() => import('src/pages/Test'));
+const Button = lazy(() => import('src/pages/Button'));
+const Combo = lazy(() => import('src/pages/Combo'));
+const Form = lazy(() => import('src/pages/Form'));
 export const ROUTES = [
   {
     path: '/',
     auth: true,
-    name: '메인',
-    node: Main,
+    name: '버튼',
+    node: Button,
   },
   {
-    path: '/test',
+    path: '/combo',
     auth: true,
-    name: '테스트',
-    node: Test,
+    name: '콤보박스',
+    node: Combo,
+  },
+  {
+    path: '/form',
+    auth: true,
+    name: '폼',
+    node: Form,
   },
 ];

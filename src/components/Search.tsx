@@ -1,6 +1,6 @@
 // import { MouseEvent } from 'react';
 
-import { FocusEvent, MouseEvent, forwardRef, useEffect, useRef, useState } from 'react';
+import { FocusEvent, MouseEvent, forwardRef, useEffect, useState } from 'react';
 import Input, { InputProps } from './Input';
 import Button from './Button';
 import Smooth from './Smooth';

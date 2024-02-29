@@ -20,16 +20,11 @@ const Main = () => {
   const [text, setText] = useState('빈값');
   return (
     <Base title="메인">
-      <code>
-        {`<Toast show delay={5000}>
-          tab 버튼을 눌러보세요~. 콤보박스가 열리고 옵션이동 후 다음 엘리먼트로 포커스가 잘 이동됩니다.
-        </Toast>`}
-      </code>
       <Toast show delay={5000}>
         tab 버튼을 눌러보세요~. 콤보박스가 열리고 옵션이동 후 다음 엘리먼트로 포커스가 잘 이동됩니다.
       </Toast>
       <dl className={style}>
-        <dt>정보</dt>
+        <dt>테마</dt>
         <dd>
           <Combo
             themeColor={color}
@@ -41,6 +36,20 @@ const Main = () => {
           >
             컬러
           </Combo>
+          {/* <Code>
+            {`
+<Combo
+  themeColor={color}
+  themeSize={size}
+  delay={0}
+  defaultValue={color}
+  onChange={(e) => setColor(e as COLOR)}
+  options={colorArr.map((x) => ({ label: x, value: x }))}
+>
+  컬러
+</Combo>
+        `}
+          </Code> */}
         </dd>
         <dd>
           <Combo
