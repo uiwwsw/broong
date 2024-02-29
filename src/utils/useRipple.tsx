@@ -27,7 +27,7 @@ const useRipple = (size: UseRippleProps = 70) => {
     if (active) throw new Error('에니메이션이 끝나지 않고 다시 시작되었습니다.');
     const timeElapsed = new Date().valueOf();
     if (!startTime.current) startTime.current = timeElapsed;
-    const percent = Math.min((timeElapsed - startTime.current) / 1000, 1);
+    const percent = Math.min((timeElapsed - startTime.current) / 1000, 0.9);
     const rect = size * percent;
     setActive({ width: rect, height: rect, opacity: percent });
   };

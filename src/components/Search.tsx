@@ -8,9 +8,9 @@ import clsx from 'clsx';
 interface SearchProps extends InputProps {
   onChange?: (value: string) => void;
 }
-const Search = forwardRef<HTMLDivElement, SearchProps>(
+const Search = forwardRef<HTMLLabelElement, SearchProps>(
   ({ onChange, themeSize, themeColor, onFocus, onBlur, className, ...props }, ref) => {
-    const labelRef = useRef<HTMLLabelElement>(null);
+    // const labelRef = useRef<HTMLLabelElement>(null);
     const [value, setValue] = useState<string | number>('');
     const [focus, setFocus] = useState(false);
     const handleChange = (newValue: string) => {
@@ -28,7 +28,6 @@ const Search = forwardRef<HTMLDivElement, SearchProps>(
     const handleClear = (e: MouseEvent) => {
       setValue('');
       onChange && onChange('');
-      if (labelRef.current) labelRef.current.focus();
       e.preventDefault();
       e.stopPropagation();
     };
@@ -37,7 +36,6 @@ const Search = forwardRef<HTMLDivElement, SearchProps>(
     }, [props.value]);
     return (
       <div
-        ref={ref}
         className={clsx(
           {
             'relative inline-block': true,
@@ -47,13 +45,12 @@ const Search = forwardRef<HTMLDivElement, SearchProps>(
           },
           className,
         )}
-        tabIndex={0}
         onFocusCapture={handleFocus}
         onBlurCapture={handleBlur}
       >
         <Input
           {...props}
-          ref={labelRef}
+          ref={ref}
           className={clsx({
             'peer w-[inherit] transition-all': true,
             'pr-8': focus,

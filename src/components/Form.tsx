@@ -224,7 +224,7 @@ const Form = <T,>({ width = 300, requires, validations, children, onSubmit, butt
           )}
         </Smooth>
         <div className="flex justify-end" style={{ minWidth: width }}>
-          <Loader show={loading}>{button && cloneElement(button, { disabled: hasError })}</Loader>
+          <Loader show={loading}>{button && cloneElement(button, { disabled: hasError || !!complete })}</Loader>
         </div>
       </div>
       <Toast themeSize="lg" show={!!error}>

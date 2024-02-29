@@ -49,6 +49,9 @@ export default {
             opacity: '1',
             transform: 'scale(1) translate(-50%, -50%)',
           },
+          '80%': {
+            opacity: '0.1',
+          },
           '100%': {
             opacity: '0',
             transform: 'scale(4) translate(-50%, -50%)',
