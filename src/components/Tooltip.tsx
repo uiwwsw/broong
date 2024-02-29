@@ -1,15 +1,15 @@
 import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Smooth from './Smooth';
-import useTheme, { WithTheme } from '#/useTheme';
+import { WithTheme } from '#/theme';
 import usePosition from '#/usePosition';
+import clsx from 'clsx';
 interface TooltipProps extends WithTheme {
   children?: ReactNode;
   slot?: ReactNode;
   timeout?: number;
 }
-const Tooltip = ({ slot, children, timeout = 0, componentName = 'tooltip', ...props }: TooltipProps) => {
-  const theme = useTheme({ ...props, componentName });
+const Tooltip = ({ slot, children, timeout = 0, themeColor = 'primary', themeSize = 'md' }: TooltipProps) => {
   const ref = useRef<HTMLElement>(null);
   const sto = useRef(0);
   const { position, trigger } = usePosition({ ref });
@@ -41,7 +41,27 @@ const Tooltip = ({ slot, children, timeout = 0, componentName = 'tooltip', ...pr
     <i className="inline-block not-italic" ref={ref} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
       {slot}
       {createPortal(
-        <Smooth type="tooltip" style={adapterPosition} className={theme}>
+        <Smooth
+          on="animate-tooltip-in"
+          off="animate-tooltip-out"
+          style={adapterPosition}
+          className={clsx({
+            'fixed z-50 px-2 py-1 text-xs font-thin after:absolute after:h-3 after:w-3 after:skew-x-12 after:bg-inherit':
+              true,
+            'origin-top-left after:left-0 after:top-0 after:rotate-6': adapterPosition?.top && adapterPosition?.left,
+            'origin-top-right after:right-0 after:top-0 after:rotate-[-84deg]':
+              adapterPosition?.top && adapterPosition?.right,
+            'origin-bottom-left after:bottom-0 after:left-0 after:rotate-[-84deg]':
+              adapterPosition?.bottom && adapterPosition?.left,
+            'origin-bottom-right after:bottom-0 after:right-0 after:rotate-6':
+              adapterPosition?.bottom && adapterPosition?.right,
+            'rounded-sm px-2 py-1 text-xs shadow-sm': themeSize === 'sm',
+            'rounded-md px-3 py-1.5 shadow': themeSize === 'md',
+            'rounded-lg px-4 py-2.5 text-lg shadow-lg': themeSize === 'lg',
+            'bg-cyan-500 text-white': themeColor === 'primary',
+            'bg-slate-500 text-white': themeColor === 'secondary',
+          })}
+        >
           {show && children}
         </Smooth>,
         document.body,

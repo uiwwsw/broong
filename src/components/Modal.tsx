@@ -1,9 +1,9 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Smooth from './Smooth';
-import useTheme, { WithTheme } from '#/useTheme';
+import { WithTheme } from '#/theme';
 import Button from './Button';
-import mergeClassName from '#/mergeClassName';
+import clsx from 'clsx';
 export interface ModalProps extends WithTheme {
   show?: boolean;
   timeout?: number;
@@ -12,15 +12,14 @@ export interface ModalProps extends WithTheme {
   onClose?: () => unknown;
 }
 const Modal = ({
+  themeColor = 'primary',
+  themeSize = 'md',
   onClose,
   removeLayer = false,
   children,
   show,
   timeout = 0,
-  componentName = 'modal',
-  ...props
 }: ModalProps) => {
-  const theme = useTheme({ ...props, componentName });
   const [hide, setHide] = useState(false);
 
   const handleClick = () => setHide(true);
@@ -39,14 +38,25 @@ const Modal = ({
     <>
       <Smooth className="fixed inset-0 z-50 bg-slate-800 bg-opacity-30">{show && !hide && !removeLayer}</Smooth>
 
-      <Smooth type="modal" className={mergeClassName(theme)} onEnd={handleEnd}>
+      <Smooth
+        on="animate-modal-in"
+        off="animate-modal-out"
+        className={clsx({
+          'fixed left-1/2 top-1/2 z-50 origin-top-left': true,
+          'rounded-sm px-2 py-1 text-xs shadow-sm': themeSize === 'sm',
+          'rounded-md px-3 py-1.5 shadow': themeSize === 'md',
+          'rounded-lg px-4 py-2.5 text-lg shadow-lg': themeSize === 'lg',
+          'border-cyan-500 bg-cyan-500 text-white': themeColor === 'primary',
+          'border-slate-500 bg-slate-500 text-white': themeColor === 'secondary',
+        })}
+        onEnd={handleEnd}
+      >
         {show && !hide && (
           <>
             {children}
             <Button
               onClick={handleClick}
-              componentName={null}
-              className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 overflow-hidden rounded-full bg-inherit"
+              className="!absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 overflow-hidden !rounded-full bg-inherit !p-0"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

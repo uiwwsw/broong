@@ -4,14 +4,12 @@ import { FocusEvent, MouseEvent, forwardRef, useEffect, useRef, useState } from 
 import Input, { InputProps } from './Input';
 import Button from './Button';
 import Smooth from './Smooth';
-import mergeClassName from '#/mergeClassName';
-import useTheme from '#/useTheme';
+import clsx from 'clsx';
 interface SearchProps extends InputProps {
   onChange?: (value: string) => void;
 }
 const Search = forwardRef<HTMLDivElement, SearchProps>(
-  ({ onChange, themeSize, themeColor, componentName = 'search', onFocus, onBlur, className, ...props }, ref) => {
-    const theme = useTheme({ themeSize, themeColor, componentName });
+  ({ onChange, themeSize, themeColor, onFocus, onBlur, className, ...props }, ref) => {
     const labelRef = useRef<HTMLLabelElement>(null);
     const [value, setValue] = useState<string | number>('');
     const [focus, setFocus] = useState(false);
@@ -40,7 +38,15 @@ const Search = forwardRef<HTMLDivElement, SearchProps>(
     return (
       <div
         ref={ref}
-        className={mergeClassName(className, theme)}
+        className={clsx(
+          {
+            'relative inline-block': true,
+            'w-32': themeSize === 'sm',
+            'w-52': themeSize === 'md',
+            'w-72': themeSize === 'lg',
+          },
+          className,
+        )}
         tabIndex={0}
         onFocusCapture={handleFocus}
         onBlurCapture={handleBlur}
@@ -48,7 +54,10 @@ const Search = forwardRef<HTMLDivElement, SearchProps>(
         <Input
           {...props}
           ref={labelRef}
-          className={`peer transition-all${focus ? ' pr-8' : ''}`}
+          className={clsx({
+            'peer w-[inherit] transition-all': true,
+            'pr-8': focus,
+          })}
           themeColor={themeColor}
           themeSize={themeSize}
           value={value}
@@ -58,10 +67,9 @@ const Search = forwardRef<HTMLDivElement, SearchProps>(
           {focus && (
             <Button
               type="button"
-              componentName=""
               themeColor={themeColor}
               themeSize={themeSize}
-              className="absolute right-2 top-1/2 z-10 -translate-y-1/2 overflow-hidden"
+              className="!absolute right-2 top-1/2 z-10 -translate-y-1/2 overflow-hidden !p-0"
               onClick={handleClear}
             >
               <svg

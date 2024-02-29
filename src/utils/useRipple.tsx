@@ -2,6 +2,7 @@ import { MouseEvent, TouchEvent, useEffect, useMemo, useRef, useState } from 're
 import useAnimation from '#/useAnimation';
 import useDebounce from '#/useDebounce';
 import usePreThrottle from './usePreThrottle';
+import clsx from 'clsx';
 interface Active {
   width?: number;
   height?: number;
@@ -10,7 +11,6 @@ interface Active {
 interface Ripple extends Active {
   left?: number;
   top?: number;
-  className?: string;
 }
 type UseRippleProps = number;
 const useRipple = (size: UseRippleProps = 70) => {
@@ -49,7 +49,6 @@ const useRipple = (size: UseRippleProps = 70) => {
         {
           left: left - rect.left,
           top: top - rect.top,
-          className: 'ripple',
         },
       ];
     });
@@ -69,7 +68,6 @@ const useRipple = (size: UseRippleProps = 70) => {
         width: size,
         height: size,
         opacity: 1,
-        className: 'ripple ripple--begin',
       },
     ]);
   };
@@ -89,7 +87,11 @@ const useRipple = (size: UseRippleProps = 70) => {
         <i
           onAnimationEnd={() => handleAnimateEnd(index)}
           key={index}
-          className={x.className}
+          className={clsx({
+            'pointer-events-none absolute z-50 h-0 w-0 origin-top-left -translate-x-1/2 -translate-y-1/2 rounded-full bg-black bg-opacity-10 opacity-0':
+              true,
+            'animate-ripple transition-all duration-300': x.opacity === 1,
+          })}
           style={{ left: x.left, top: x.top, width: x.width, height: x.height, opacity: x.opacity }}
         />
       ),

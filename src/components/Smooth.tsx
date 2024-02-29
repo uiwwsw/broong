@@ -1,15 +1,25 @@
-import mergeClassName from '#/mergeClassName';
+import clsx from 'clsx';
 import { CSSProperties, ReactNode, useEffect, useState } from 'react';
 interface UseSmoothProps {
   delay?: number;
   children?: ReactNode;
   className?: string;
-  type?: string;
+  on?: string;
+  off?: string;
   style?: CSSProperties;
   onStart?: (show: boolean) => unknown;
   onEnd?: (show: boolean) => unknown;
 }
-const Smooth = ({ delay = 0, onStart, onEnd, children, className, type = 'fade', ...props }: UseSmoothProps) => {
+const Smooth = ({
+  delay = 0,
+  onStart,
+  onEnd,
+  children,
+  className,
+  on = 'animate-fade-in',
+  off = 'animate-fade-out',
+  ...props
+}: UseSmoothProps) => {
   const [show, setShow] = useState(false);
   const [clone, setClone] = useState(children);
   const [hide, setHide] = useState(true);
@@ -33,7 +43,14 @@ const Smooth = ({ delay = 0, onStart, onEnd, children, className, type = 'fade',
   return hide ? null : (
     <i
       {...props}
-      className={mergeClassName(type, `${type}--${show ? 'in' : 'out'}`, className, 'not-italic')}
+      className={clsx(
+        {
+          'not-italic': true,
+          [on]: show,
+          [off]: !show,
+        },
+        className,
+      )}
       onAnimationEnd={handleAnimationEnd}
       onAnimationStart={handleAnimationStart}
     >

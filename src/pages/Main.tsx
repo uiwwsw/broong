@@ -5,7 +5,7 @@ import Input from '@/Input';
 import Combo from '@/Combo';
 import Loader from '@/Loader';
 import Numeric from '@/Numeric';
-import { COLOR, SIZE, colorArr, sizeArr } from '#/useTheme';
+import { COLOR, SIZE, colorArr, sizeArr } from '#/theme';
 import Tooltip from '@/Tooltip';
 import Form from '@/Form';
 import Currency from '@/Currency';

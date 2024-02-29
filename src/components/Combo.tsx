@@ -1,6 +1,6 @@
 // import { MouseEvent } from 'react';
 
-import useTheme, { WithTheme } from '#/useTheme';
+import { WithTheme } from '#/theme';
 import { createPortal } from 'react-dom';
 
 import { InputProps } from './Input';
@@ -10,6 +10,7 @@ import usePosition from '#/usePosition';
 import Button from './Button';
 import Toast from './Toast';
 import Search from './Search';
+import clsx from 'clsx';
 
 interface ComboProps extends Omit<InputProps, 'onChange'>, WithTheme {
   onChange?: (value: string) => unknown;
@@ -28,7 +29,6 @@ const Combo = ({
   defaultValue = '',
   onChange,
   options,
-  componentName = 'combo',
   themeColor,
   themeSize,
   name,
@@ -39,7 +39,6 @@ const Combo = ({
   const sto = useRef(0);
   const ref = useRef<HTMLDivElement>(null);
   const layerRef = useRef<HTMLDivElement>(null);
-  const theme = useTheme({ themeColor, themeSize, componentName });
   const [value, setValue] = useState(defaultValue);
   const [filter, setFilter] = useState('');
   const [visible, setVisible] = useState(false);
@@ -110,6 +109,7 @@ const Combo = ({
       </Toast>
       <Search
         {...props}
+        readOnly={readOnly}
         type={visible ? 'search' : 'text'}
         placeholder={visible ? '검색어를 입력해보아요.' : placeholder}
         themeColor={themeColor}
@@ -132,7 +132,14 @@ const Combo = ({
               onFocusCapture={handleFocusCapture}
               onKeyDownCapture={handleKeyDown}
               style={adapterPosition}
-              className={theme}
+              className={clsx({
+                'absolute grid gap-1 overflow-auto outline': true,
+                'rounded-sm p-1 shadow-lg': themeSize === 'sm',
+                'rounded-md p-1.5 shadow-xl': themeSize === 'md',
+                'rounded-lg p-2 shadow-2xl': themeSize === 'lg',
+                'bg-cyan-600 text-white': themeColor === 'primary',
+                'bg-slate-600 text-white': themeColor === 'secondary',
+              })}
             >
               {filteredOptions?.map((option, i) => (
                 <Button
@@ -143,12 +150,17 @@ const Combo = ({
                   key={option.value + i}
                   disabled={option.disabled || readOnly}
                   onClick={() => handleChange(option.value)}
-                  className={`w-full${option.value === '' ? ' !text-gray-400' : ''}`}
+                  className={clsx({
+                    'w-full': true,
+                    '!text-gray-400': option.value === '',
+                  })}
                 >
                   {option.label}
                 </Button>
               ))}
-              {isEmpty && <div className="combo__empty">{filter ? '검색결과가 없습니다' : '내용이 없습니다'}</div>}
+              {isEmpty && (
+                <div className="p-[inherit] text-center">{filter ? '검색결과가 없습니다' : '내용이 없습니다'}</div>
+              )}
             </div>
           )}
         </Smooth>,

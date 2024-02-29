@@ -3,9 +3,9 @@ interface UseSpinnerProps {
 }
 const Spinner = ({ size = 30 }: UseSpinnerProps) => {
   return (
-    <svg className="spinner" viewBox="0 0 50 50" width={size} height={size}>
+    <svg className="animate-rotate absolute left-1/2 top-1/2 z-10" viewBox="0 0 50 50" width={size} height={size}>
       <circle
-        className="spinner__path"
+        className="animate-dash stroke-cyan-500"
         cx="25"
         cy="25"
         r="20"

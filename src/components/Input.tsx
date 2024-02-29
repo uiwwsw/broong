@@ -55,15 +55,17 @@ const Input = forwardRef<HTMLLabelElement, InputProps>(
       <label
         {...rippleProps}
         ref={ref}
-        className={clsx({
+        className={clsx(
+          {
+            'relative box-border inline-flex flex-row-reverse items-center border': true,
+            'h-8 w-32 rounded-sm text-sm': themeSize === 'sm',
+            'h-10 w-52 rounded-md': themeSize === 'md',
+            'h-14 w-72 rounded-lg text-lg': themeSize === 'lg',
+            'border-cyan-500 bg-cyan-500 text-white': themeColor === 'primary',
+            'border-slate-500 bg-slate-500 text-white': themeColor === 'secondary',
+          },
           className,
-          'relative box-border inline-flex flex-row-reverse items-center border': true,
-          'h-8 w-32 rounded-sm text-sm': themeSize === 'sm',
-          'h-10 w-52 rounded-md': themeSize === 'md',
-          'h-14 w-72 rounded-lg text-lg': themeSize === 'lg',
-          'border-cyan-500 bg-cyan-500 text-white': themeColor === 'primary',
-          'border-slate-500 bg-slate-500 text-white': themeColor === 'secondary',
-        })}
+        )}
       >
         {/* <label {...holdProps} style={{ clipPath: 'border-box' }}> */}
         <input
@@ -86,7 +88,7 @@ const Input = forwardRef<HTMLLabelElement, InputProps>(
             {children}
           </Label>
         ) : null}
-        <i className="ripple--wrap">{Ripple}</i>
+        <i className="pointer-events-none absolute inset-0 overflow-hidden">{Ripple}</i>
       </label>
     );
   },
