@@ -12,10 +12,8 @@ const ComboPage = () => {
           <Code
             code={`
             <Combo
-              themeColor={color}
-              themeSize={size}
               delay={0}
-              defaultValue={color}
+              defaultValue="1"
               onChange={(e) => setNumber(+e)}
               options={[
                 { label: '1', value: '1' },
@@ -42,10 +40,8 @@ const ComboPage = () => {
           <Code
             code={`
             <Combo
-              themeColor={color}
-              themeSize={size}
+              defaultValue="1"
               delay={0}
-              defaultValue={color}
               onChange={(e) => setNumber(+e)}
               options={[
                 { label: '1', value: '1' },

@@ -34,7 +34,7 @@ const Loader = ({ children, timeout = 500, show, press = 'onClickCapture' }: Use
 
       <Smooth className="w-0">
         {loading && (
-          <i className="absolute inset-0 bg-black bg-opacity-30 transition-colors">
+          <i className="absolute inset-0 bg-black bg-opacity-30">
             <Spinner />
           </i>
         )}
