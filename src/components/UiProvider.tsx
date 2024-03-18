@@ -1,22 +1,32 @@
-import { UiContext, UiSize } from '#/useUIContext';
+import { UiContext } from '#/useUIContext';
 import { ReactNode, useState } from 'react';
+import CookieJs from 'js-cookie';
 interface UiProviderProps {
   children?: ReactNode;
 }
 
-export const UiProvider = ({ children }: UiProviderProps) => {
-  const [title, setTitle] = useState<string>();
-  const [size, setSize] = useState<Record<UiSize, number>>({ header: 0 });
+const UiProvider = ({ children }: UiProviderProps) => {
+  const [cache, _setCache] = useState(CookieJs.get());
+  const setCache = (key: string, value: string, options?: Cookies.CookieAttributes) => {
+    if (value === '') {
+      CookieJs.remove(key);
+    } else {
+      CookieJs.set(key, value, {
+        expires: 1,
+        ...options,
+      });
+    }
+    _setCache(CookieJs.get());
+  };
   return (
     <UiContext.Provider
       value={{
-        title,
-        setTitle,
-        size,
-        setSize,
+        cache,
+        setCache,
       }}
     >
       {children}
     </UiContext.Provider>
   );
 };
+export default UiProvider;
