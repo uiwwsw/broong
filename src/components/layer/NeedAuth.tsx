@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import withLayer from './withLayer';
+import withLayer from '@/layer/withLayer';
 const NeedAuth = () => {
   return (
     <div>

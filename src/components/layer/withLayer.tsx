@@ -14,7 +14,7 @@ const withLayer = <P,>(WrappedComponent: ComponentType<P & WithLayerProps>) => {
       <Modal show={props?.show}>
         <Wrap>
           <div>
-            <Button onClick={handleClick}>
+            <Button onClick={handleClick} className="inline-block">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

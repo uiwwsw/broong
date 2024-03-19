@@ -1,16 +1,14 @@
 import { createContext, useContext } from 'react';
 export type UiSize = 'header';
 interface ContextProps {
-  title?: string;
-  setTitle: (title?: string) => void;
-  size?: Record<UiSize, number>;
-  setSize: (style: Record<string, number>) => void;
+  cache?: {
+    [key: string]: string;
+  };
+  setCache: (key: string, value: string, options?: Cookies.CookieAttributes | undefined) => void;
 }
 export const UiContext = createContext<ContextProps>({
-  title: undefined,
-  setTitle: () => null,
-  size: undefined,
-  setSize: () => null,
+  cache: undefined,
+  setCache: () => null,
 });
 const useUiContext = () => useContext(UiContext);
 export default useUiContext;

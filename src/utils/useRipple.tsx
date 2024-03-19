@@ -12,8 +12,16 @@ interface Ripple extends Active {
   left?: number;
   top?: number;
 }
-type UseRippleProps = number;
-const useRipple = (size: UseRippleProps = 70) => {
+interface UseRippleProps {
+  size?: number;
+  beLight?: boolean;
+}
+const useRipple = (props?: UseRippleProps) => {
+  const { size, beLight } = {
+    size: 70,
+    beLight: true,
+    ...props,
+  };
   const startTime = useRef(0);
   // const size = useRef<number>(0);
   const [_ripple, setRipple] = useState<(Ripple | undefined)[]>([]);
@@ -39,6 +47,7 @@ const useRipple = (size: UseRippleProps = 70) => {
 
   const handleStart = usePreThrottle((e: MouseEvent | TouchEvent) => {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const { scrollTop, scrollLeft } = e.currentTarget;
     setRipple((prev) => {
       const left =
         (e as MouseEvent).clientX !== undefined ? (e as MouseEvent).clientX : (e as TouchEvent).touches[0].clientX;
@@ -47,8 +56,8 @@ const useRipple = (size: UseRippleProps = 70) => {
       return [
         ...prev,
         {
-          left: left - rect.left,
-          top: top - rect.top,
+          left: left - rect.left + scrollLeft,
+          top: top - rect.top + scrollTop,
         },
       ];
     });
@@ -71,7 +80,7 @@ const useRipple = (size: UseRippleProps = 70) => {
       },
     ]);
   };
-
+  const handleMove = (e: MouseEvent | TouchEvent) => {};
   useEffect(() => {
     ripple.length && reset();
   }, [ripple, reset]);
@@ -80,7 +89,7 @@ const useRipple = (size: UseRippleProps = 70) => {
     onTouchStart: handleStart,
     onMouseUp: handleEnd,
     onTouchEnd: handleEnd,
-    onMouseLeave: handleEnd,
+    onMouseMove: handleEnd,
     onTouchCancel: handleEnd,
     Ripple: ripple.map((x, index) =>
       x === undefined ? null : (
@@ -88,8 +97,10 @@ const useRipple = (size: UseRippleProps = 70) => {
           onAnimationEnd={() => handleAnimateEnd(index)}
           key={index}
           className={clsx({
-            'pointer-events-none absolute z-50 h-0 w-0 origin-top-left -translate-x-1/2 -translate-y-1/2 rounded-full bg-black bg-opacity-10 opacity-0':
+            'pointer-events-none absolute z-50 h-0 w-0 origin-top-left -translate-x-1/2 -translate-y-1/2 rounded-full bg-opacity-10 opacity-0':
               true,
+            'bg-white': beLight,
+            'bg-black': !beLight,
             'animate-ripple transition-all duration-300': x.opacity === 1,
           })}
           style={{ left: x.left, top: x.top, width: x.width, height: x.height, opacity: x.opacity }}

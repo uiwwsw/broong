@@ -44,15 +44,7 @@ const Map = ({ keyword }: MapProps) => {
     //   console.log(level);
     // });
     search();
-    kakao.maps.event.addListener(map, 'dragend', async function () {
-      // 지도 중심좌표를 얻어옵니다
-      search();
-      // var message = '변경된 지도 중심좌표는 ' + latlng.getLat() + ' 이고, ';
-      // message += '경도는 ' + latlng.getLng() + ' 입니다';
-
-      // var resultDiv = document.getElementById('result');
-      // resultDiv.innerHTML = message;
-    });
+    kakao.maps.event.addListener(map, 'dragend', search);
 
     async function search() {
       const arg = map.getBounds() as unknown;

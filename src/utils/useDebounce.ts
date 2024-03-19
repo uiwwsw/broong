@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 
 const useDebounce = <T>(callback?: T, delay: number = 0) => {
-  const schedule = useRef(0);
+  if (!delay && callback) return callback as T;
+  const schedule = useRef<NodeJS.Timeout | number>();
 
   return <K>(param?: K) => {
     clearTimeout(schedule.current);

@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 
 const usePreThrottle = <T>(callback?: T, delay: number = 0) => {
-  const schedule = useRef(0);
+  const schedule = useRef<NodeJS.Timeout | number>();
 
   return <K>(param?: unknown): K | void => {
     if (!schedule.current) {
