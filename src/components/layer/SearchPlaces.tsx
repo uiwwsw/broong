@@ -1,24 +1,13 @@
-import useUiContext from '#/useUIContext';
 import Places from '@/ui/Places';
-import { useMemo, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import Input from '@/Input';
-import withLayer from './Layer';
-const SearchPlaces = () => {
+import withLayer, { WithLayerProps } from './withLayer';
+type SearchPlacesProps = WithLayerProps;
+const SearchPlaces = ({ onClose }: SearchPlacesProps) => {
   const [keyword, setKeyword] = useState('');
-  const navigate = useNavigate();
-
-  const { setCache } = useUiContext();
-  const location = useLocation();
-  const search = useMemo(() => new URLSearchParams(location.search), [location]);
-  const from = useMemo(() => search.get('from') ?? '', [search]);
 
   const handleComplete = (place: kakao.maps.services.PlacesSearchResultItem) => {
-    setCache(`${from}/placeId`, place.id);
-    setCache(`${from}/placeName`, place.place_name);
-    setCache(`${from}/longitude`, place.x);
-    setCache(`${from}/latitude`, place.y);
-    navigate(from);
+    onClose && onClose(place);
   };
   return (
     <>

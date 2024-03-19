@@ -4,7 +4,7 @@ import { ComponentType } from 'react';
 import Modal from '@/Modal';
 export interface WithLayerProps {
   show?: boolean;
-  onClose?: () => void;
+  onClose?: (params?: unknown) => void;
 }
 const withLayer = <P,>(WrappedComponent: ComponentType<P & WithLayerProps>) => {
   return (props: P & WithLayerProps) => {

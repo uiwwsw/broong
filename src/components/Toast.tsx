@@ -4,7 +4,7 @@ import Button from '@/Button';
 import useThrottle from '#/useThrottle';
 import clsx from 'clsx';
 import { Transition } from 'react-transition-group';
-interface ToastProps {
+export interface ToastProps {
   show?: boolean;
   duration?: number;
   children?: ReactNode;

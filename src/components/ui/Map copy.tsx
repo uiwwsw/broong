@@ -1,6 +1,4 @@
 import { useSearchReviews } from '!/review/applications/search';
-import { Review } from '!/review/domain';
-import { SearchReviewRequest } from 'library';
 import { useEffect, useRef, useState } from 'react';
 interface MapProps {
   keyword?: string;
@@ -43,39 +41,42 @@ const Map = ({ keyword }: MapProps) => {
     //   const level = map.getLevel();
     //   console.log(level);
     // });
-    search();
-    kakao.maps.event.addListener(map, 'dragend', async function () {
+    kakao.maps.event.addListener(map, 'dragend', function () {
       // 지도 중심좌표를 얻어옵니다
-      search();
+      console.log(trigger(map.getBounds()));
+
       // var message = '변경된 지도 중심좌표는 ' + latlng.getLat() + ' 이고, ';
       // message += '경도는 ' + latlng.getLng() + ' 입니다';
 
       // var resultDiv = document.getElementById('result');
       // resultDiv.innerHTML = message;
     });
-
-    async function search() {
-      const arg = map.getBounds() as unknown;
-      const data = await trigger(arg as SearchReviewRequest);
-      placesSearchCB(data);
-    }
+    if (!keyword) return;
+    // 장소 검색 객체를 생성합니다
+    const ps = new kakao.maps.services.Places();
+    // 키워드로 장소를 검색합니다
+    ps.keywordSearch(keyword, placesSearchCB);
 
     // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-    function placesSearchCB(result?: Review[]) {
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-      // LatLngBounds 객체에 좌표를 추가합니다
-      if (!result) return;
+    function placesSearchCB(result: kakao.maps.services.PlacesSearchResult, status: kakao.maps.services.Status) {
+      if (status === kakao.maps.services.Status.OK) {
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        const bounds = new kakao.maps.LatLngBounds();
 
-      for (let i = 0; i < result.length; i++) {
-        const currentResult = result[i];
-        displayMarker(currentResult);
+        for (let i = 0; i < result.length; i++) {
+          const currentResult = result[i];
+          displayMarker(currentResult);
+          bounds.extend(new kakao.maps.LatLng(+currentResult.y, +currentResult.x));
+        }
+
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+        map.setBounds(bounds);
       }
-
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
     }
 
     // 지도에 마커를 표시하는 함수입니다
-    function displayMarker(place: Review) {
+    function displayMarker(place: kakao.maps.services.PlacesSearchResultItem) {
       // 마커를 생성하고 지도에 표시합니다
       const marker = new kakao.maps.Marker({
         map,
@@ -85,11 +86,12 @@ const Map = ({ keyword }: MapProps) => {
       // 마커에 클릭이벤트를 등록합니다
       kakao.maps.event.addListener(marker, 'click', function () {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-        infoWindow.setContent('<div style="padding:5px;font-size:12px; color: #000;">' + place.placeName + '</div>');
+        infoWindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
         infoWindow.open(map, marker);
       });
     }
   }, [ref.current, position, keyword]);
+  console.log('dawdwad', data);
   return <div ref={ref} style={{ height: 400 }}></div>;
 };
 
